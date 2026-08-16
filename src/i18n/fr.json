@@ -1,0 +1,39 @@
+{
+  "app": {
+    "name": "Nurtura"
+  },
+  "common": {
+    "retry": "Réessayer",
+    "loading": "Chargement en cours",
+    "cancel": "Annuler",
+    "back": "Retour"
+  },
+  "devGallery": {
+    "title": "Galerie de composants",
+    "notForProduction": "Écran de développement — absent du build de production",
+    "themeSectionTitle": "Thème",
+    "themeChildLabel": "Enfant",
+    "themeParentLabel": "Parent",
+    "themeToggleAccessibilityLabel": "Choisir le thème enfant ou parent",
+    "breakpointLabel": "Point de rupture courant",
+    "textSectionTitle": "Texte",
+    "boxSectionTitle": "Mise en page",
+    "pressableSectionTitle": "Zone tactile",
+    "pressableDemoLabel": "Zone d'appui de démonstration",
+    "buttonSectionTitle": "Boutons",
+    "buttonVariantPrimaryAffordance": "Continuer",
+    "buttonVariantPrimary": "Valider",
+    "buttonVariantSecondary": "Plus tard",
+    "buttonVariantTonal": "Écouter le résumé",
+    "buttonVariantGhost": "Passer cette étape",
+    "buttonVariantDestructive": "Supprimer le compte",
+    "buttonStateNormal": "Normal",
+    "buttonStateLoading": "Chargement",
+    "buttonStateDisabled": "Désactivé",
+    "buttonDisabledReason": "Choisissez une classe pour continuer",
+    "iconButtonSectionTitle": "Boutons icône",
+    "iconButtonBackLabel": "Revenir à l'écran précédent",
+    "iconButtonMicLabel": "Démarrer l'enregistrement vocal",
+    "iconButtonArrowLabel": "Continuer"
+  }
+}
