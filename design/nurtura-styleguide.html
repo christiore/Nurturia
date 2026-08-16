@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nurtura — Styleguide mobile v0.1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════════════
+   NURTURA — TOKENS
+   ══════════════════════════════════════════════════════════════ */
+:root{
+  --n0:#FFFFFF; --n50:#F6F7FB; --n100:#EDEFF4; --n200:#DEE2EA; --n300:#C2C7D4;
+  --n400:#9AA1B2; --n500:#767D90; --n550:#686F82; --n600:#565C6E; --n700:#3A3F4E; --n800:#262A36;
+  --n900:#171A23; --n950:#0F1117;
+  --p50:#F4F3FE; --p100:#E9E7FD; --p300:#B7B1F5; --p500:#7A71E9; --p600:#5A4FE0;
+  --p700:#3D33B8; --p800:#2F2790; --p900:#241C6B;
+  --a100:#FFEADF; --a300:#FFC0A0; --a500:#FF8A4C; --a600:#E0631F; --a700:#A63F10;
+  --s100:#DFF3ED; --s500:#2FA98C; --s600:#26856D; --s700:#1E6B58;
+  --am100:#FDF0CE; --am500:#F2B807; --am700:#8A5A00;
+  --d100:#FBE7E7; --d600:#C93838; --d700:#A32A2A;
+  --sand50:#FFF8F2; --sand100:#FFF1E6; --sand200:#F7E4D4;
+  /* Bordure porteuse d'affordance : contraste >= 3:1 (WCAG 1.4.11) */
+  --border-int:#848BA0;
+  /* Echelle data viz : paliers distinguables entre eux */
+  --dv0:#EDEFF4; --dv1:#CFCBF8; --dv2:#8C84EE; --dv3:#5A4FE0;
+
+  --sp1:4px; --sp2:8px; --sp3:12px; --sp4:16px; --sp5:20px; --sp6:24px;
+  --sp7:32px; --sp8:40px; --sp9:48px; --sp10:64px;
+  --r-xs:8px; --r-sm:12px; --r-md:16px; --r-lg:20px; --r-xl:28px; --r-2xl:32px; --r-pill:999px;
+
+  --sh1:0 2px 8px rgba(23,26,35,.06);
+  --sh2:0 8px 24px rgba(23,26,35,.08);
+  --sh3:0 16px 40px rgba(23,26,35,.12);
+
+  --ease:cubic-bezier(.2,.8,.2,1);
+  --ease-emph:cubic-bezier(.2,0,0,1);
+
+  --font-text:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  --font-display:'Nunito','Inter',system-ui,sans-serif;
+}
+
+/* ── Thème ENFANT (défaut) ── */
+[data-theme="child"]{
+  --bg:var(--sand50); --bg-alt:var(--sand100); --surface:var(--n0);
+  --surface-sunken:var(--sand100); --border:var(--sand200); --border-strong:var(--n300);
+  --text:var(--n900); --text-2:var(--n600); --text-muted:var(--n550);
+  --action:var(--n900); --action-text:var(--n0); --accent:var(--p600);
+  --r-card:var(--r-xl); --ctrl-h:56px; --font-h:var(--font-display); --w-h:800;
+}
+/* ── Thème PARENT ── */
+[data-theme="parent"]{
+  --bg:var(--n50); --bg-alt:var(--n100); --surface:var(--n0);
+  --surface-sunken:var(--n100); --border:var(--n200); --border-strong:var(--n300);
+  --text:var(--n900); --text-2:var(--n600); --text-muted:var(--n550);
+  --action:var(--p600); --action-text:var(--n0); --accent:var(--p600);
+  --r-card:var(--r-lg); --ctrl-h:52px; --font-h:var(--font-text); --w-h:700;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   CHROME DU DOCUMENT (hors système — habillage du styleguide)
+   ══════════════════════════════════════════════════════════════ */
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-text);background:#F0F1F6;color:var(--n900);-webkit-font-smoothing:antialiased}
+.doc-bar{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.88);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--n200);padding:14px 28px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.doc-bar h1{font-size:16px;font-weight:700;letter-spacing:-.3px}
+.doc-bar .ver{font-size:11px;font-weight:600;color:var(--n500);background:var(--n100);padding:3px 8px;border-radius:var(--r-pill)}
+.doc-nav{display:flex;gap:2px;margin-left:auto;flex-wrap:wrap}
+.doc-nav a{font-size:12px;font-weight:600;color:var(--n600);text-decoration:none;padding:6px 10px;border-radius:8px}
+.doc-nav a:hover{background:var(--n100);color:var(--n900)}
+.theme-switch{display:flex;background:var(--n100);border-radius:var(--r-pill);padding:3px;gap:2px}
+.theme-switch button{border:0;background:transparent;font:inherit;font-size:12px;font-weight:600;color:var(--n600);
+  padding:7px 14px;border-radius:var(--r-pill);cursor:pointer;transition:all .2s var(--ease)}
+.theme-switch button.on{background:var(--n900);color:#fff}
+.wrap{max-width:1280px;margin:0 auto;padding:40px 28px 120px}
+section{margin-bottom:64px;scroll-margin-top:80px}
+.sec-head{margin-bottom:24px;padding-bottom:14px;border-bottom:2px solid var(--n200)}
+.sec-head h2{font-size:26px;font-weight:800;letter-spacing:-.6px}
+.sec-head p{font-size:14px;color:var(--n600);margin-top:6px;max-width:70ch;line-height:1.6}
+h3.blk{font-size:15px;font-weight:700;margin:32px 0 14px;letter-spacing:-.2px}
+h3.blk:first-of-type{margin-top:0}
+.spec{font-size:12px;color:var(--n500);line-height:1.6;margin-top:8px;font-family:var(--font-text)}
+.spec code{background:var(--n100);padding:1px 5px;border-radius:5px;font-size:11px;color:var(--n700)}
+.panel{background:var(--bg);border:1px solid var(--n200);border-radius:var(--r-lg);padding:28px;
+  box-shadow:var(--sh1);transition:background .25s var(--ease)}
+.grid{display:grid;gap:20px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.col{display:flex;flex-direction:column;gap:12px}
+.stack{display:flex;flex-direction:column;gap:14px}
+.tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;
+  padding:3px 7px;border-radius:6px;background:var(--n100);color:var(--n600)}
+.tag.ok{background:var(--s100);color:var(--s700)} .tag.no{background:var(--d100);color:var(--d700)}
+
+/* ══════════════════════════════════════════════════════════════
+   COMPOSANTS DU SYSTÈME
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Boutons ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:var(--ctrl-h);
+  padding:0 24px;border:0;border-radius:var(--r-pill);font-family:var(--font-text);font-size:17px;
+  font-weight:600;letter-spacing:-.2px;cursor:pointer;transition:transform .12s var(--ease),box-shadow .18s var(--ease),background .18s var(--ease);
+  white-space:nowrap;min-width:48px}
+.btn:active{transform:scale(.97)}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn--primary{background:var(--action);color:var(--action-text);box-shadow:var(--sh2)}
+.btn--primary:hover{box-shadow:var(--sh3)}
+.btn--secondary{background:var(--surface);color:var(--text);box-shadow:var(--sh1);border:1.5px solid var(--border-int)}
+.btn--tonal{background:var(--p100);color:var(--p700)}
+.btn--ghost{background:transparent;color:var(--text);padding:0 16px}
+.btn--ghost:hover{background:var(--bg-alt)}
+.btn--danger{background:var(--d600);color:#fff}
+.btn--md{height:48px;font-size:15px;padding:0 20px}
+.btn--sm{height:40px;font-size:15px;padding:0 16px}
+.btn--block{width:100%}
+.btn[disabled]{opacity:.4;pointer-events:none;box-shadow:none}
+/* Bouton avec affordance circulaire — la signature visuelle */
+.btn--afford{padding:0 8px 0 24px;gap:16px}
+.btn--afford .afford{width:calc(var(--ctrl-h) - 12px);height:calc(var(--ctrl-h) - 12px);border-radius:var(--r-pill);
+  background:rgba(255,255,255,.18);display:grid;place-items:center;flex:none}
+.btn--afford.on-light .afford{background:var(--n900);color:#fff}
+/* Bouton icône rond */
+.iconbtn{width:56px;height:56px;border:0;border-radius:var(--r-pill);background:var(--action);color:var(--action-text);
+  display:grid;place-items:center;cursor:pointer;box-shadow:var(--sh2);transition:transform .12s var(--ease)}
+.iconbtn:active{transform:scale(.94)}
+.iconbtn--md{width:48px;height:48px}
+.iconbtn--outline{background:var(--surface);color:var(--text);border:1.5px solid var(--border-int);box-shadow:var(--sh1)}
+/* Loading */
+.spin{width:20px;height:20px;border:2.5px solid rgba(255,255,255,.32);border-top-color:#fff;border-radius:50%;
+  animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* ── Segmented control ── */
+.segmented{display:inline-flex;background:var(--surface-sunken);border-radius:var(--r-pill);padding:4px;gap:2px}
+/* Hauteur totale 48 = cible tactile minimale. Le pouce vise le conteneur, pas la pastille. */
+.segmented button{border:0;background:transparent;font:inherit;font-size:14px;font-weight:600;color:var(--text-2);
+  height:40px;padding:0 18px;border-radius:var(--r-pill);cursor:pointer;transition:all .2s var(--ease)}
+.segmented button.on{background:var(--n900);color:#fff;box-shadow:var(--sh1)}
+
+/* ── Chips ── */
+.chip{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 14px;border-radius:var(--r-pill);
+  background:var(--surface);border:1.5px solid var(--border-int);font-size:14px;font-weight:600;color:var(--text);
+  cursor:pointer;transition:all .18s var(--ease);box-shadow:var(--sh1)}
+.chip.on{background:var(--n900);color:#fff;border-color:var(--n900)}
+.chip .dot{width:20px;height:20px;border-radius:6px;display:grid;place-items:center;font-size:11px}
+
+/* ── Champs de formulaire ── */
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:13px;font-weight:600;color:var(--text);letter-spacing:.1px}
+.field .input{height:56px;border-radius:var(--r-md);background:var(--surface-sunken);border:1.5px solid transparent;
+  padding:0 16px;font-family:var(--font-text);font-size:16px;color:var(--text);width:100%;
+  transition:all .18s var(--ease);outline:none}
+.field .input::placeholder{color:var(--text-muted)}
+.field .input:focus{background:var(--surface);border-color:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 14%,transparent)}
+.field .help{font-size:13px;color:var(--text-2);line-height:1.5}
+.field.is-error .input{border-color:var(--d600);background:var(--d100)}
+.field.is-error .help{color:var(--d700);display:flex;gap:6px;align-items:flex-start;font-weight:500}
+.field.is-valid .input{border-color:var(--s600)}
+.input-group{position:relative}
+.input-group .adorn{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);display:grid;place-items:center}
+.input-group .input{padding-right:48px}
+textarea.input{height:auto;min-height:120px;padding:14px 16px;line-height:1.5;resize:vertical}
+
+/* ── Radio-cards (sélection tactile) ── */
+.radiocard{display:flex;align-items:center;gap:14px;min-height:64px;padding:14px 16px;border-radius:var(--r-md);
+  background:var(--surface);border:1.5px solid var(--border-int);cursor:pointer;transition:all .18s var(--ease);width:100%;text-align:left;font:inherit}
+.radiocard:hover{border-color:var(--border-strong)}
+.radiocard > span:last-child{flex:1;min-width:0}
+.radiocard.on{border-color:var(--accent);background:var(--p50);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 12%,transparent)}
+.radiocard .mark{width:24px;height:24px;border-radius:50%;border:2px solid var(--border-int);flex:none;display:grid;place-items:center;transition:all .18s var(--ease)}
+.radiocard.on .mark{border-color:var(--accent);background:var(--accent);color:#fff}
+.radiocard .rc-t{display:block;font-size:15px;font-weight:600;color:var(--text)}
+.radiocard .rc-s{display:block;font-size:13px;color:var(--text-2);margin-top:2px;line-height:1.4}
+
+/* ── Switch ── */
+.switch{width:52px;height:32px;border-radius:var(--r-pill);background:var(--n300);position:relative;cursor:pointer;
+  border:0;transition:background .2s var(--ease);flex:none}
+.switch::after{content:'';position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:#fff;
+  box-shadow:var(--sh1);transition:transform .2s var(--ease-emph)}
+.switch.on{background:var(--s600)}
+.switch.on::after{transform:translateX(20px)}
+
+/* ── Slider « température pédagogique » ── */
+.slider{padding:4px 0}
+.slider .track{height:10px;border-radius:var(--r-pill);background:var(--surface-sunken);position:relative}
+.slider .fill{position:absolute;left:0;top:0;bottom:0;border-radius:var(--r-pill);background:var(--accent)}
+.slider .thumb{position:absolute;top:50%;width:28px;height:28px;border-radius:50%;background:#fff;
+  box-shadow:var(--sh2);border:2px solid var(--accent);transform:translate(-50%,-50%)}
+.slider .steps{display:flex;justify-content:space-between;margin-top:12px}
+.slider .steps span{font-size:11px;font-weight:600;color:var(--text-muted)}
+.slider .steps span.on{color:var(--accent)}
+
+/* ── Listes ── */
+.list{background:var(--surface);border-radius:var(--r-card);overflow:hidden;box-shadow:var(--sh1)}
+.list-head{font-size:13px;font-weight:700;color:var(--text-2);padding:16px 20px 8px;letter-spacing:.1px}
+.li{display:flex;align-items:center;gap:14px;min-height:64px;padding:12px 20px;position:relative;
+  background:var(--surface);cursor:pointer;transition:background .15s var(--ease);border:0;width:100%;text-align:left;font:inherit}
+.li:hover{background:var(--bg-alt)}
+.li + .li::before{content:'';position:absolute;top:0;left:78px;right:0;height:1px;background:var(--border)}
+.li--flat + .li--flat::before{left:20px}
+.li .lead{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;flex:none;font-size:18px}
+.li .body{flex:1;min-width:0;display:block}
+.li .t{display:block;font-size:15px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.li .s{display:block;font-size:13px;color:var(--text-2);margin-top:2px;line-height:1.4}
+.li .trail{color:var(--n300);flex:none;display:flex;align-items:center;gap:10px}
+.li .val{font-size:15px;font-weight:600;color:var(--text-2);font-variant-numeric:tabular-nums}
+
+/* ── Cartes ── */
+.card{background:var(--surface);border-radius:var(--r-card);padding:20px;box-shadow:var(--sh1)}
+.card--tint{box-shadow:none}
+.card--hero{background:var(--p700);color:#fff;padding:24px;position:relative;overflow:hidden}
+.card--hero h4{font-family:var(--font-display);font-size:26px;font-weight:800;letter-spacing:-.6px;line-height:1.15;max-width:75%}
+.card--hero p{font-size:14px;color:#E4E1FA;margin-top:8px;max-width:70%;line-height:1.5}
+.stat{background:var(--surface);border-radius:var(--r-card);padding:16px 18px;box-shadow:var(--sh1);flex:1;min-width:0}
+.stat .k{font-size:12px;font-weight:600;color:var(--text-2)}
+.stat .v{font-family:var(--font-h);font-size:32px;font-weight:800;letter-spacing:-1px;margin-top:2px;font-variant-numeric:tabular-nums}
+.stat .d{font-size:12px;color:var(--text-muted);margin-top:2px}
+
+/* ── Barre de progression (descriptive, non compétitive) ── */
+.bar{height:10px;border-radius:var(--r-pill);background:var(--surface-sunken);overflow:hidden}
+.bar > i{display:block;height:100%;border-radius:var(--r-pill);background:var(--s600)}
+
+/* ── Data viz parent ── */
+.dots{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.dots i{aspect-ratio:1;border-radius:8px;background:var(--dv0);display:block;box-shadow:inset 0 0 0 1px rgba(23,26,35,.10)}
+.dots i.l1{background:var(--dv1)} .dots i.l2{background:var(--dv2)} .dots i.l3{background:var(--dv3)}
+.bars{display:flex;align-items:flex-end;gap:10px;height:120px}
+.bars .b{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px}
+.bars .b i{width:100%;border-radius:var(--r-pill);background:var(--p600);display:block;min-height:6px}
+.bars .b i.muted{background:var(--p100)}
+.bars .b span{font-size:11px;font-weight:600;color:var(--text-muted)}
+
+/* ── Navigation ── */
+.tabbar{display:flex;align-items:center;justify-content:space-around;height:64px;border-radius:var(--r-pill);
+  background:var(--n900);padding:0 10px;box-shadow:var(--sh3)}
+.tabbar .tab{width:48px;height:48px;border-radius:var(--r-pill);display:grid;place-items:center;color:rgba(255,255,255,.5);
+  border:0;background:transparent;cursor:pointer;transition:all .2s var(--ease)}
+.tabbar .tab.on{background:var(--accent);color:#fff}
+.sheet{background:var(--surface);border-radius:var(--r-xl) var(--r-xl) 0 0;padding:8px 20px 24px;box-shadow:var(--sh3)}
+.sheet .grabber{width:40px;height:4px;border-radius:var(--r-pill);background:var(--n300);margin:0 auto 18px}
+.appbar{display:flex;align-items:center;gap:14px;height:56px}
+.appbar .back{width:44px;height:44px;border-radius:var(--r-pill);background:var(--surface);border:1.5px solid var(--border-int);
+  display:grid;place-items:center;cursor:pointer;flex:none}
+.appbar h4{font-size:17px;font-weight:700;flex:1;text-align:center}
+
+/* ── États vides / chargement ── */
+.empty{text-align:center;padding:36px 24px}
+.empty .ill{width:96px;height:96px;border-radius:var(--r-2xl);background:var(--surface-sunken);margin:0 auto 18px;
+  display:grid;place-items:center;color:var(--text-muted);font-size:12px;font-weight:600;text-align:center;line-height:1.3}
+.empty h5{font-size:17px;font-weight:700;color:var(--text)}
+.empty p{font-size:14px;color:var(--text-2);margin:8px auto 20px;max-width:34ch;line-height:1.55}
+.skel{background:linear-gradient(90deg,var(--surface-sunken) 25%,var(--bg-alt) 50%,var(--surface-sunken) 75%);
+  background-size:200% 100%;animation:sk 1.4s ease-in-out infinite;border-radius:8px}
+@keyframes sk{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* ── Toast / alerte douce ── */
+.alert{display:flex;gap:12px;padding:14px 16px;border-radius:var(--r-md);font-size:14px;line-height:1.5;align-items:flex-start}
+.alert--info{background:var(--p100);color:var(--p900)}
+.alert--warn{background:var(--am100);color:var(--am700)}
+.alert--error{background:var(--d100);color:var(--d700)}
+.alert--progress{background:var(--s100);color:var(--s700)}
+
+/* ── Écrans maquettés ── */
+.phones{display:flex;gap:28px;flex-wrap:wrap;justify-content:center}
+.phone{width:340px;height:720px;border-radius:44px;background:var(--bg);box-shadow:var(--sh3),0 0 0 10px #1b1d24;
+  overflow:hidden;position:relative;display:flex;flex-direction:column;flex:none}
+.phone .status{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;
+  font-size:13px;font-weight:700;color:var(--text);flex:none}
+.phone .screen{flex:1;overflow-y:auto;padding:0 20px 100px;scrollbar-width:thin}
+.phone .screen::-webkit-scrollbar{width:0}
+.phone .dock{position:absolute;left:20px;right:20px;bottom:18px}
+.phone-cap{text-align:center;font-size:13px;font-weight:700;color:var(--n700);margin-top:14px}
+.phone-cap span{display:block;font-weight:500;color:var(--n500);font-size:12px;margin-top:3px}
+
+/* ── Do / Don't ── */
+.dd{border-radius:var(--r-md);padding:18px;border:1.5px solid}
+.dd.do{border-color:var(--s500);background:var(--s100)}
+.dd.dont{border-color:var(--d600);background:var(--d100)}
+.dd h5{font-size:13px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;margin-bottom:10px}
+.dd.do h5{color:var(--s700)} .dd.dont h5{color:var(--d700)}
+.dd ul{margin:0;padding-left:18px}
+.dd li{font-size:14px;line-height:1.65;color:var(--n800)}
+
+/* ── Swatches ── */
+.sw{border-radius:var(--r-md);overflow:hidden;box-shadow:var(--sh1);background:var(--n0)}
+.sw .chip-c{height:64px}
+.sw .meta{padding:10px 12px}
+.sw .meta b{font-size:12px;font-weight:700;display:block}
+.sw .meta code{font-size:11px;color:var(--n500);font-family:ui-monospace,monospace}
+.type-row{display:flex;align-items:baseline;gap:20px;padding:12px 0;border-bottom:1px solid var(--n200)}
+.type-row .lbl{width:110px;flex:none;font-size:11px;font-weight:700;color:var(--n500);font-family:ui-monospace,monospace}
+.type-row .val{flex:none;width:120px;font-size:11px;color:var(--n400);font-family:ui-monospace,monospace}
+@media(max-width:640px){.wrap{padding:24px 16px 80px}.doc-nav{display:none}}
+</style>
+</head>
+<body data-theme="child">
+
+<svg style="display:none">
+  <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5.5 5.5L20 7"/></symbol>
+  <symbol id="i-mic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20V10M12 20V4M19 20v-6"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v18H6a2 2 0 0 0-2 2z"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6M10 20a2 2 0 0 0 4 0"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5h.01"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></symbol>
+  <symbol id="i-sliders" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8M16 4v6M8 14v6"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></symbol>
+</svg>
+
+<div class="doc-bar">
+  <h1>Nurtura — Styleguide mobile</h1>
+  <span class="ver">v0.1 · 13 août 2026</span>
+  <div class="theme-switch">
+    <button class="on" onclick="setTheme('child',this)">Enfant</button>
+    <button onclick="setTheme('parent',this)">Parent</button>
+  </div>
+  <nav class="doc-nav">
+    <a href="#fond">Fondations</a><a href="#btn">Boutons</a><a href="#form">Formulaires</a>
+    <a href="#list">Listes</a><a href="#nav">Navigation</a><a href="#data">Données</a>
+    <a href="#screens">Écrans</a><a href="#rules">Do / Don't</a>
+  </nav>
+</div>
+
+<div class="wrap">
+
+<!-- ═══════════════ FONDATIONS ═══════════════ -->
+<section id="fond">
+  <div class="sec-head">
+    <h2>1 · Fondations</h2>
+    <p>Un seul jeu de tokens, deux thèmes. Le thème <b>Enfant</b> pousse la chaleur (fond sable, rayons 28, typo Nunito, boutons encre). Le thème <b>Parent</b> reste sobre et dense (fond gris froid, rayons 20, Inter, action indigo). Bascule le sélecteur en haut : toute la page suit.</p>
+  </div>
+
+  <h3 class="blk">Palette</h3>
+  <div class="grid g3">
+    <div class="sw"><div class="chip-c" style="background:#5A4FE0"></div><div class="meta"><b>Primary 600 — Indigo</b><code>#5A4FE0</code><div class="spec">Action parent, accent enfant, focus ring, sélection.</div></div></div>
+    <div class="sw"><div class="chip-c" style="background:#171A23"></div><div class="meta"><b>Neutral 900 — Encre</b><code>#171A23</code><div class="spec">Texte principal, bouton primaire enfant, tab bar.</div></div></div>
+    <div class="sw"><div class="chip-c" style="background:#FF8A4C"></div><div class="meta"><b>Accent 500 — Abricot</b><code>#FF8A4C</code><div class="spec">Décoratif et illustratif uniquement. <b>Jamais</b> pour du texte fin.</div></div></div>
+    <div class="sw"><div class="chip-c" style="background:#26856D"></div><div class="meta"><b>Sage 600 — Progression</b><code>#26856D</code><div class="spec">Avancement, effort constaté. Pas « bien / bravo ».</div></div></div>
+    <div class="sw"><div class="chip-c" style="background:#8A5A00"></div><div class="meta"><b>Amber 700 — Attention</b><code>#8A5A00</code><div class="spec">Signal doux côté parent (ex. « pas de session depuis 4 jours »).</div></div></div>
+    <div class="sw"><div class="chip-c" style="background:#C93838"></div><div class="meta"><b>Danger 600 — Erreur</b><code>#C93838</code><div class="spec"><b>Réservé</b> aux erreurs de saisie et système. Interdit pour qualifier l'enfant.</div></div></div>
+  </div>
+
+  <h3 class="blk">Couleurs par matière</h3>
+  <div class="row">
+    <span class="chip on" style="background:#5A4FE0;border-color:#5A4FE0">Maths</span>
+    <span class="chip" style="background:#FFEADF;color:#A63F10;border-color:#FFC0A0">Français</span>
+    <span class="chip" style="background:#DFF3ED;color:#1E6B58;border-color:#DFF3ED">Sciences</span>
+    <span class="chip" style="background:#FBE6F0;color:#A63A6E;border-color:#FBE6F0">Histoire-Géo</span>
+    <span class="chip" style="background:#E2F0FB;color:#1F6BA8;border-color:#E2F0FB">Anglais</span>
+    <span class="chip" style="background:#FDF0CE;color:#8A5A00;border-color:#FDF0CE">Arts</span>
+  </div>
+  <div class="spec">Chaque matière a un triplet <code>tint</code> (fond), <code>ink</code> (texte sur tint, contraste AA vérifié) et <code>solid</code> (aplat décoratif). La couleur ne porte jamais seule le sens : elle est toujours doublée d'un libellé.</div>
+
+  <h3 class="blk">Échelle typographique</h3>
+  <div class="panel" style="background:#fff">
+    <div class="type-row"><span class="lbl">displayXl</span><span class="val">34/40 · 800</span><span style="font-family:var(--font-display);font-size:34px;line-height:40px;font-weight:800;letter-spacing:-.6px">Ce soir, les fractions</span></div>
+    <div class="type-row"><span class="lbl">h1</span><span class="val">24/30 · 700</span><span style="font-size:24px;font-weight:700;letter-spacing:-.3px">Ta session du jour</span></div>
+    <div class="type-row"><span class="lbl">h2</span><span class="val">20/26 · 700</span><span style="font-size:20px;font-weight:700">Comment tu t'y prends</span></div>
+    <div class="type-row"><span class="lbl">bodyL</span><span class="val">17/26 · 400</span><span style="font-size:17px">Texte de lecture, consignes, questions du coach.</span></div>
+    <div class="type-row"><span class="lbl">body</span><span class="val">15/23 · 400</span><span style="font-size:15px">Texte d'interface courant, descriptions de lignes de liste.</span></div>
+    <div class="type-row"><span class="lbl">caption</span><span class="val">13/19 · 400</span><span style="font-size:13px">Texte secondaire, aide de champ, horodatage.</span></div>
+    <div class="type-row" style="border:0"><span class="lbl">numberXl</span><span class="val">40/44 · 800</span><span style="font-size:40px;font-weight:800;letter-spacing:-1px;font-variant-numeric:tabular-nums">12 min</span></div>
+  </div>
+  <div class="spec">Interlignage minimum <code>1.45×</code>, jamais de texte justifié, longueur de ligne ≤ 60 caractères. <code>allowFontScaling</code> reste actif : chaque écran doit tenir à 200 % de taille de police (test obligatoire avant merge). Une option « police lisible » (Atkinson Hyperlegible) est prévue dans les réglages.</div>
+
+  <h3 class="blk">Espacement, rayons, élévation</h3>
+  <div class="grid g2">
+    <div class="panel">
+      <div class="spec" style="margin:0 0 14px"><b>Grille 4 pt</b> — 4 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 48 · 64. Marge d'écran : <code>20 px</code>. Écart entre sections : <code>28 px</code>. Écart entre cartes : <code>12 px</code>.</div>
+      <div class="row" style="align-items:flex-end">
+        <div style="width:4px;height:16px;background:var(--p600);border-radius:2px"></div>
+        <div style="width:8px;height:24px;background:var(--p600);border-radius:2px"></div>
+        <div style="width:12px;height:32px;background:var(--p600);border-radius:2px"></div>
+        <div style="width:16px;height:40px;background:var(--p600);border-radius:3px"></div>
+        <div style="width:20px;height:48px;background:var(--p600);border-radius:4px"></div>
+        <div style="width:24px;height:56px;background:var(--p600);border-radius:4px"></div>
+        <div style="width:32px;height:64px;background:var(--p600);border-radius:6px"></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="spec" style="margin:0 0 14px"><b>Rayons</b> — 8 / 12 / 16 / 20 / 28 / 32 / pill. Les contrôles sont toujours en <code>pill</code> : c'est la signature de forme du produit.</div>
+      <div class="row">
+        <div style="width:60px;height:60px;background:var(--surface);border-radius:12px;box-shadow:var(--sh1);display:grid;place-items:center;font-size:11px;font-weight:700;color:var(--n500)">12</div>
+        <div style="width:60px;height:60px;background:var(--surface);border-radius:16px;box-shadow:var(--sh1);display:grid;place-items:center;font-size:11px;font-weight:700;color:var(--n500)">16</div>
+        <div style="width:60px;height:60px;background:var(--surface);border-radius:20px;box-shadow:var(--sh2);display:grid;place-items:center;font-size:11px;font-weight:700;color:var(--n500)">20</div>
+        <div style="width:60px;height:60px;background:var(--surface);border-radius:28px;box-shadow:var(--sh2);display:grid;place-items:center;font-size:11px;font-weight:700;color:var(--n500)">28</div>
+        <div style="width:60px;height:60px;background:var(--surface);border-radius:999px;box-shadow:var(--sh3);display:grid;place-items:center;font-size:11px;font-weight:700;color:var(--n500)">pill</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ BOUTONS ═══════════════ -->
+<section id="btn">
+  <div class="sec-head">
+    <h2>2 · Boutons</h2>
+    <p>Forme unique : <b>pill</b> (rayon 999). Hauteur 56 côté enfant, 52 côté parent, 48 minimum partout ailleurs. La variante <b>« avec affordance »</b> — pastille circulaire à droite qui porte la flèche — est le geste visuel signature repris des références, et elle sert uniquement à l'action principale d'un écran.</p>
+  </div>
+
+  <div class="grid g2">
+    <div class="panel">
+      <h3 class="blk">Hiérarchie</h3>
+      <div class="stack">
+        <button class="btn btn--primary btn--block btn--afford">Commencer ma session <span class="afford"><svg width="20" height="20"><use href="#i-arrow"/></svg></span></button>
+        <button class="btn btn--primary btn--block">Valider</button>
+        <button class="btn btn--secondary btn--block">Plus tard</button>
+        <button class="btn btn--tonal btn--block">Écouter le résumé</button>
+        <button class="btn btn--ghost btn--block">Passer cette étape</button>
+        <button class="btn btn--danger btn--block btn--md">Supprimer le compte de Léa</button>
+      </div>
+      <div class="spec"><b>Un seul bouton primaire visible par écran.</b> S'il y en a deux, l'un des deux n'est pas primaire. Le bouton destructeur ne partage jamais une rangée avec le primaire : il vit dans un écran de réglages ou une feuille de confirmation.</div>
+    </div>
+
+    <div class="panel">
+      <h3 class="blk">Tailles &amp; icônes</h3>
+      <div class="row" style="margin-bottom:20px">
+        <button class="btn btn--primary">56 · lg</button>
+        <button class="btn btn--primary btn--md">48 · md</button>
+        <button class="btn btn--primary btn--sm">40 · sm</button>
+      </div>
+      <div class="row" style="margin-bottom:20px">
+        <button class="iconbtn"><svg width="22" height="22"><use href="#i-arrow"/></svg></button>
+        <button class="iconbtn iconbtn--outline"><svg width="22" height="22"><use href="#i-mic"/></svg></button>
+        <button class="iconbtn iconbtn--md iconbtn--outline"><svg width="20" height="20"><use href="#i-bell"/></svg></button>
+        <button class="btn btn--secondary btn--md"><svg width="18" height="18"><use href="#i-mic"/></svg> Répondre à l'oral</button>
+      </div>
+      <h3 class="blk">États</h3>
+      <div class="row">
+        <button class="btn btn--primary btn--md">Normal</button>
+        <button class="btn btn--primary btn--md" style="transform:scale(.97);box-shadow:var(--sh1)">Pressé</button>
+        <button class="btn btn--primary btn--md" disabled>Désactivé</button>
+        <button class="btn btn--primary btn--md" style="width:150px"><span class="spin"></span></button>
+      </div>
+      <div class="spec">Pressé = <code>scale .97</code> en 120 ms + ombre réduite (jamais un simple changement de couleur : sur mobile le doigt masque le bouton). Chargement = la largeur est verrouillée avant de remplacer le libellé, sinon la mise en page saute. Un bouton désactivé doit être accompagné d'un texte qui explique pourquoi.</div>
+    </div>
+  </div>
+
+  <h3 class="blk">Contrôles segmentés &amp; chips de filtre</h3>
+  <div class="panel">
+    <div class="row" style="margin-bottom:18px">
+      <div class="segmented"><button class="on">Semaine</button><button>Mois</button></div>
+      <div class="segmented"><button class="on">6 matières</button><button>Toutes</button></div>
+    </div>
+    <div class="row" style="overflow-x:auto;padding-bottom:4px">
+      <span class="chip on"><span class="dot" style="background:rgba(255,255,255,.2)">✳</span>Toutes</span>
+      <span class="chip"><span class="dot" style="background:#E9E7FD">📐</span>Maths</span>
+      <span class="chip"><span class="dot" style="background:#FFEADF">📖</span>Français</span>
+      <span class="chip"><span class="dot" style="background:#DFF3ED">🔬</span>Sciences</span>
+      <span class="chip"><span class="dot" style="background:#E2F0FB">🌍</span>Anglais</span>
+    </div>
+    <div class="spec">Hauteur totale du segmented : <b>48 px</b> — c'est le conteneur qui est la cible, pas la pastille. Le chip mesure 40 px de haut et reçoit un <code>hitSlop={{top:4,bottom:4}}</code> pour atteindre 48. Le segmented sert à <b>changer de vue sur les mêmes données</b> (2–3 options max). Les chips servent à <b>filtrer une liste</b> et défilent horizontalement, avec un dégradé de coupe à droite pour signaler qu'il y en a d'autres. Ne jamais empiler deux rangées de chips.</div>
+  </div>
+</section>
+
+<!-- ═══════════════ FORMULAIRES ═══════════════ -->
+<section id="form">
+  <div class="sec-head">
+    <h2>3 · Formulaires</h2>
+    <p>C'est ici que se joue le risque n°3 identifié au cadrage : <i>« feature riche → onboarding lourd → friction → abandon »</i>. La réponse système : <b>presets par défaut, réglages fins repliés</b>, une question par écran, et jamais plus de 5 champs visibles simultanément.</p>
+  </div>
+
+  <div class="grid g2">
+    <div class="panel">
+      <h3 class="blk">Champ de saisie — anatomie et états</h3>
+      <div class="stack">
+        <div class="field">
+          <label for="f1">Prénom de l'enfant</label>
+          <input class="input" id="f1" placeholder="Léa">
+          <span class="help">Il apparaîtra tel quel dans l'application de votre enfant.</span>
+        </div>
+        <div class="field">
+          <label for="f2">Adresse e-mail</label>
+          <div class="input-group">
+            <input class="input" id="f2" value="sophie.martin@email.fr">
+            <span class="adorn" style="color:var(--s600)"><svg width="20" height="20"><use href="#i-check"/></svg></span>
+          </div>
+        </div>
+        <div class="field is-error">
+          <label for="f3">Classe</label>
+          <input class="input" id="f3" value="">
+          <span class="help"><svg width="16" height="16" style="flex:none;margin-top:2px"><use href="#i-alert"/></svg> Choisissez une classe pour adapter les exercices.</span>
+        </div>
+        <div class="field">
+          <label for="f4">Ce que vous aimeriez suivre en priorité</label>
+          <textarea class="input" id="f4" placeholder="Optionnel — quelques mots suffisent"></textarea>
+        </div>
+      </div>
+      <div class="spec"><b>Le label reste toujours visible au-dessus du champ</b> — jamais de placeholder qui tient lieu de label (il disparaît à la saisie et l'utilisateur perd le contexte). Validation <b>au blur</b>, jamais à la frappe ; une fois le champ en erreur, il se revalide à chaque frappe pour rendre la correction immédiate. Le message d'erreur dit quoi faire, pas ce qui est faux.</div>
+    </div>
+
+    <div class="panel">
+      <h3 class="blk">Sélection — cartes tactiles plutôt que radios</h3>
+      <div class="stack">
+        <button class="radiocard on"><span class="mark"><svg width="14" height="14"><use href="#i-check"/></svg></span>
+          <span><span class="rc-t">Après l'école · 17h – 19h</span><span class="rc-s">Le créneau le plus choisi par les familles</span></span></button>
+        <button class="radiocard"><span class="mark"></span>
+          <span><span class="rc-t">Avant le dîner · 18h – 19h30</span><span class="rc-s">Sessions courtes, 15 min en moyenne</span></span></button>
+        <button class="radiocard"><span class="mark"></span>
+          <span><span class="rc-t">Personnaliser</span><span class="rc-s">Choisir les jours et les horaires un par un</span></span></button>
+      </div>
+      <div class="spec">Un bouton radio natif fait 20 px : c'est sous la cible tactile minimale. On utilise systématiquement des <b>cartes de 64 px de haut</b> dont toute la surface est cliquable. Les deux premières options sont des <b>presets</b> — « Personnaliser » est en troisième position et n'ouvre les réglages fins qu'à la demande.</div>
+    </div>
+  </div>
+
+  <div class="grid g2" style="margin-top:20px">
+    <div class="panel">
+      <h3 class="blk">Curseur nommé — « température pédagogique »</h3>
+      <div class="card">
+        <div class="row" style="justify-content:space-between;margin-bottom:14px">
+          <b style="font-size:15px">Exigence du coach</b>
+          <span class="tag" style="background:var(--p100);color:var(--p700)">Équilibré</span>
+        </div>
+        <div class="slider">
+          <div class="track"><div class="fill" style="width:52%"></div><div class="thumb" style="left:52%"></div></div>
+          <div class="steps"><span>Très souple</span><span>Souple</span><span class="on">Équilibré</span><span>Exigeant</span><span>Très exigeant</span></div>
+        </div>
+        <div class="alert alert--info" style="margin-top:16px">Le coach laissera Léa chercher environ 2 minutes avant de proposer un indice.</div>
+      </div>
+      <div class="spec">Un réglage abstrait doit être <b>nommé, pas numéroté</b> (jamais « 3/5 »), et sa conséquence concrète s'affiche en direct sous le curseur. Le thumb fait 28 px avec une zone tactile étendue à 48. Retour haptique léger à chaque cran.</div>
+    </div>
+
+    <div class="panel">
+      <h3 class="blk">Réglages — interrupteurs &amp; divulgation progressive</h3>
+      <div class="list">
+        <div class="li li--flat"><div class="body"><div class="t">Résumé vocal du soir</div><div class="s">Une note de 60 s, vers 20h30</div></div><button class="switch on" onclick="this.classList.toggle('on')"></button></div>
+        <div class="li li--flat"><div class="body"><div class="t">Alerte si Léa bloque</div><div class="s">Seulement si elle le demande</div></div><button class="switch" onclick="this.classList.toggle('on')"></button></div>
+        <div class="li li--flat"><div class="body"><div class="t">Réglages avancés</div><div class="s">Seuils, matières, durée de session</div></div><div class="trail"><svg width="20" height="20"><use href="#i-chev"/></svg></div></div>
+      </div>
+      <div class="spec">Trois réglages visibles au premier niveau, le reste derrière « Réglages avancés ». L'interrupteur s'applique <b>immédiatement</b> (pas de bouton « Enregistrer ») avec un toast d'annulation de 5 s. Le label de l'interrupteur décrit l'état activé, jamais l'action.</div>
+    </div>
+  </div>
+
+  <h3 class="blk">Parcours multi-étapes</h3>
+  <div class="panel">
+    <div style="max-width:520px">
+      <div class="row" style="justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:13px;font-weight:600;color:var(--text-2)">Étape 2 sur 4</span>
+        <button class="btn btn--ghost btn--sm">Reprendre plus tard</button>
+      </div>
+      <div class="bar" style="margin-bottom:24px"><i style="width:50%;background:var(--accent)"></i></div>
+      <h4 style="font-family:var(--font-h);font-size:26px;font-weight:800;letter-spacing:-.5px;line-height:1.2">Quand Léa bloque, que fait-elle en général&nbsp;?</h4>
+      <p style="font-size:15px;color:var(--text-2);margin:10px 0 20px;line-height:1.6">Une seule réponse. Vous pourrez la changer à tout moment.</p>
+      <div class="stack">
+        <button class="radiocard"><span class="mark"></span><span class="rc-t">Elle demande de l'aide tout de suite</span></button>
+        <button class="radiocard on"><span class="mark"><svg width="14" height="14"><use href="#i-check"/></svg></span><span class="rc-t">Elle insiste puis abandonne</span></button>
+        <button class="radiocard"><span class="mark"></span><span class="rc-t">Elle passe à autre chose</span></button>
+      </div>
+      <div class="row" style="margin-top:24px">
+        <button class="btn btn--secondary btn--md" style="flex:none">Retour</button>
+        <button class="btn btn--primary btn--md" style="flex:1">Continuer</button>
+      </div>
+    </div>
+    <div class="spec">Une question par écran, progression toujours visible, <b>sortie sans perte possible à chaque étape</b> (« Reprendre plus tard » sauvegarde l'état). La cible : le parent doit pouvoir arriver à la première session de l'enfant en moins de 3 minutes. Au-delà de 4 étapes, l'onboarding devient un point de mesure à instrumenter.</div>
+  </div>
+</section>
+
+<!-- ═══════════════ LISTES ═══════════════ -->
+<section id="list">
+  <div class="sec-head">
+    <h2>4 · Listes</h2>
+    <p>Trois formats seulement : <b>ligne simple</b> (64 px), <b>ligne à deux niveaux</b> (76 px), <b>carte</b>. Toute liste doit avoir ses quatre états dessinés : chargement, vide, erreur, plein.</p>
+  </div>
+
+  <div class="grid g2">
+    <div>
+      <h3 class="blk">Liste groupée en carte — le format par défaut</h3>
+      <div class="list-head">Cette semaine</div>
+      <div class="list">
+        <button class="li"><span class="lead" style="background:#E9E7FD;color:#3D33B8">📐</span>
+          <span class="body"><span class="t">Fractions — additionner</span><span class="s">Mardi · 14 min · a cherché seule 6 min</span></span>
+          <span class="trail"><svg width="20" height="20"><use href="#i-chev"/></svg></span></button>
+        <button class="li"><span class="lead" style="background:#FFEADF;color:#A63F10">📖</span>
+          <span class="body"><span class="t">Accord du participe passé</span><span class="s">Lundi · 9 min · a demandé 2 indices</span></span>
+          <span class="trail"><svg width="20" height="20"><use href="#i-chev"/></svg></span></button>
+        <button class="li"><span class="lead" style="background:#DFF3ED;color:#1E6B58">🔬</span>
+          <span class="body"><span class="t">Le cycle de l'eau</span><span class="s">Lundi · 11 min · session terminée</span></span>
+          <span class="trail"><svg width="20" height="20"><use href="#i-chev"/></svg></span></button>
+      </div>
+      <div class="spec">Séparateur <b>encastré</b> : il démarre à l'aplomb du texte (78 px), jamais bord à bord — sinon la vignette semble détachée. Le titre est tronqué sur une ligne avec des points de suspension, la ligne secondaire porte le contexte factuel. <b>Aucune note, aucun score, aucun pourcentage de réussite</b> dans la ligne : on décrit l'effort, pas le résultat.</div>
+    </div>
+
+    <div>
+      <h3 class="blk">États de liste</h3>
+      <div class="list" style="margin-bottom:14px">
+        <div class="li li--flat"><div class="skel" style="width:44px;height:44px;border-radius:14px;flex:none"></div>
+          <div class="body"><div class="skel" style="height:12px;width:70%"></div><div class="skel" style="height:10px;width:45%;margin-top:8px"></div></div></div>
+        <div class="li li--flat"><div class="skel" style="width:44px;height:44px;border-radius:14px;flex:none"></div>
+          <div class="body"><div class="skel" style="height:12px;width:55%"></div><div class="skel" style="height:10px;width:35%;margin-top:8px"></div></div></div>
+      </div>
+      <div class="card empty">
+        <div class="ill">illustration<br>à venir</div>
+        <h5>Rien pour l'instant</h5>
+        <p>Les sessions de Léa apparaîtront ici dès sa première utilisation.</p>
+        <button class="btn btn--primary btn--md">Inviter Léa à démarrer</button>
+      </div>
+      <div class="spec">On utilise des <b>skeletons</b> et non un spinner : la page garde sa forme, la perception d'attente baisse. L'état vide comporte toujours 4 blocs — visuel, titre court, une phrase d'explication, une action. L'état d'erreur reprend la même structure avec un bouton « Réessayer ».</div>
+    </div>
+  </div>
+
+  <div class="grid g2" style="margin-top:20px">
+    <div class="panel">
+      <h3 class="blk">Ligne avec valeur &amp; ligne de réglage</h3>
+      <div class="list">
+        <div class="li li--flat"><div class="body"><div class="t">Temps de recherche autonome</div></div><div class="trail"><span class="val">6 min</span></div></div>
+        <div class="li li--flat"><div class="body"><div class="t">Jours avec au moins une session</div></div><div class="trail"><span class="val">4 / 7</span></div></div>
+        <div class="li li--flat"><div class="body"><div class="t">Matière la plus travaillée</div></div><div class="trail"><span class="val">Maths</span></div></div>
+      </div>
+      <div class="spec">Chiffres en <code>tabular-nums</code> pour que les colonnes s'alignent. Une ligne de données pure n'est pas cliquable : pas de chevron si rien ne s'ouvre.</div>
+    </div>
+    <div class="panel">
+      <h3 class="blk">Recherche &amp; en-tête de section</h3>
+      <div class="field" style="margin-bottom:16px">
+        <div class="input-group">
+          <input class="input" placeholder="Rechercher une notion" style="padding-left:46px">
+          <span class="adorn" style="left:16px;right:auto"><svg width="20" height="20"><use href="#i-search"/></svg></span>
+        </div>
+      </div>
+      <div class="list-head" style="padding-left:0">Hier</div>
+      <div class="list">
+        <button class="li"><span class="lead" style="background:#E2F0FB;color:#1F6BA8">🌍</span>
+          <span class="body"><span class="t">Prétérit — verbes irréguliers</span><span class="s">18 min · a repris deux fois</span></span>
+          <span class="trail"><svg width="20" height="20"><use href="#i-chev"/></svg></span></button>
+      </div>
+      <div class="spec">En-tête de section collant en haut de liste, 13/700. Le champ de recherche vit dans le contenu défilant (pas dans la barre de nav) et déclenche à 300 ms de debounce, minimum 2 caractères.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ NAVIGATION ═══════════════ -->
+<section id="nav">
+  <div class="sec-head">
+    <h2>5 · Navigation</h2>
+    <p>Barre d'onglets flottante, 4 destinations maximum, toujours atteignables au pouce. Tout le reste passe par des feuilles (bottom sheets) plutôt que par des empilements d'écrans.</p>
+  </div>
+
+  <div class="grid g2">
+    <div class="panel">
+      <h3 class="blk">Barre d'onglets</h3>
+      <div class="tabbar" style="margin-bottom:18px">
+        <button class="tab on"><svg width="22" height="22"><use href="#i-home"/></svg></button>
+        <button class="tab"><svg width="22" height="22"><use href="#i-book"/></svg></button>
+        <button class="tab"><svg width="22" height="22"><use href="#i-chart"/></svg></button>
+        <button class="tab"><svg width="22" height="22"><use href="#i-user"/></svg></button>
+      </div>
+      <h3 class="blk">Barre de navigation d'écran</h3>
+      <div class="appbar">
+        <button class="back"><svg width="20" height="20"><use href="#i-back"/></svg></button>
+        <h4>Réglages de Léa</h4>
+        <button class="back"><svg width="20" height="20"><use href="#i-sliders"/></svg></button>
+      </div>
+      <div class="spec">Retour = bouton rond 44 px en haut à gauche, <b>en plus</b> du geste de balayage natif (jamais à la place). Zone de sécurité basse respectée sous la barre d'onglets. L'icône seule est acceptable dans la tab bar à condition d'un <code>accessibilityLabel</code> ; si un test utilisateur montre une hésitation, on ajoute le libellé sous l'icône.</div>
+    </div>
+    <div class="panel" style="display:flex;flex-direction:column;justify-content:flex-end">
+      <h3 class="blk" style="margin-top:0">Feuille modale</h3>
+      <div class="sheet">
+        <div class="grabber"></div>
+        <h4 style="font-size:20px;font-weight:700;letter-spacing:-.2px">Léa a demandé un coup de main</h4>
+        <p style="font-size:15px;color:var(--text-2);margin:8px 0 18px;line-height:1.6">Elle bloque sur les fractions depuis 4 minutes. Vous pouvez lui envoyer un mot, ou laisser le coach continuer.</p>
+        <div class="stack">
+          <button class="btn btn--primary btn--block btn--md">Lui envoyer un mot</button>
+          <button class="btn btn--ghost btn--block btn--md">Laisser le coach faire</button>
+        </div>
+      </div>
+      <div class="spec">Poignée visible, rayon 28 en haut, deux paliers de hauteur (moyen / plein). Fermeture par balayage vers le bas ET par le fond assombri. Une feuille ne contient jamais plus de deux actions.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ DONNÉES ═══════════════ -->
+<section id="data">
+  <div class="sec-head">
+    <h2>6 · Cartes &amp; visualisation de données</h2>
+    <p>Le cœur de la valeur côté parent, c'est l'analytics <b>comportemental</b> — persévérance, régularité, recours à l'aide. La règle de représentation : on montre la <b>forme de l'effort</b>, jamais un jugement. Pas de vert « bien » contre rouge « mal », pas de note globale.</p>
+  </div>
+
+  <div class="grid g2">
+    <div class="panel">
+      <h3 class="blk">Cartes</h3>
+      <div class="stack">
+        <div class="card card--hero">
+          <h4>La note du soir est prête</h4>
+          <p>58 secondes sur la séance de Léa</p>
+          <button class="iconbtn" style="background:#fff;color:var(--p700);margin-top:18px"><svg width="22" height="22"><use href="#i-play"/></svg></button>
+        </div>
+        <div class="row" style="gap:12px;flex-wrap:nowrap">
+          <div class="stat"><div class="k">Temps de recherche</div><div class="v">12<span style="font-size:16px;font-weight:600"> min</span></div><div class="d">+4 min vs semaine dernière</div></div>
+          <div class="stat"><div class="k">Jours actifs</div><div class="v">4<span style="font-size:16px;font-weight:600">/7</span></div><div class="d">lun · mar · jeu · ven</div></div>
+        </div>
+      </div>
+      <div class="spec">La carte héro porte une seule idée et une seule action. Les tuiles de statistiques affichent toujours <b>chiffre + unité + point de comparaison factuel</b> — la comparaison se fait avec l'enfant lui-même la semaine précédente, jamais avec d'autres enfants.</div>
+    </div>
+
+    <div class="panel">
+      <h3 class="blk">Régularité &amp; persévérance</h3>
+      <div class="card" style="margin-bottom:14px">
+        <div class="row" style="justify-content:space-between;margin-bottom:14px"><b style="font-size:15px">Régularité — 4 semaines</b><span style="font-size:12px;color:var(--text-muted)">L M M J V S D</span></div>
+        <div class="dots">
+          <i class="l2"></i><i class="l3"></i><i></i><i class="l1"></i><i class="l2"></i><i></i><i></i>
+          <i class="l1"></i><i class="l2"></i><i class="l2"></i><i></i><i class="l3"></i><i></i><i></i>
+          <i class="l3"></i><i></i><i class="l1"></i><i class="l2"></i><i class="l2"></i><i class="l1"></i><i></i>
+          <i class="l2"></i><i class="l3"></i><i></i><i class="l2"></i><i class="l1"></i><i></i><i></i>
+        </div>
+        <div class="row" style="margin-top:14px;font-size:12px;color:var(--text-muted);gap:8px">
+          <span>Moins</span><i style="width:14px;height:14px;border-radius:5px;background:var(--dv0);box-shadow:inset 0 0 0 1px rgba(23,26,35,.10)"></i>
+          <i style="width:14px;height:14px;border-radius:5px;background:var(--dv1)"></i>
+          <i style="width:14px;height:14px;border-radius:5px;background:var(--dv2)"></i>
+          <i style="width:14px;height:14px;border-radius:5px;background:var(--dv3)"></i><span>Plus</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="row" style="justify-content:space-between;margin-bottom:16px"><b style="font-size:15px">Temps avant de demander de l'aide</b></div>
+        <div class="bars">
+          <div class="b"><i style="height:40%"></i><span>L</span></div>
+          <div class="b"><i style="height:65%"></i><span>M</span></div>
+          <div class="b"><i class="muted" style="height:8%"></i><span>M</span></div>
+          <div class="b"><i style="height:88%"></i><span>J</span></div>
+          <div class="b"><i style="height:72%"></i><span>V</span></div>
+          <div class="b"><i class="muted" style="height:8%"></i><span>S</span></div>
+          <div class="b"><i class="muted" style="height:8%"></i><span>D</span></div>
+        </div>
+      </div>
+      <div class="spec"><b>Une seule couleur d'accent par graphique</b>, l'absence de donnée est un gris neutre et non un « zéro » rouge. Les jours sans session ne sont pas des échecs : ils sont simplement plus clairs. Aucun axe moralisant, aucun objectif affiché en pointillés à ne pas franchir.</div>
+    </div>
+  </div>
+
+  <h3 class="blk">Messages système</h3>
+  <div class="grid g2">
+    <div class="alert alert--progress"><svg width="20" height="20" style="flex:none"><use href="#i-check"/></svg><div><b>Session terminée.</b> Léa a travaillé 14 minutes sur les fractions, dont 6 en autonomie.</div></div>
+    <div class="alert alert--info"><svg width="20" height="20" style="flex:none"><use href="#i-clock"/></svg><div><b>Créneau terminé.</b> L'application se remettra en pause jusqu'à demain 17h.</div></div>
+    <div class="alert alert--warn"><svg width="20" height="20" style="flex:none"><use href="#i-alert"/></svg><div>Pas de session depuis 4 jours. C'est fréquent en période de vacances.</div></div>
+    <div class="alert alert--error"><svg width="20" height="20" style="flex:none"><use href="#i-alert"/></svg><div>Impossible d'enregistrer. Vérifiez votre connexion, puis réessayez.</div></div>
+  </div>
+  <div class="spec">Remarquez le ton du message d'attention : il constate et normalise, il ne culpabilise pas. Le rouge n'apparaît que sur le message d'échec technique.</div>
+</section>
+
+<!-- ═══════════════ ÉCRANS ═══════════════ -->
+<section id="screens">
+  <div class="sec-head">
+    <h2>7 · Écrans de référence</h2>
+    <p>Quatre écrans montés avec les composants ci-dessus, sans une seule valeur inventée hors tokens. Ils servent de base à Claude Design et de cible visuelle au premier dev.</p>
+  </div>
+
+  <div class="phones">
+    <!-- Écran 1 : Accueil enfant -->
+    <div>
+      <div class="phone" data-theme="child">
+        <div class="status"><span>9:41</span><span>▮▮▮ ▾</span></div>
+        <div class="screen">
+          <div class="row" style="justify-content:space-between;margin:8px 0 22px">
+            <div class="row" style="gap:12px">
+              <div style="width:48px;height:48px;border-radius:var(--r-pill);background:var(--p100);display:grid;place-items:center;font-size:22px">🦊</div>
+              <div><div style="font-family:var(--font-display);font-size:19px;font-weight:800;letter-spacing:-.3px">Salut Léa</div>
+                <div style="font-size:13px;color:var(--text-2);margin-top:1px">Il te reste 40 min aujourd'hui</div></div>
+            </div>
+            <button class="iconbtn iconbtn--md iconbtn--outline"><svg width="20" height="20"><use href="#i-bell"/></svg></button>
+          </div>
+
+          <div class="card card--hero" style="margin-bottom:12px">
+            <h4>On reprend les fractions&nbsp;?</h4>
+            <p>Tu t'étais arrêtée juste avant les dénominateurs différents.</p>
+            <button class="iconbtn" style="background:#fff;color:var(--p700);margin-top:20px"><svg width="22" height="22"><use href="#i-arrow"/></svg></button>
+            <div style="position:absolute;right:-20px;bottom:-30px;width:130px;height:130px;border-radius:50%;background:rgba(255,255,255,.09)"></div>
+          </div>
+
+          <div class="row" style="gap:12px;flex-wrap:nowrap;margin-bottom:22px">
+            <div class="stat" style="background:var(--a100)"><div class="k" style="color:var(--a700)">Aujourd'hui</div><div class="v" style="color:var(--a700)">14<span style="font-size:15px"> min</span></div></div>
+            <div class="stat" style="background:var(--p100)"><div class="k" style="color:var(--p700)">Cherché seule</div><div class="v" style="color:var(--p700)">6<span style="font-size:15px"> min</span></div></div>
+          </div>
+
+          <div class="row" style="justify-content:space-between;margin-bottom:12px">
+            <b style="font-size:17px;font-weight:700">Tes matières</b>
+            <span style="font-size:13px;font-weight:600;color:var(--text-2)">Voir tout</span>
+          </div>
+          <div class="list">
+            <button class="li"><span class="lead" style="background:#E9E7FD;color:#3D33B8">📐</span>
+              <span class="body"><span class="t">Maths</span><span class="s">Fractions · en cours</span></span>
+              <span class="trail"><svg width="20" height="20"><use href="#i-chev"/></svg></span></button>
+            <button class="li"><span class="lead" style="background:#FFEADF;color:#A63F10">📖</span>
+              <span class="body"><span class="t">Français</span><span class="s">Participe passé · repris hier</span></span>
+              <span class="trail"><svg width="20" height="20"><use href="#i-chev"/></svg></span></button>
+            <button class="li"><span class="lead" style="background:#DFF3ED;color:#1E6B58">🔬</span>
+              <span class="body"><span class="t">Sciences</span><span class="s">Cycle de l'eau · terminé</span></span>
+              <span class="trail"><svg width="20" height="20"><use href="#i-chev"/></svg></span></button>
+          </div>
+        </div>
+        <div class="dock">
+          <div class="tabbar">
+            <button class="tab on"><svg width="22" height="22"><use href="#i-home"/></svg></button>
+            <button class="tab"><svg width="22" height="22"><use href="#i-book"/></svg></button>
+            <button class="tab"><svg width="22" height="22"><use href="#i-chart"/></svg></button>
+            <button class="tab"><svg width="22" height="22"><use href="#i-user"/></svg></button>
+          </div>
+        </div>
+      </div>
+      <div class="phone-cap">Enfant — Accueil<span>Reprise là où l'enfant s'est arrêté. Aucun compteur de jours consécutifs.</span></div>
+    </div>
+
+    <!-- Écran 2 : Session coach enfant -->
+    <div>
+      <div class="phone" data-theme="child" style="background:var(--sand100)">
+        <div class="status"><span>9:41</span><span>▮▮▮ ▾</span></div>
+        <div class="screen">
+          <div class="appbar">
+            <button class="back"><svg width="20" height="20"><use href="#i-back"/></svg></button>
+            <h4>Fractions</h4>
+            <button class="back"><svg width="20" height="20"><use href="#i-clock"/></svg></button>
+          </div>
+
+          <div class="card" style="margin:12px 0;background:var(--surface)">
+            <span class="tag" style="background:var(--p100);color:var(--p700)">Exercice 3</span>
+            <p style="font-size:19px;line-height:1.5;font-weight:600;margin-top:12px">Combien font <b>1/3 + 1/4</b> ?</p>
+          </div>
+
+          <div class="row" style="align-items:flex-start;gap:10px;margin-bottom:12px">
+            <div style="width:36px;height:36px;border-radius:var(--r-pill);background:var(--p600);display:grid;place-items:center;font-size:17px;flex:none">🦊</div>
+            <div style="background:var(--surface);border-radius:20px 20px 20px 6px;padding:14px 16px;font-size:15px;line-height:1.55;box-shadow:var(--sh1)">
+              Avant d'additionner, regarde les dénominateurs. Est-ce qu'ils sont pareils&nbsp;?
+            </div>
+          </div>
+          <div class="row" style="justify-content:flex-end;margin-bottom:12px">
+            <div style="background:var(--n900);color:#fff;border-radius:20px 20px 6px 20px;padding:14px 16px;font-size:15px;line-height:1.55;max-width:75%">
+              Non, y'en a un c'est 3 et l'autre 4
+            </div>
+          </div>
+          <div class="row" style="align-items:flex-start;gap:10px;margin-bottom:12px">
+            <div style="width:36px;height:36px;border-radius:var(--r-pill);background:var(--p600);display:grid;place-items:center;font-size:17px;flex:none">🦊</div>
+            <div style="background:var(--surface);border-radius:20px 20px 20px 6px;padding:14px 16px;font-size:15px;line-height:1.55;box-shadow:var(--sh1)">
+              Exactement. Alors quel nombre est à la fois dans la table de 3 et dans celle de 4&nbsp;?
+            </div>
+          </div>
+
+          <div class="alert alert--info" style="margin-top:16px;font-size:13px">
+            <svg width="18" height="18" style="flex:none"><use href="#i-alert"/></svg>
+            <div>Le coach ne donne jamais la réponse. Il t'aide à la trouver.</div>
+          </div>
+        </div>
+        <div class="dock">
+          <div class="row" style="gap:10px;flex-wrap:nowrap">
+            <div style="flex:1;height:56px;background:var(--surface);border-radius:var(--r-pill);display:flex;align-items:center;padding:0 20px;font-size:15px;color:var(--text-muted);box-shadow:var(--sh2)">Écris ta réponse…</div>
+            <button class="iconbtn"><svg width="22" height="22"><use href="#i-mic"/></svg></button>
+          </div>
+        </div>
+      </div>
+      <div class="phone-cap">Enfant — Session coach<span>Entrée vocale au même rang que le clavier (décision du 20 juin).</span></div>
+    </div>
+
+    <!-- Écran 3 : Aujourd'hui parent -->
+    <div>
+      <div class="phone" data-theme="parent">
+        <div class="status"><span>9:41</span><span>▮▮▮ ▾</span></div>
+        <div class="screen">
+          <div class="row" style="justify-content:space-between;margin:8px 0 20px">
+            <div><div style="font-size:13px;color:var(--text-2);font-weight:500">Jeudi 13 août</div>
+              <div style="font-size:26px;font-weight:700;letter-spacing:-.5px;margin-top:2px">Aujourd'hui</div></div>
+            <div class="segmented" style="height:48px;padding:4px"><button class="on" style="height:40px;padding:0 14px;font-size:13px">Léa</button><button style="height:40px;padding:0 14px;font-size:13px">Tom</button></div>
+          </div>
+
+          <div class="card card--hero" style="margin-bottom:12px">
+            <h4 style="font-size:21px;max-width:100%">La note du soir est prête</h4>
+            <p style="max-width:100%">58 secondes sur la séance de Léa</p>
+            <div class="row" style="margin-top:18px;gap:12px">
+              <button class="iconbtn iconbtn--md" style="background:#fff;color:var(--p700)"><svg width="20" height="20"><use href="#i-play"/></svg></button>
+              <div style="flex:1;height:4px;background:rgba(255,255,255,.28);border-radius:99px"><div style="width:0;height:100%;background:#fff;border-radius:99px"></div></div>
+              <span style="font-size:13px;font-weight:600;opacity:.85">0:58</span>
+            </div>
+          </div>
+
+          <div class="row" style="gap:12px;flex-wrap:nowrap;margin-bottom:20px">
+            <div class="stat"><div class="k">Temps de recherche</div><div class="v">12<span style="font-size:15px;font-weight:600"> min</span></div><div class="d">+4 vs S-1</div></div>
+            <div class="stat"><div class="k">Jours actifs</div><div class="v">4<span style="font-size:15px;font-weight:600">/7</span></div><div class="d">stable</div></div>
+          </div>
+
+          <div class="card" style="margin-bottom:20px">
+            <div class="row" style="justify-content:space-between;margin-bottom:14px"><b style="font-size:15px">Avant de demander de l'aide</b>
+              <div class="segmented" style="height:40px;padding:4px"><button class="on" style="height:32px;padding:0 12px;font-size:12px">7 j</button><button style="height:32px;padding:0 12px;font-size:12px">30 j</button></div></div>
+            <div class="bars" style="height:96px">
+              <div class="b"><i style="height:40%"></i><span>L</span></div>
+              <div class="b"><i style="height:65%"></i><span>M</span></div>
+              <div class="b"><i class="muted" style="height:8%"></i><span>M</span></div>
+              <div class="b"><i style="height:88%"></i><span>J</span></div>
+              <div class="b"><i style="height:72%"></i><span>V</span></div>
+              <div class="b"><i class="muted" style="height:8%"></i><span>S</span></div>
+              <div class="b"><i class="muted" style="height:8%"></i><span>D</span></div>
+            </div>
+          </div>
+
+          <div class="list-head" style="padding-left:0">Dernières sessions</div>
+          <div class="list">
+            <button class="li"><span class="lead" style="background:#E9E7FD;color:#3D33B8">📐</span>
+              <span class="body"><span class="t">Fractions</span><span class="s">14 min · 6 min en autonomie</span></span>
+              <span class="trail"><svg width="20" height="20"><use href="#i-chev"/></svg></span></button>
+            <button class="li"><span class="lead" style="background:#FFEADF;color:#A63F10">📖</span>
+              <span class="body"><span class="t">Participe passé</span><span class="s">9 min · 2 indices demandés</span></span>
+              <span class="trail"><svg width="20" height="20"><use href="#i-chev"/></svg></span></button>
+          </div>
+        </div>
+        <div class="dock">
+          <div class="tabbar">
+            <button class="tab on"><svg width="22" height="22"><use href="#i-home"/></svg></button>
+            <button class="tab"><svg width="22" height="22"><use href="#i-chart"/></svg></button>
+            <button class="tab"><svg width="22" height="22"><use href="#i-sliders"/></svg></button>
+            <button class="tab"><svg width="22" height="22"><use href="#i-user"/></svg></button>
+          </div>
+        </div>
+      </div>
+      <div class="phone-cap">Parent — Aujourd'hui<span>La note vocale est l'objet principal, pas un encart secondaire.</span></div>
+    </div>
+
+    <!-- Écran 4 : Réglages parent -->
+    <div>
+      <div class="phone" data-theme="parent">
+        <div class="status"><span>9:41</span><span>▮▮▮ ▾</span></div>
+        <div class="screen">
+          <div class="appbar">
+            <button class="back"><svg width="20" height="20"><use href="#i-back"/></svg></button>
+            <h4>Réglages de Léa</h4>
+            <span style="width:44px"></span>
+          </div>
+
+          <div class="card" style="margin:12px 0">
+            <div class="row" style="justify-content:space-between;margin-bottom:14px">
+              <b style="font-size:15px">Exigence du coach</b>
+              <span class="tag" style="background:var(--p100);color:var(--p700)">Équilibré</span>
+            </div>
+            <div class="slider">
+              <div class="track"><div class="fill" style="width:52%"></div><div class="thumb" style="left:52%"></div></div>
+              <div class="steps"><span>Souple</span><span></span><span class="on">Équilibré</span><span></span><span>Exigeant</span></div>
+            </div>
+            <div class="alert alert--info" style="margin-top:16px;font-size:13px">Le coach laissera Léa chercher ~2 min avant de proposer un indice.</div>
+          </div>
+
+          <div class="list-head" style="padding-left:0">Quand l'application est disponible</div>
+          <div class="stack" style="margin-bottom:20px">
+            <button class="radiocard on"><span class="mark"><svg width="14" height="14"><use href="#i-check"/></svg></span>
+              <span><span class="rc-t">Après l'école · 17h – 19h</span><span class="rc-s">Du lundi au vendredi</span></span></button>
+            <button class="radiocard"><span class="mark"></span>
+              <span><span class="rc-t">Personnaliser</span><span class="rc-s">Choisir jour par jour</span></span></button>
+          </div>
+
+          <div class="list-head" style="padding-left:0">Ce que vous recevez</div>
+          <div class="list" style="margin-bottom:20px">
+            <div class="li li--flat"><div class="body"><div class="t">Résumé vocal du soir</div><div class="s">Vers 20h30</div></div><button class="switch on" onclick="this.classList.toggle('on')"></button></div>
+            <div class="li li--flat"><div class="body"><div class="t">Alerte si Léa bloque</div><div class="s">Seulement si elle le demande</div></div><button class="switch" onclick="this.classList.toggle('on')"></button></div>
+            <button class="li li--flat"><div class="body"><div class="t">Réglages avancés</div><div class="s">Seuils, matières, durée</div></div><div class="trail"><svg width="20" height="20"><use href="#i-chev"/></svg></div></button>
+          </div>
+        </div>
+        <div class="dock">
+          <button class="btn btn--primary btn--block">Enregistrer</button>
+        </div>
+      </div>
+      <div class="phone-cap">Parent — Réglages<span>Deux presets d'horaires devant, le fin réglage replié : réponse directe à l'hypothèse n°3.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ DO / DON'T ═══════════════ -->
+<section id="rules">
+  <div class="sec-head">
+    <h2>8 · Ce que le système autorise et interdit</h2>
+    <p>Les trois références partagées sont d'excellentes sources de <b>forme</b>, mais elles embarquent des <b>mécaniques</b> (olympiades, classement des élèves, séries) que le positionnement Nurtura refuse explicitement. On garde la forme, on écarte les mécaniques.</p>
+  </div>
+
+  <div class="grid g2">
+    <div class="dd do">
+      <h5>À reprendre des références</h5>
+      <ul>
+        <li>Cartes à grand rayon, aplats de couleur pleine page, respiration généreuse.</li>
+        <li>Bouton pill sombre avec pastille circulaire portant la flèche.</li>
+        <li>Grands chiffres en tête de tuile, unité en petit à côté.</li>
+        <li>Barre d'onglets flottante arrondie, pastille colorée sur l'onglet actif.</li>
+        <li>Chips de matières défilant horizontalement, chacune avec son icône.</li>
+        <li>Illustrations et mascotte côté enfant — le ludique passe par là.</li>
+      </ul>
+    </div>
+    <div class="dd dont">
+      <h5>À ne pas reprendre</h5>
+      <ul>
+        <li>« Rating of students », classements, comparaison entre enfants.</li>
+        <li>Séries de jours consécutifs, flammes, compteurs à ne pas casser.</li>
+        <li>Trophées, olympiades, XP, boutique, roue de la fortune.</li>
+        <li>Pourcentage de progression global affiché à l'enfant (« Progress 76 % »).</li>
+        <li>Notifications à aversion pour la perte (« Tu vas perdre ta série ! »).</li>
+        <li>Rouge pour qualifier un résultat, vert pour féliciter une bonne réponse.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 class="blk">Le même écran, deux façons de l'écrire</h3>
+  <div class="grid g2">
+    <div class="dd dont">
+      <h5>Formulation interdite</h5>
+      <div class="card" style="background:#fff">
+        <div style="font-size:15px;line-height:1.6">🔥 <b>Série de 5 jours !</b><br>Ne casse pas ta série — il te reste 3 h.<br><span style="color:var(--d700);font-weight:600">Score : 62 % — en dessous de ton objectif</span></div>
+      </div>
+      <div class="spec" style="color:var(--d700);margin-top:12px">Crée de l'anxiété, déplace l'attention de l'apprentissage vers la protection du compteur, et transforme un jour de repos en faute.</div>
+    </div>
+    <div class="dd do">
+      <h5>Formulation attendue</h5>
+      <div class="card" style="background:#fff">
+        <div style="font-size:15px;line-height:1.6"><b>Hier, tu as tenu 12 minutes sur les fractions.</b><br>C'est 4 de plus que la semaine dernière.<br><span style="color:var(--s700);font-weight:600">Tu veux reprendre où tu t'es arrêtée ?</span></div>
+      </div>
+      <div class="spec" style="color:var(--s700);margin-top:12px">Constate un fait passé, compare l'enfant à lui-même, et propose une action sans injonction. Aucun point d'exclamation, aucun impératif culpabilisant.</div>
+    </div>
+  </div>
+
+  <h3 class="blk">Règles non négociables du système</h3>
+  <div class="panel">
+    <div class="grid g2">
+      <div class="col">
+        <div class="row" style="align-items:flex-start;gap:10px"><span class="tag ok">01</span><div class="spec" style="margin:0">Toute zone tactile fait au moins <b>48 × 48 px</b>. Si le visuel est plus petit, on étend avec <code>hitSlop</code> — on n'agrandit pas l'icône.</div></div>
+        <div class="row" style="align-items:flex-start;gap:10px"><span class="tag ok">02</span><div class="spec" style="margin:0">Contraste texte ≥ <b>4,5:1</b>, éléments d'interface ≥ <b>3:1</b>. La couleur ne porte jamais seule une information.</div></div>
+        <div class="row" style="align-items:flex-start;gap:10px"><span class="tag ok">03</span><div class="spec" style="margin:0">Chaque écran est testé à <b>200 % de taille de police</b> avant d'être considéré comme fini.</div></div>
+        <div class="row" style="align-items:flex-start;gap:10px"><span class="tag ok">04</span><div class="spec" style="margin:0">Aucune valeur brute dans un composant : tout passe par <code>theme.ts</code>.</div></div>
+      </div>
+      <div class="col">
+        <div class="row" style="align-items:flex-start;gap:10px"><span class="tag ok">05</span><div class="spec" style="margin:0">Un seul bouton primaire par écran. L'action principale reste atteignable au pouce, en bas.</div></div>
+        <div class="row" style="align-items:flex-start;gap:10px"><span class="tag ok">06</span><div class="spec" style="margin:0">Toute liste dessine ses <b>quatre états</b> : chargement, vide, erreur, plein.</div></div>
+        <div class="row" style="align-items:flex-start;gap:10px"><span class="tag ok">07</span><div class="spec" style="margin:0">Toute action destructrice est <b>annulable</b> (toast 5 s) ou confirmée dans une feuille.</div></div>
+        <div class="row" style="align-items:flex-start;gap:10px"><span class="tag ok">08</span><div class="spec" style="margin:0">Le rouge est réservé aux erreurs techniques et de saisie. <b>Jamais</b> à la performance de l'enfant.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div style="text-align:center;font-size:12px;color:var(--n500);line-height:1.7;border-top:1px solid var(--n200);padding-top:24px">
+  Nurtura — Styleguide mobile v0.1 · 13 août 2026 · Cible : React Native / Expo<br>
+  Document de travail interne. Les valeurs de session, prénoms et données affichés sont fictifs et ne servent qu'à dimensionner les composants.<br>
+  Nom produit non arrêté : « IAdibou » porte un risque juridique connu (marque Adibou / Ubisoft), cf. CR du 7 mai 2026.
+</div>
+</div>
+
+<script>
+function setTheme(t, btn){
+  document.body.setAttribute('data-theme', t);
+  document.querySelectorAll('.theme-switch button').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+}
+// Démo : segmented, chips, radiocards interactifs
+document.querySelectorAll('.segmented').forEach(g=>{
+  g.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+    g.querySelectorAll('button').forEach(x=>x.classList.remove('on')); b.classList.add('on');
+  }));
+});
+document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>c.classList.toggle('on')));
+document.querySelectorAll('.stack, .radiocard').forEach(()=>{});
+document.querySelectorAll('.stack').forEach(g=>{
+  const cards = g.querySelectorAll('.radiocard');
+  cards.forEach(c=>c.addEventListener('click',()=>{
+    cards.forEach(x=>{x.classList.remove('on'); x.querySelector('.mark').innerHTML='';});
+    c.classList.add('on');
+    c.querySelector('.mark').innerHTML='<svg width="14" height="14"><use href="#i-check"/></svg>';
+  }));
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nurtura — Parcours parent : authentification → réglages</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --n0:#FFFFFF; --n50:#F6F7FB; --n100:#EDEFF4; --n200:#DEE2EA; --n300:#C2C7D4;
+  --n400:#9AA1B2; --n500:#767D90; --n550:#686F82; --n600:#565C6E; --n700:#3A3F4E;
+  --n800:#262A36; --n900:#171A23;
+  --p50:#F4F3FE; --p100:#E9E7FD; --p300:#B7B1F5; --p500:#7A71E9; --p600:#5A4FE0;
+  --p700:#3D33B8; --p800:#2F2790; --p900:#241C6B;
+  --a100:#FFEADF; --a300:#FFC0A0; --a500:#FF8A4C; --a600:#E0631F; --a700:#A63F10;
+  --s100:#DFF3ED; --s500:#2FA98C; --s600:#26856D; --s700:#1E6B58;
+  --am100:#FDF0CE; --am500:#F2B807; --am700:#8A5A00;
+  --d100:#FBE7E7; --d600:#C93838; --d700:#A32A2A;
+  --sand50:#FFF8F2; --sand100:#FFF1E6; --sand200:#F7E4D4;
+  --border-int:#848BA0;
+  --r-xs:8px; --r-sm:12px; --r-md:16px; --r-lg:20px; --r-xl:28px; --r-2xl:32px; --r-pill:999px;
+  --sh1:0 2px 8px rgba(23,26,35,.06); --sh2:0 8px 24px rgba(23,26,35,.08); --sh3:0 16px 40px rgba(23,26,35,.12);
+  --ease:cubic-bezier(.2,.8,.2,1);
+  --font-text:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  --font-display:'Nunito','Inter',system-ui,sans-serif;
+}
+[data-theme="child"]{
+  --bg:var(--sand50); --bg-alt:var(--sand100); --surface:var(--n0); --surface-sunken:var(--sand100);
+  --border:var(--sand200); --text:var(--n900); --text-2:var(--n600); --text-muted:var(--n550);
+  --action:var(--n900); --action-text:var(--n0); --accent:var(--p600);
+  --r-card:var(--r-xl); --ctrl-h:56px; --font-h:var(--font-display);
+}
+[data-theme="parent"]{
+  --bg:var(--n50); --bg-alt:var(--n100); --surface:var(--n0); --surface-sunken:var(--n100);
+  --border:var(--n200); --text:var(--n900); --text-2:var(--n600); --text-muted:var(--n550);
+  --action:var(--p600); --action-text:var(--n0); --accent:var(--p600);
+  --r-card:var(--r-lg); --ctrl-h:52px; --font-h:var(--font-text);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-text);background:#F0F1F6;color:var(--n900);-webkit-font-smoothing:antialiased}
+.doc-bar{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.9);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--n200);padding:14px 28px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.doc-bar h1{font-size:16px;font-weight:700;letter-spacing:-.3px}
+.doc-bar .ver{font-size:11px;font-weight:600;color:var(--n550);background:var(--n100);padding:3px 8px;border-radius:var(--r-pill)}
+.doc-nav{display:flex;gap:2px;margin-left:auto;flex-wrap:wrap}
+.doc-nav a{font-size:12px;font-weight:600;color:var(--n600);text-decoration:none;padding:6px 10px;border-radius:8px}
+.doc-nav a:hover{background:var(--n100);color:var(--n900)}
+.wrap{max-width:1320px;margin:0 auto;padding:40px 28px 120px}
+section{margin-bottom:64px;scroll-margin-top:80px}
+.sec-head{margin-bottom:24px;padding-bottom:14px;border-bottom:2px solid var(--n200)}
+.sec-head h2{font-size:26px;font-weight:800;letter-spacing:-.6px}
+.sec-head p{font-size:14px;color:var(--n600);margin-top:6px;max-width:78ch;line-height:1.65}
+h3.blk{font-size:15px;font-weight:700;margin:34px 0 14px;letter-spacing:-.2px}
+.spec{font-size:12.5px;color:var(--n600);line-height:1.65;margin-top:10px}
+.spec code{background:var(--n100);padding:1px 5px;border-radius:5px;font-size:11px;color:var(--n700);font-family:ui-monospace,monospace}
+.panel{background:#fff;border:1px solid var(--n200);border-radius:var(--r-lg);padding:26px;box-shadow:var(--sh1)}
+
+/* ── Flow map ── */
+.flow{display:flex;flex-direction:column;gap:0}
+.lane{display:grid;grid-template-columns:150px 1fr;gap:20px;padding:22px 0;border-top:1px solid var(--n200)}
+.lane:first-child{border-top:0}
+.lane .lane-t{font-size:13px;font-weight:800;letter-spacing:.2px;text-transform:uppercase;color:var(--n550);padding-top:10px}
+.lane .lane-t span{display:block;text-transform:none;font-weight:500;font-size:11.5px;color:var(--n400);letter-spacing:0;margin-top:4px;line-height:1.4}
+.nodes{display:flex;align-items:center;gap:0;flex-wrap:wrap}
+.node{background:#fff;border:1.5px solid var(--n200);border-radius:14px;padding:11px 14px;min-width:132px;box-shadow:var(--sh1)}
+.node b{display:block;font-size:12.5px;font-weight:700;line-height:1.3}
+.node i{display:block;font-style:normal;font-size:11px;color:var(--n550);margin-top:3px;line-height:1.35}
+.node.gate{border-color:var(--d600);background:var(--d100)}
+.node.gate b{color:var(--d700)}
+.node.legal{border-color:var(--am700);background:var(--am100)}
+.node.legal b{color:var(--am700)}
+.node.key{border-color:var(--p600);background:var(--p50)}
+.node.key b{color:var(--p700)}
+.node.miss{border-style:dashed;border-color:var(--s600);background:var(--s100)}
+.node.miss b{color:var(--s700)}
+.arr{color:var(--n300);padding:0 9px;font-size:17px;flex:none;font-weight:700}
+.branch{display:flex;flex-direction:column;gap:8px}
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:20px;padding-top:18px;border-top:1px solid var(--n200)}
+.legend div{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--n600)}
+.legend i{width:16px;height:16px;border-radius:5px;border:1.5px solid;display:block;flex:none}
+
+/* ── Arborescence ── */
+.tree{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:2;color:var(--n700)}
+.tree .lvl0{font-weight:700;color:var(--n900)}
+.tree .new{background:var(--s100);color:var(--s700);font-weight:600;padding:1px 6px;border-radius:5px}
+.tree .req{background:var(--am100);color:var(--am700);font-weight:600;padding:1px 6px;border-radius:5px}
+.tree .note{color:var(--n400);font-size:11.5px}
+
+/* ── Composants système ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:var(--ctrl-h);padding:0 24px;
+  border:0;border-radius:var(--r-pill);font-family:var(--font-text);font-size:16px;font-weight:600;
+  letter-spacing:-.2px;cursor:pointer;transition:transform .12s var(--ease);white-space:nowrap}
+.btn:active{transform:scale(.97)}
+.btn--primary{background:var(--action);color:var(--action-text);box-shadow:var(--sh2)}
+.btn--secondary{background:var(--surface);color:var(--text);box-shadow:var(--sh1);border:1.5px solid var(--border-int)}
+.btn--ghost{background:transparent;color:var(--text);padding:0 16px}
+.btn--tonal{background:var(--p100);color:var(--p700)}
+.btn--danger-ghost{background:transparent;color:var(--d700);padding:0 16px}
+.btn--block{width:100%}
+.btn--md{height:48px;font-size:15px;padding:0 20px}
+.btn--sm{height:40px;font-size:14px;padding:0 16px}
+.btn[disabled]{opacity:.4;pointer-events:none;box-shadow:none}
+.iconbtn{width:44px;height:44px;border:0;border-radius:var(--r-pill);background:var(--surface);color:var(--text);
+  border:1.5px solid var(--border-int);display:grid;place-items:center;cursor:pointer;flex:none}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:13px;font-weight:600;color:var(--text)}
+.field .input{height:56px;border-radius:var(--r-md);background:var(--surface-sunken);border:1.5px solid transparent;
+  padding:0 16px;font-family:var(--font-text);font-size:16px;color:var(--text);width:100%;outline:none}
+.field .input::placeholder{color:var(--text-muted)}
+.field .input.focus{background:var(--surface);border-color:var(--accent);box-shadow:0 0 0 4px rgba(90,79,224,.14)}
+.field .help{font-size:13px;color:var(--text-2);line-height:1.5}
+.list{background:var(--surface);border-radius:var(--r-card);overflow:hidden;box-shadow:var(--sh1)}
+.list-head{font-size:13px;font-weight:700;color:var(--text-2);padding:16px 4px 8px}
+.li{display:flex;align-items:center;gap:14px;min-height:56px;padding:12px 18px;position:relative;
+  background:var(--surface);width:100%;text-align:left;border:0;font:inherit}
+.li + .li::before{content:'';position:absolute;top:0;left:18px;right:0;height:1px;background:var(--border)}
+.li .lead{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;flex:none;font-size:16px}
+.li .body{flex:1;min-width:0;display:block}
+.li .t{display:block;font-size:15px;font-weight:600;color:var(--text)}
+.li .s{display:block;font-size:12.5px;color:var(--text-2);margin-top:2px;line-height:1.4}
+.li .trail{color:var(--n300);flex:none;display:flex;align-items:center;gap:10px}
+.li .val{font-size:14px;font-weight:600;color:var(--text-2)}
+.card{background:var(--surface);border-radius:var(--r-card);padding:18px;box-shadow:var(--sh1)}
+.alert{display:flex;gap:11px;padding:13px 15px;border-radius:var(--r-md);font-size:13.5px;line-height:1.55;align-items:flex-start}
+.alert--info{background:var(--p100);color:var(--p900)}
+.alert--warn{background:var(--am100);color:var(--am700)}
+.alert--error{background:var(--d100);color:var(--d700)}
+.alert--ok{background:var(--s100);color:var(--s700)}
+.switch{width:52px;height:32px;border-radius:var(--r-pill);background:var(--n300);position:relative;cursor:pointer;border:0;flex:none;transition:background .2s}
+.switch::after{content:'';position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:#fff;box-shadow:var(--sh1);transition:transform .2s var(--ease)}
+.switch.on{background:var(--s600)}
+.switch.on::after{transform:translateX(20px)}
+.checkrow{display:flex;gap:13px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--border);cursor:pointer}
+.checkrow:last-child{border-bottom:0}
+.checkbox{width:26px;height:26px;border-radius:9px;border:2px solid var(--border-int);flex:none;display:grid;place-items:center;margin-top:1px}
+.checkrow.on .checkbox{background:var(--accent);border-color:var(--accent);color:#fff}
+.checkrow > span:last-child{flex:1;min-width:0}
+.checkrow .ct{display:block;font-size:14.5px;font-weight:600;color:var(--text);line-height:1.4}
+.checkrow .cs{display:block;font-size:12.5px;color:var(--text-2);margin-top:3px;line-height:1.5}
+.checkrow .req-tag{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--n600);background:var(--n100);padding:2px 6px;border-radius:5px;margin-left:6px;vertical-align:1px}
+
+/* ── PIN / OTP ── */
+.pin-dots{display:flex;gap:14px;justify-content:center;margin:26px 0 6px}
+.pin-dots i{width:16px;height:16px;border-radius:50%;border:2px solid var(--border-int);display:block}
+.pin-dots i.f{background:var(--text);border-color:var(--text)}
+.pin-dots.err i{border-color:var(--d600)}
+.pin-dots.err i.f{background:var(--d600);border-color:var(--d600)}
+.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.keypad button{height:64px;border-radius:var(--r-pill);border:0;background:var(--surface);box-shadow:var(--sh1);
+  font-family:var(--font-text);font-size:26px;font-weight:600;color:var(--text);cursor:pointer;transition:transform .1s var(--ease)}
+.keypad button:active{transform:scale(.94)}
+.keypad button.blank{background:transparent;box-shadow:none;cursor:default}
+.keypad button.fn{font-size:14px;font-weight:600;background:transparent;box-shadow:none}
+.otp{display:flex;gap:9px;justify-content:center}
+.otp i{width:46px;height:58px;border-radius:14px;background:var(--surface-sunken);border:1.5px solid transparent;
+  display:grid;place-items:center;font-size:24px;font-weight:700;font-style:normal;color:var(--text)}
+.otp i.cur{border-color:var(--accent);background:var(--surface);box-shadow:0 0 0 4px rgba(90,79,224,.14)}
+
+/* ── Téléphones ── */
+.phones{display:flex;gap:26px;flex-wrap:wrap}
+.phone{width:326px;height:700px;border-radius:42px;background:var(--bg);box-shadow:var(--sh3),0 0 0 9px #1b1d24;
+  overflow:hidden;position:relative;display:flex;flex-direction:column;flex:none}
+.phone .status{height:42px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;font-size:12.5px;font-weight:700;color:var(--text);flex:none}
+.phone .screen{flex:1;overflow-y:auto;padding:0 20px 96px}
+.phone .screen::-webkit-scrollbar{width:0}
+.phone .dock{position:absolute;left:20px;right:20px;bottom:18px}
+.phone.locked::after{content:'MODE ENFANT — VERROUILLÉ';position:absolute;top:0;left:0;right:0;height:26px;
+  background:var(--n900);color:#fff;font-size:9.5px;font-weight:800;letter-spacing:1px;display:grid;place-items:center;z-index:5}
+.phone.locked .status{margin-top:26px}
+.appbar{display:flex;align-items:center;gap:12px;height:52px}
+.appbar h4{font-size:16px;font-weight:700;flex:1;text-align:center}
+.cap{width:326px;margin-top:12px}
+.cap b{display:block;font-size:13px;font-weight:700;color:var(--n800)}
+.cap span{display:block;font-size:11.5px;color:var(--n550);line-height:1.55;margin-top:4px}
+.cap .num{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:6px;background:var(--n900);color:#fff;font-size:11px;font-weight:800;margin-right:7px;vertical-align:-4px}
+
+/* ── Audit ── */
+table.audit{width:100%;border-collapse:collapse;font-size:13.5px}
+table.audit th{text-align:left;font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;
+  color:var(--n550);padding:10px 12px;border-bottom:2px solid var(--n200)}
+table.audit td{padding:14px 12px;border-bottom:1px solid var(--n200);vertical-align:top;line-height:1.6}
+table.audit td:first-child{font-weight:700;width:20%}
+.pri{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.4px;padding:3px 8px;border-radius:6px;text-transform:uppercase;white-space:nowrap}
+.pri.p0{background:var(--d100);color:var(--d700)}
+.pri.p1{background:var(--am100);color:var(--am700)}
+.pri.p2{background:var(--n100);color:var(--n600)}
+@media(max-width:640px){.wrap{padding:24px 16px 80px}.doc-nav{display:none}.lane{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<svg style="display:none">
+  <symbol id="i-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5.5 5.5L20 7"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol>
+  <symbol id="i-face" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><path d="M9 10v1.5M15 10v1.5M9.5 15s1 1 2.5 1 2.5-1 2.5-1"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7l8.5 6 8.5-6"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5h.01"/></symbol>
+  <symbol id="i-swap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h13l-3.5-3.5M20 16H7l3.5 3.5"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></symbol>
+  <symbol id="i-del" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3.5h6M4 7h16M6.5 7l1 12.5a1.5 1.5 0 0 0 1.5 1.4h6a1.5 1.5 0 0 0 1.5-1.4L18 7"/></symbol>
+</svg>
+
+<div class="doc-bar">
+  <h1>Nurtura — Parcours parent : authentification → réglages</h1>
+  <span class="ver">v0.1 · 13 août 2026 · mono-app</span>
+  <nav class="doc-nav">
+    <a href="#decision">La décision</a><a href="#flow">Flow map</a><a href="#verrou">Verrou</a>
+    <a href="#ecrans">Écrans</a><a href="#reglages">Arborescence</a><a href="#audit">Ce qu'on a oublié</a>
+  </nav>
+</div>
+
+<div class="wrap">
+
+<!-- ═══════════ 1. LA DÉCISION ═══════════ -->
+<section id="decision">
+  <div class="sec-head">
+    <h2>1 · Ce que la décision mono-app change</h2>
+    <p>Passer de deux applications à une seule avec bascule de mode résout un vrai problème d'usage — la famille à un seul appareil — et supprime la friction du double téléchargement. Mais elle déplace une frontière qui était jusqu'ici garantie par le système d'exploitation vers <b>une frontière que nous devons construire nous-mêmes</b>. Trois conséquences.</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px">
+    <div class="panel">
+      <h3 class="blk" style="margin-top:0">La sécurité devient notre problème</h3>
+      <div class="spec" style="margin-top:0">Avec deux apps, un enfant ne pouvait pas atteindre les réglages parentaux : il n'avait pas l'app. Avec une seule, <b>tout est à un geste de distance</b> — ses propres plages horaires, la température du coach, et surtout les analytics comportementaux le concernant. Un élève de 6e qui découvre qu'il peut lever ses propres restrictions, c'est la promesse produit qui s'effondre. D'où le verrou de la section 3.</div>
+    </div>
+    <div class="panel">
+      <h3 class="blk" style="margin-top:0">Le magasin d'applications change de règles</h3>
+      <div class="spec" style="margin-top:0">La directive 1.3 d'Apple interdit aux apps de la catégorie Enfants « les liens sortants, les opportunités d'achat ou autres distractions, sauf dans une zone réservée derrière une barrière parentale ». Une app unique contient forcément l'abonnement, les CGU, le support. <b>Tous ces éléments doivent vivre côté parent, derrière le code.</b> C'est structurant, pas cosmétique.</div>
+    </div>
+    <div class="panel">
+      <h3 class="blk" style="margin-top:0">Le multi-enfant devient une question de navigation</h3>
+      <div class="spec" style="margin-top:0">Sur un appareil partagé entre Léa et Tom, « mode enfant » ne suffit plus : il faut <b>« mode Léa » ou « mode Tom »</b>. La bascule est donc un choix à deux dimensions — quel mode, et pour quel enfant. Ça n'existait dans aucun de nos documents.</div>
+    </div>
+  </div>
+
+  <div class="alert alert--warn" style="margin-top:20px">
+    <svg width="20" height="20" style="flex:none"><use href="#i-alert"/></svg>
+    <div><b>Décision à prendre, que je ne tranche pas ici :</b> publier ou non dans la catégorie Enfants de l'App Store. Y entrer donne une vitrine et une crédibilité auprès des parents, au prix de contraintes lourdes (pas d'analytics tiers, pas de publicité tierce, barrière parentale obligatoire sur tout lien sortant). Ne pas y entrer — catégorie Éducation, classification 4+ — laisse plus de latitude technique. Le parcours ci-dessous est compatible avec les deux, mais l'arbitrage doit être fait avant le premier envoi en revue.</div>
+  </div>
+</section>
+
+<!-- ═══════════ 2. FLOW MAP ═══════════ -->
+<section id="flow">
+  <div class="sec-head">
+    <h2>2 · Carte du parcours</h2>
+    <p>Du lancement à froid jusqu'aux réglages, en passant par la bascule de mode. Chaque nœud correspond à un écran ou à une décision de routage.</p>
+  </div>
+
+  <div class="panel">
+    <div class="flow">
+
+      <div class="lane">
+        <div class="lane-t">0 · Lancement<span>Résolution de session, avant tout affichage</span></div>
+        <div class="nodes">
+          <div class="node"><b>Écran de lancement</b><i>Logo, 400 ms max</i></div>
+          <span class="arr">→</span>
+          <div class="branch">
+            <div class="node"><b>Pas de session</b><i>→ Accueil</i></div>
+            <div class="node key"><b>Session + mode parent</b><i>→ Aujourd'hui</i></div>
+            <div class="node gate"><b>Session + mode enfant</b><i>→ Accueil enfant, verrouillé</i></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lane">
+        <div class="lane-t">1 · Entrée<span>Lien magique, sans mot de passe</span></div>
+        <div class="nodes">
+          <div class="node"><b>Accueil</b><i>Créer un compte / Se connecter</i></div>
+          <span class="arr">→</span>
+          <div class="node"><b>Saisie e-mail</b><i>Clavier e-mail, autoComplete</i></div>
+          <span class="arr">→</span>
+          <div class="node key"><b>Vérifiez votre boîte</b><i>Lien + code à 6 chiffres</i></div>
+          <span class="arr">→</span>
+          <div class="node"><b>Session ouverte</b><i>Compte existant → Aujourd'hui</i></div>
+        </div>
+      </div>
+
+      <div class="lane">
+        <div class="lane-t">2 · Onboarding<span>Nouveau compte uniquement</span></div>
+        <div class="nodes">
+          <div class="node"><b>Votre prénom</b><i>Optionnel, sautable</i></div>
+          <span class="arr">→</span>
+          <div class="node"><b>Ajouter un enfant</b><i>Prénom, année, classe</i></div>
+          <span class="arr">→</span>
+          <div class="node legal"><b>Consentement</b><i>Finalités séparées, RGPD art. 8</i></div>
+          <span class="arr">→</span>
+          <div class="node"><b>Profil d'apprentissage</b><i>4 questions, parent + enfant</i></div>
+          <span class="arr">→</span>
+          <div class="node"><b>Presets</b><i>Créneau + exigence du coach</i></div>
+          <span class="arr">→</span>
+          <div class="node gate"><b>Code parent</b><i>6 chiffres + confirmation</i></div>
+        </div>
+      </div>
+
+      <div class="lane">
+        <div class="lane-t">3 · Bascule<span>Le cœur de la décision mono-app</span></div>
+        <div class="nodes">
+          <div class="node key"><b>Aujourd'hui</b><i>Home parent</i></div>
+          <span class="arr">→</span>
+          <div class="node"><b>Choix de l'enfant</b><i>Feuille : Léa / Tom</i></div>
+          <span class="arr">→</span>
+          <div class="node"><b>Transition « Mode Léa »</b><i>1,5 s, rappel du verrou</i></div>
+          <span class="arr">→</span>
+          <div class="node gate"><b>Mode enfant verrouillé</b><i>Sortie impossible sans code</i></div>
+        </div>
+      </div>
+
+      <div class="lane">
+        <div class="lane-t">4 · Retour<span>Enfant → parent</span></div>
+        <div class="nodes">
+          <div class="node"><b>Bouton cadenas</b><i>Discret, en-tête, 44 px</i></div>
+          <span class="arr">→</span>
+          <div class="node gate"><b>Saisie du code</b><i>Pavé, 5 essais puis délai</i></div>
+          <span class="arr">→</span>
+          <div class="branch">
+            <div class="node key"><b>Succès → Aujourd'hui</b><i>Biométrie si appareil parent</i></div>
+            <div class="node"><b>Code oublié</b><i>→ Lien magique e-mail</i></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lane">
+        <div class="lane-t">5 · Réglages<span>Toujours côté parent</span></div>
+        <div class="nodes">
+          <div class="node"><b>Racine</b><i>5 groupes</i></div>
+          <span class="arr">→</span>
+          <div class="node">Enfants</div><span class="arr">·</span>
+          <div class="node">Compte</div><span class="arr">·</span>
+          <div class="node legal">Abonnement</div><span class="arr">·</span>
+          <div class="node legal">Données</div><span class="arr">·</span>
+          <div class="node miss">Aide &amp; signalement</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="legend">
+      <div><i style="border-color:var(--n200);background:#fff"></i> Écran standard</div>
+      <div><i style="border-color:var(--p600);background:var(--p50)"></i> Point de valeur</div>
+      <div><i style="border-color:var(--d600);background:var(--d100)"></i> Barrière de sécurité</div>
+      <div><i style="border-color:var(--am700);background:var(--am100)"></i> Exigence légale ou magasin</div>
+      <div><i style="border-color:var(--s600);background:var(--s100);border-style:dashed"></i> Manquant identifié — voir §6</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 3. VERROU ═══════════ -->
+<section id="verrou">
+  <div class="sec-head">
+    <h2>3 · Le verrou de mode enfant</h2>
+    <p>C'est le composant le plus sensible du produit. Il doit être infranchissable pour un élève de 6e motivé, et invisible pour un parent pressé.</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px">
+    <div class="panel">
+      <h3 class="blk" style="margin-top:0">Règles de conception</h3>
+      <div class="spec" style="margin-top:0">
+        <b>Code à 6 chiffres</b>, pas 4 : 10 000 combinaisons se testent, un million non.<br><br>
+        <b>Liste noire à la création</b> : suites (123456, 654321), répétitions (111111), et surtout <b>la date de naissance de l'enfant et celle du parent</b> — ce sont les premiers codes qu'un enfant essaie.<br><br>
+        <b>Anti-force brute</b> : 5 essais, puis 60 s de délai qui double à chaque série (60 s → 2 min → 4 min…). Le délai persiste même si l'app est tuée, sinon il suffit de la relancer.<br><br>
+        <b>Biométrie conditionnelle</b> — le point subtil. Face ID ou l'empreinte déverrouillent seulement si l'appareil est marqué « appareil du parent » à l'installation. Sur un appareil familial où l'enfant a enregistré son propre visage, la biométrie <b>ouvrirait le mode parent à l'enfant</b>. Sur appareil partagé : code uniquement.<br><br>
+        <b>Récupération</b> : « Code oublié » envoie un lien magique à l'e-mail du compte. Sans ça, un parent qui oublie son code est enfermé hors de son propre abonnement.
+      </div>
+    </div>
+    <div class="panel">
+      <h3 class="blk" style="margin-top:0">Ce que le verrou protège</h3>
+      <div class="list" style="box-shadow:none;border:1px solid var(--n200)" data-theme="parent">
+        <div class="li"><span class="lead" style="background:var(--d100);color:var(--d700)"><svg width="17" height="17"><use href="#i-lock"/></svg></span><span class="body"><span class="t">Plages horaires et durée</span><span class="s">Sinon l'enfant lève ses propres limites</span></span></div>
+        <div class="li"><span class="lead" style="background:var(--d100);color:var(--d700)"><svg width="17" height="17"><use href="#i-lock"/></svg></span><span class="body"><span class="t">Analytics comportementaux</span><span class="s">Ils sont destinés au parent, pas à l'enfant</span></span></div>
+        <div class="li"><span class="lead" style="background:var(--d100);color:var(--d700)"><svg width="17" height="17"><use href="#i-lock"/></svg></span><span class="body"><span class="t">Abonnement et paiement</span><span class="s">Exigé par la directive 1.3 d'Apple</span></span></div>
+        <div class="li"><span class="lead" style="background:var(--d100);color:var(--d700)"><svg width="17" height="17"><use href="#i-lock"/></svg></span><span class="body"><span class="t">Liens sortants, CGU, support</span><span class="s">Même directive</span></span></div>
+        <div class="li"><span class="lead" style="background:var(--d100);color:var(--d700)"><svg width="17" height="17"><use href="#i-lock"/></svg></span><span class="body"><span class="t">Journal des conversations</span><span class="s">Modération et signalement</span></span></div>
+      </div>
+      <div class="alert alert--info" style="margin-top:16px">Le mode enfant affiche en permanence un bandeau discret « Mode Léa ». Ce n'est pas décoratif : c'est ce qui évite qu'un parent croie être en mode parent et s'étonne de ne rien pouvoir régler.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 4. ÉCRANS ═══════════ -->
+<section id="ecrans">
+  <div class="sec-head">
+    <h2>4 · Les écrans</h2>
+    <p>Douze écrans montés avec les composants du styleguide v0.1. Aucune valeur hors tokens.</p>
+  </div>
+
+  <h3 class="blk">Phase 1 — Entrée</h3>
+  <div class="phones">
+
+    <!-- 1 Accueil -->
+    <div><div class="phone" data-theme="parent">
+      <div class="status"><span>9:41</span><span>▮▮▮ ▾</span></div>
+      <div class="screen" style="display:flex;flex-direction:column">
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:20px 0">
+          <div style="width:72px;height:72px;border-radius:24px;background:var(--p600);display:grid;place-items:center;font-size:32px;margin-bottom:28px">🌱</div>
+          <h1 style="font-size:30px;font-weight:800;letter-spacing:-.8px;line-height:1.15">Voir comment votre enfant apprend, pas seulement ses notes.</h1>
+          <p style="font-size:15.5px;color:var(--text-2);margin-top:14px;line-height:1.6">Un coach qui ne donne jamais la réponse, et un résumé de 60 secondes chaque soir pour vous.</p>
+        </div>
+      </div>
+      <div class="dock">
+        <button class="btn btn--primary btn--block" style="margin-bottom:10px">Créer mon compte</button>
+        <button class="btn btn--ghost btn--block btn--md">J'ai déjà un compte</button>
+      </div>
+    </div>
+    <div class="cap"><b><span class="num">1</span>Accueil</b><span>Une seule promesse, deux actions. Aucun carrousel d'onboarding avant l'inscription : il fait chuter la conversion sans rien apprendre au parent.</span></div></div>
+
+    <!-- 2 E-mail -->
+    <div><div class="phone" data-theme="parent">
+      <div class="status"><span>9:41</span><span>▮▮▮ ▾</span></div>
+      <div class="screen">
+        <div class="appbar"><button class="iconbtn"><svg width="19" height="19"><use href="#i-back"/></svg></button><h4></h4><span style="width:44px"></span></div>
+        <h1 style="font-size:26px;font-weight:700;letter-spacing:-.5px;margin:12px 0 8px">Votre adresse e-mail</h1>
+        <p style="font-size:14.5px;color:var(--text-2);line-height:1.6;margin-bottom:24px">Nous vous enverrons un lien de connexion. Pas de mot de passe à retenir.</p>
+        <div class="field">
+          <label>E-mail</label>
+          <input class="input focus" value="sophie.martin@email.fr">
+          <span class="help">C'est aussi l'adresse qui recevra le résumé du soir.</span>
+        </div>
+        <div class="alert alert--info" style="margin-top:24px">
+          <svg width="19" height="19" style="flex:none"><use href="#i-lock"/></svg>
+          <div>Cette adresse sert de preuve de contact parental. Elle ne sera jamais visible par votre enfant.</div>
+        </div>
+      </div>
+      <div class="dock"><button class="btn btn--primary btn--block">Continuer</button></div>
+    </div>
+    <div class="cap"><b><span class="num">2</span>Saisie e-mail</b><span>Un seul champ. <code>keyboardType="email-address"</code>, <code>textContentType="emailAddress"</code>, <code>autoCapitalize="none"</code>. Validation au blur, jamais à la frappe.</span></div></div>
+
+    <!-- 3 Vérification -->
+    <div><div class="phone" data-theme="parent">
+      <div class="status"><span>9:41</span><span>▮▮▮ ▾</span></div>
+      <div class="screen">
+        <div class="appbar"><button class="iconbtn"><svg width="19" height="19"><use href="#i-back"/></svg></button><h4></h4><span style="width:44px"></span></div>
+        <div style="width:64px;height:64px;border-radius:22px;background:var(--p100);color:var(--p700);display:grid;place-items:center;margin:16px 0 20px"><svg width="30" height="30"><use href="#i-mail"/></svg></div>
+        <h1 style="font-size:25px;font-weight:700;letter-spacing:-.5px">Regardez votre boîte mail</h1>
+        <p style="font-size:14.5px;color:var(--text-2);line-height:1.6;margin:10px 0 26px">Nous avons envoyé un lien à <b style="color:var(--text)">sophie.martin@email.fr</b>. Touchez-le pour vous connecter.</p>
+        <div style="text-align:center;font-size:12.5px;font-weight:700;color:var(--text-muted);margin-bottom:14px">OU SAISISSEZ LE CODE DU MAIL</div>
+        <div class="otp"><i>4</i><i>0</i><i>7</i><i class="cur"></i><i></i><i></i></div>
+        <div style="text-align:center;margin-top:22px">
+          <button class="btn btn--ghost btn--sm" disabled>Renvoyer dans 47 s</button>
+        </div>
+        <div style="text-align:center;margin-top:2px">
+          <button class="btn btn--ghost btn--sm">Changer d'adresse</button>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><b><span class="num">3</span>Attente du lien</b><span><b>Le code à 6 chiffres est indispensable.</b> Le lien s'ouvre souvent dans un navigateur différent de celui de l'app, et la session se perd. Sans code de secours, l'utilisateur est bloqué. <code>textContentType="oneTimeCode"</code> pour le remplissage auto iOS.</span></div></div>
+  </div>
+
+  <h3 class="blk">Phase 2 — Onboarding et consentement</h3>
+  <div class="phones">
+
+    <!-- 4 Enfant -->
+    <div><div class="phone" data-theme="parent">
+      <div class="status"><span>9:41</span><span>▮▮▮ ▾</span></div>
+      <div class="screen">
+        <div class="appbar"><button class="iconbtn"><svg width="19" height="19"><use href="#i-back"/></svg></button>
+          <h4 style="font-size:13px;color:var(--text-2)">Étape 2 sur 5</h4><span style="width:44px"></span></div>
+        <div style="height:6px;border-radius:99px;background:var(--surface-sunken);margin-bottom:22px"><div style="width:40%;height:100%;border-radius:99px;background:var(--accent)"></div></div>
+        <h1 style="font-size:25px;font-weight:700;letter-spacing:-.5px">Parlez-nous de votre enfant</h1>
+        <p style="font-size:14.5px;color:var(--text-2);margin:8px 0 22px;line-height:1.6">Vous pourrez en ajouter d'autres plus tard.</p>
+        <div style="display:flex;flex-direction:column;gap:18px">
+          <div class="field"><label>Prénom</label><input class="input" value="Léa"></div>
+          <div class="field"><label>Année de naissance</label><input class="input" value="2014" inputmode="numeric">
+            <span class="help">Sert à adapter le niveau et à savoir quel cadre légal s'applique.</span></div>
+          <div class="field"><label>Classe</label><input class="input" value="6ᵉ"></div>
+        </div>
+      </div>
+      <div class="dock"><button class="btn btn--primary btn--block">Continuer</button></div>
+    </div>
+    <div class="cap"><b><span class="num">4</span>Ajouter un enfant</b><span>L'année de naissance n'est pas un détail de personnalisation : c'est elle qui déclenche le régime de consentement parental. On l'explique plutôt que de la demander sèchement.</span></div></div>
+
+    <!-- 5 Consentement -->
+    <div><div class="phone" data-theme="parent">
+      <div class="status"><span>9:41</span><span>▮▮▮ ▾</span></div>
+      <div class="screen">
+        <div class="appbar"><button class="iconbtn"><svg width="19" height="19"><use href="#i-back"/></svg></button>
+          <h4 style="font-size:13px;color:var(--text-2)">Étape 3 sur 5</h4><span style="width:44px"></span></div>
+        <div style="height:6px;border-radius:99px;background:var(--surface-sunken);margin-bottom:22px"><div style="width:60%;height:100%;border-radius:99px;background:var(--accent)"></div></div>
+        <h1 style="font-size:24px;font-weight:700;letter-spacing:-.5px">Votre accord</h1>
+        <p style="font-size:14px;color:var(--text-2);margin:8px 0 6px;line-height:1.6">Léa a 11 ans. En France, l'accord d'un parent est requis en dessous de 15 ans.</p>
+        <div class="card" style="padding:4px 16px;margin-top:14px">
+          <div class="checkrow on"><span class="checkbox"><svg width="15" height="15"><use href="#i-check"/></svg></span>
+            <span><span class="ct">Créer le compte de Léa<span class="req-tag">Requis</span></span><span class="cs">Prénom, classe, historique des sessions. Sans cela, le service ne peut pas fonctionner.</span></span></div>
+          <div class="checkrow on"><span class="checkbox"><svg width="15" height="15"><use href="#i-check"/></svg></span>
+            <span><span class="ct">M'envoyer l'analyse de son travail<span class="req-tag">Requis</span></span><span class="cs">Persévérance, régularité, moments où elle demande de l'aide. C'est le cœur du service.</span></span></div>
+          <div class="checkrow"><span class="checkbox"></span>
+            <span><span class="ct">Aider à améliorer le coach</span><span class="cs">Analyse anonymisée des échanges. <b>Facultatif</b> — vous pouvez refuser et tout fonctionne pareil.</span></span></div>
+        </div>
+        <div class="alert alert--info" style="margin-top:16px;font-size:12.5px">
+          <div>Si l'autre parent de Léa souhaite s'y opposer, il peut nous écrire à tout moment. Vous pouvez retirer chacun de ces accords dans Réglages → Données.</div>
+        </div>
+      </div>
+      <div class="dock"><button class="btn btn--primary btn--block">Je donne mon accord</button></div>
+    </div>
+    <div class="cap"><b><span class="num">5</span>Consentement</b><span><b>Finalités séparées, jamais une case unique.</b> Le troisième poste est réellement décochable sans dégrader le service. La mention sur le second parent applique la recommandation 4 de la CNIL : accord d'un parent, l'autre présumé mais avec droit d'opposition.</span></div></div>
+
+    <!-- 6 PIN -->
+    <div><div class="phone" data-theme="parent">
+      <div class="status"><span>9:41</span><span>▮▮▮ ▾</span></div>
+      <div class="screen">
+        <div class="appbar"><span style="width:44px"></span><h4 style="font-size:13px;color:var(--text-2)">Étape 5 sur 5</h4><span style="width:44px"></span></div>
+        <div style="height:6px;border-radius:99px;background:var(--surface-sunken);margin-bottom:20px"><div style="width:100%;height:100%;border-radius:99px;background:var(--accent)"></div></div>
+        <h1 style="font-size:23px;font-weight:700;letter-spacing:-.4px;text-align:center">Choisissez votre code parent</h1>
+        <p style="font-size:13.5px;color:var(--text-2);margin:8px 0 0;line-height:1.55;text-align:center">C'est lui qui empêchera Léa de modifier ses propres réglages.</p>
+        <div class="pin-dots"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i></i><i></i></div>
+        <div class="alert alert--warn" style="margin:14px 0 18px;font-size:12.5px">
+          <svg width="17" height="17" style="flex:none"><use href="#i-alert"/></svg>
+          <div>Évitez la date de naissance de Léa — c'est le premier code que les enfants essaient.</div>
+        </div>
+        <div class="keypad">
+          <button>1</button><button>2</button><button>3</button>
+          <button>4</button><button>5</button><button>6</button>
+          <button>7</button><button>8</button><button>9</button>
+          <button class="blank"></button><button>0</button><button class="fn"><svg width="22" height="22"><use href="#i-del"/></svg></button>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><b><span class="num">6</span>Création du code</b><span>Pavé personnalisé et non clavier système : touches de 64 px, bien au-dessus des 48 px minimum. Liste noire appliquée à la validation, message explicite plutôt qu'un refus sec.</span></div></div>
+  </div>
+
+  <h3 class="blk">Phase 3 — Bascule et retour</h3>
+  <div class="phones">
+
+    <!-- 7 Choix -->
+    <div><div class="phone" data-theme="parent">
+      <div class="status"><span>9:41</span><span>▮▮▮ ▾</span></div>
+      <div class="screen" style="filter:brightness(.96)">
+        <div style="margin:8px 0 20px"><div style="font-size:13px;color:var(--text-2)">Jeudi 13 août</div>
+          <div style="font-size:26px;font-weight:700;letter-spacing:-.5px;margin-top:2px">Aujourd'hui</div></div>
+        <div style="height:150px;border-radius:var(--r-card);background:var(--p700)"></div>
+        <div style="display:flex;gap:12px;margin-top:12px"><div style="flex:1;height:88px;border-radius:var(--r-card);background:var(--surface)"></div><div style="flex:1;height:88px;border-radius:var(--r-card);background:var(--surface)"></div></div>
+      </div>
+      <div style="position:absolute;inset:0;background:rgba(23,26,35,.5)"></div>
+      <div style="position:absolute;left:0;right:0;bottom:0;background:var(--surface);border-radius:28px 28px 0 0;padding:8px 20px 26px;box-shadow:var(--sh3)">
+        <div style="width:40px;height:4px;border-radius:99px;background:var(--n300);margin:0 auto 18px"></div>
+        <h4 style="font-size:19px;font-weight:700;letter-spacing:-.2px">Passer en mode enfant</h4>
+        <p style="font-size:13.5px;color:var(--text-2);margin:6px 0 16px;line-height:1.55">Pour revenir, il faudra saisir votre code parent.</p>
+        <div class="list" style="box-shadow:none;border:1.5px solid var(--border)">
+          <button class="li"><span class="lead" style="background:var(--p100)">🦊</span><span class="body"><span class="t">Léa</span><span class="s">6ᵉ · disponible jusqu'à 19h</span></span><span class="trail"><svg width="18" height="18"><use href="#i-chev"/></svg></span></button>
+          <button class="li"><span class="lead" style="background:var(--a100)">🐻</span><span class="body"><span class="t">Tom</span><span class="s">CM2 · hors créneau jusqu'à demain 17h</span></span><span class="trail"><svg width="18" height="18"><use href="#i-chev"/></svg></span></button>
+        </div>
+        <button class="btn btn--ghost btn--block btn--md" style="margin-top:12px">Annuler</button>
+      </div>
+    </div>
+    <div class="cap"><b><span class="num">7</span>Choix de l'enfant</b><span>La bascule est un choix à deux dimensions : quel mode, et pour quel enfant. Le rappel du verrou est fait <b>avant</b> le basculement, pas après — c'est là qu'il informe.</span></div></div>
+
+    <!-- 8 Transition -->
+    <div><div class="phone" data-theme="child" style="background:var(--p700)">
+      <div class="status" style="color:#fff"><span>9:41</span><span>▮▮▮ ▾</span></div>
+      <div class="screen" style="display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;color:#fff">
+        <div style="width:96px;height:96px;border-radius:34px;background:rgba(255,255,255,.16);display:grid;place-items:center;font-size:46px;margin-bottom:26px">🦊</div>
+        <div style="font-family:var(--font-display);font-size:32px;font-weight:800;letter-spacing:-.7px">Mode Léa</div>
+        <p style="font-size:15px;color:#E4E1FA;margin-top:12px;line-height:1.6;max-width:26ch">Bon travail Léa. Ton créneau se termine à 19h.</p>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:32px;background:rgba(255,255,255,.14);padding:10px 16px;border-radius:99px;font-size:12.5px;font-weight:600">
+          <svg width="16" height="16"><use href="#i-lock"/></svg> Réglages protégés par le code parent
+        </div>
+      </div>
+    </div>
+    <div class="cap"><b><span class="num">8</span>Transition de mode</b><span>1,5 s, non interruptible. Elle sert à trois choses : signaler sans ambiguïté le changement d'univers, s'adresser à l'enfant par son prénom, et dire que les réglages sont verrouillés — pour qu'il n'essaie pas.</span></div></div>
+
+    <!-- 9 Déverrouillage -->
+    <div><div class="phone locked" data-theme="child">
+      <div class="status"><span>9:41</span><span>▮▮▮ ▾</span></div>
+      <div class="screen">
+        <div class="appbar"><button class="iconbtn"><svg width="19" height="19"><use href="#i-back"/></svg></button><h4>Espace parent</h4><span style="width:44px"></span></div>
+        <div style="text-align:center;margin-top:18px">
+          <div style="width:56px;height:56px;border-radius:20px;background:var(--surface);box-shadow:var(--sh1);display:grid;place-items:center;margin:0 auto 16px;color:var(--text-2)"><svg width="26" height="26"><use href="#i-lock"/></svg></div>
+          <h1 style="font-size:21px;font-weight:700;letter-spacing:-.3px">Code parent</h1>
+        </div>
+        <div class="pin-dots err"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i></div>
+        <div class="alert alert--error" style="margin:14px 0 16px;font-size:12.5px">
+          <svg width="17" height="17" style="flex:none"><use href="#i-alert"/></svg>
+          <div><b>Code incorrect.</b> Encore 2 essais avant une pause d'une minute.</div>
+        </div>
+        <div class="keypad" style="gap:12px">
+          <button>1</button><button>2</button><button>3</button>
+          <button>4</button><button>5</button><button>6</button>
+          <button>7</button><button>8</button><button>9</button>
+          <button class="fn"><svg width="24" height="24"><use href="#i-face"/></svg></button><button>0</button><button class="fn"><svg width="22" height="22"><use href="#i-del"/></svg></button>
+        </div>
+        <div style="text-align:center;margin-top:8px"><button class="btn btn--ghost btn--sm">Code oublié ?</button></div>
+      </div>
+    </div>
+    <div class="cap"><b><span class="num">9</span>Déverrouillage</b><span>Bandeau permanent en haut : on sait toujours qu'on est en mode enfant. Le compteur d'essais restants est affiché — cacher l'information n'ajoute pas de sécurité et frustre le parent légitime. L'icône biométrie n'apparaît que sur un appareil marqué « appareil du parent ».</span></div></div>
+  </div>
+
+  <h3 class="blk">Phase 4 — Réglages</h3>
+  <div class="phones">
+
+    <!-- 10 Réglages racine -->
+    <div><div class="phone" data-theme="parent">
+      <div class="status"><span>9:41</span><span>▮▮▮ ▾</span></div>
+      <div class="screen">
+        <div class="appbar"><span style="width:44px"></span><h4>Réglages</h4><span style="width:44px"></span></div>
+        <div class="list-head">Enfants</div>
+        <div class="list">
+          <button class="li"><span class="lead" style="background:var(--p100)">🦊</span><span class="body"><span class="t">Léa</span><span class="s">6ᵉ · 17h–19h · Équilibré</span></span><span class="trail"><svg width="18" height="18"><use href="#i-chev"/></svg></span></button>
+          <button class="li"><span class="lead" style="background:var(--a100)">🐻</span><span class="body"><span class="t">Tom</span><span class="s">CM2 · 17h–18h30 · Souple</span></span><span class="trail"><svg width="18" height="18"><use href="#i-chev"/></svg></span></button>
+          <button class="li"><span class="lead" style="background:var(--surface-sunken);color:var(--text-2);font-size:20px">+</span><span class="body"><span class="t" style="color:var(--accent)">Ajouter un enfant</span></span></button>
+        </div>
+        <div class="list-head">Compte</div>
+        <div class="list">
+          <button class="li"><span class="body"><span class="t">Adresse e-mail</span></span><span class="trail"><span class="val">sophie.m@…</span><svg width="18" height="18"><use href="#i-chev"/></svg></span></button>
+          <button class="li"><span class="body"><span class="t">Second parent</span><span class="s">Non invité</span></span><span class="trail"><svg width="18" height="18"><use href="#i-chev"/></svg></span></button>
+          <button class="li"><span class="body"><span class="t">Code parent</span></span><span class="trail"><span class="val">••••••</span><svg width="18" height="18"><use href="#i-chev"/></svg></span></button>
+          <button class="li"><span class="body"><span class="t">Appareils connectés</span></span><span class="trail"><span class="val">2</span><svg width="18" height="18"><use href="#i-chev"/></svg></span></button>
+        </div>
+        <div class="list-head">Abonnement</div>
+        <div class="list">
+          <button class="li"><span class="body"><span class="t">Formule Famille</span><span class="s">Prochain prélèvement le 3 septembre</span></span><span class="trail"><svg width="18" height="18"><use href="#i-chev"/></svg></span></button>
+        </div>
+        <div class="list-head">Confidentialité &amp; données</div>
+        <div class="list">
+          <button class="li"><span class="body"><span class="t">Mes accords</span><span class="s">2 actifs sur 3</span></span><span class="trail"><svg width="18" height="18"><use href="#i-chev"/></svg></span></button>
+          <button class="li"><span class="body"><span class="t">Exporter les données</span></span><span class="trail"><svg width="18" height="18"><use href="#i-chev"/></svg></span></button>
+          <button class="li"><span class="body"><span class="t">Supprimer mon compte</span></span><span class="trail"><svg width="18" height="18"><use href="#i-chev"/></svg></span></button>
+        </div>
+        <div class="list-head">Aide</div>
+        <div class="list" style="margin-bottom:20px">
+          <button class="li"><span class="body"><span class="t">Comment fonctionne le coach</span></span><span class="trail"><svg width="18" height="18"><use href="#i-chev"/></svg></span></button>
+          <button class="li"><span class="body"><span class="t">Signaler un échange</span></span><span class="trail"><svg width="18" height="18"><use href="#i-chev"/></svg></span></button>
+          <button class="li"><span class="body"><span class="t">Nous contacter</span></span><span class="trail"><svg width="18" height="18"><use href="#i-chev"/></svg></span></button>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><b><span class="num">10</span>Réglages — racine</b><span>Cinq groupes, jamais plus. « Second parent », « Appareils connectés », « Signaler un échange » et « Supprimer mon compte » n'existaient dans aucun de nos documents — voir l'audit §6.</span></div></div>
+
+    <!-- 11 Données -->
+    <div><div class="phone" data-theme="parent">
+      <div class="status"><span>9:41</span><span>▮▮▮ ▾</span></div>
+      <div class="screen">
+        <div class="appbar"><button class="iconbtn"><svg width="19" height="19"><use href="#i-back"/></svg></button><h4>Mes accords</h4><span style="width:44px"></span></div>
+        <p style="font-size:13.5px;color:var(--text-2);line-height:1.6;margin:10px 0 18px">Vous pouvez retirer chaque accord indépendamment. Retirer un accord requis suspend le compte de l'enfant sans le supprimer.</p>
+        <div class="list">
+          <div class="li"><span class="body"><span class="t">Compte de Léa</span><span class="s">Requis pour le fonctionnement</span></span><button class="switch on"></button></div>
+          <div class="li"><span class="body"><span class="t">Analyse du travail</span><span class="s">Requis pour le résumé du soir</span></span><button class="switch on"></button></div>
+          <div class="li"><span class="body"><span class="t">Amélioration du coach</span><span class="s">Facultatif · retiré le 2 août</span></span><button class="switch"></button></div>
+        </div>
+        <div class="list-head">Vos droits</div>
+        <div class="list">
+          <button class="li"><span class="body"><span class="t">Exporter les données de Léa</span><span class="s">Fichier lisible, envoyé par e-mail</span></span><span class="trail"><svg width="18" height="18"><use href="#i-chev"/></svg></span></button>
+          <button class="li"><span class="body"><span class="t">Supprimer les données de Léa</span><span class="s">Définitif après 30 jours</span></span><span class="trail"><svg width="18" height="18"><use href="#i-chev"/></svg></span></button>
+        </div>
+        <div class="alert alert--info" style="margin-top:18px;font-size:12.5px">
+          <div>Le second parent de Léa peut demander la suspension de ces traitements en nous écrivant. Nous vous en informerions.</div>
+        </div>
+        <div class="list-head">Documents</div>
+        <div class="list" style="margin-bottom:20px">
+          <button class="li"><span class="body"><span class="t">Politique de confidentialité</span></span><span class="trail"><svg width="18" height="18"><use href="#i-chev"/></svg></span></button>
+          <button class="li"><span class="body"><span class="t">Conditions d'utilisation</span></span><span class="trail"><svg width="18" height="18"><use href="#i-chev"/></svg></span></button>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><b><span class="num">11</span>Accords et droits</b><span>Chaque accord est <b>révocable individuellement</b>, avec la conséquence annoncée. Export et suppression sont des écrans, pas une adresse e-mail dans les CGU. Les liens sortants sont ici, derrière le code parent — conformité à la directive 1.3.</span></div></div>
+
+    <!-- 12 Exception -->
+    <div><div class="phone" data-theme="parent">
+      <div class="status"><span>9:41</span><span>▮▮▮ ▾</span></div>
+      <div class="screen">
+        <div class="appbar"><button class="iconbtn"><svg width="19" height="19"><use href="#i-back"/></svg></button><h4>Disponibilité de Léa</h4><span style="width:44px"></span></div>
+        <div class="card" style="margin:10px 0 16px;background:var(--am100)">
+          <div style="display:flex;gap:11px;align-items:flex-start">
+            <svg width="20" height="20" style="flex:none;color:var(--am700);margin-top:1px"><use href="#i-clock"/></svg>
+            <div><div style="font-size:14.5px;font-weight:700;color:var(--am700)">Léa a demandé 30 minutes de plus</div>
+              <div style="font-size:12.5px;color:var(--am700);margin-top:4px;line-height:1.5">Il y a 4 minutes · elle travaillait sur les fractions</div></div>
+          </div>
+          <div style="display:flex;gap:9px;margin-top:14px">
+            <button class="btn btn--sm" style="flex:1;background:var(--am700);color:#fff">Accorder</button>
+            <button class="btn btn--secondary btn--sm" style="flex:1">Refuser</button>
+          </div>
+        </div>
+        <div class="list-head">Créneau habituel</div>
+        <div class="list">
+          <div class="li"><span class="body"><span class="t">Lundi au vendredi</span><span class="s">17h00 – 19h00</span></span><span class="trail"><svg width="18" height="18"><use href="#i-chev"/></svg></span></div>
+          <div class="li"><span class="body"><span class="t">Samedi et dimanche</span><span class="s">Indisponible</span></span><span class="trail"><svg width="18" height="18"><use href="#i-chev"/></svg></span></div>
+          <div class="li"><span class="body"><span class="t">Durée maximale par session</span></span><span class="trail"><span class="val">45 min</span><svg width="18" height="18"><use href="#i-chev"/></svg></span></div>
+        </div>
+        <div class="list-head">Exceptions</div>
+        <div class="list">
+          <div class="li"><span class="body"><span class="t">Autoriser Léa à demander plus</span><span class="s">Une demande par jour maximum</span></span><button class="switch on"></button></div>
+          <div class="li"><span class="body"><span class="t">Vacances scolaires</span><span class="s">Créneau élargi 10h – 19h</span></span><button class="switch on"></button></div>
+        </div>
+        <div class="alert alert--info" style="margin-top:18px;font-size:12.5px">
+          <div>Sans réponse de votre part sous 10 minutes, la demande expire et Léa voit un message neutre.</div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><b><span class="num">12</span>Exception horaire</b><span><b>Écran ajouté par l'audit.</b> « Contrôle demain matin, il est 19h05, l'enfant est bloqué » est le scénario le plus probable du produit et il n'existait nulle part. Sans soupape, le parent désactive purement et simplement les plages horaires.</span></div></div>
+  </div>
+</section>
+
+<!-- ═══════════ 5. ARBORESCENCE ═══════════ -->
+<section id="reglages">
+  <div class="sec-head">
+    <h2>5 · Arborescence complète des réglages</h2>
+    <p>Deux niveaux de profondeur maximum depuis la racine. En vert, ce que l'audit a ajouté ; en ambre, ce qui relève d'une obligation légale ou d'une règle de magasin.</p>
+  </div>
+  <div class="panel">
+<div class="tree">
+<span class="lvl0">Réglages</span>
+├── <b>Enfants</b>
+│   └── [Léa] <span class="note">— une entrée par enfant</span>
+│       ├── Profil <span class="note">prénom, année, classe, avatar</span>
+│       ├── Disponibilité <span class="note">créneaux, jours, durée max</span>
+│       │   └── Exceptions <span class="new">+ demande de rallonge</span> <span class="new">+ vacances scolaires</span>
+│       ├── Coach <span class="note">exigence, seuil du mode strict, matières actives</span>
+│       ├── Ce que je reçois <span class="note">résumé vocal, heure, alertes</span>
+│       ├── Journal des échanges <span class="new">+ consultation et signalement</span>
+│       └── Retirer cet enfant
+├── <b>Compte</b>
+│   ├── Adresse e-mail
+│   ├── Second parent <span class="new">+ invitation, droits, droit d'opposition</span>
+│   ├── Code parent <span class="note">modifier, réinitialiser par e-mail</span>
+│   └── Appareils connectés <span class="new">+ marquer « appareil du parent », déconnecter</span>
+├── <b>Abonnement</b> <span class="req">Directive 1.3 — derrière le code</span>
+│   ├── Formule et échéance
+│   ├── Changer de formule
+│   ├── Résilier <span class="req">Résiliation aussi simple que la souscription</span>
+│   └── Historique de facturation
+├── <b>Confidentialité &amp; données</b>
+│   ├── Mes accords <span class="req">Révocables un par un — RGPD art. 7</span>
+│   ├── Exporter les données <span class="req">Portabilité — art. 20</span>
+│   ├── Supprimer mon compte <span class="req">Effacement — art. 17 + exigence App Store</span>
+│   ├── Politique de confidentialité
+│   └── Conditions d'utilisation
+├── <b>Notifications</b>
+│   ├── Résumé du soir <span class="note">activation + heure</span>
+│   ├── Demandes de Léa <span class="new">+ liées à l'écran d'exception</span>
+│   └── Rappels hebdomadaires
+├── <b>Accessibilité</b> <span class="new">+ absent de la v0.1</span>
+│   ├── Police lisible <span class="note">Atkinson Hyperlegible</span>
+│   ├── Taille du texte
+│   └── Réduire les animations
+└── <b>Aide</b>
+    ├── Comment fonctionne le coach
+    ├── Signaler un échange <span class="new">+ critique pour une IA parlant à un mineur</span>
+    └── Nous contacter
+</div>
+  </div>
+</section>
+
+<!-- ═══════════ 6. AUDIT ═══════════ -->
+<section id="audit">
+  <div class="sec-head">
+    <h2>6 · Ce qu'on avait oublié pour l'app parent</h2>
+    <p>Douze trous, classés par criticité pour le MVP de mi-septembre. Les quatre premiers bloquent une mise en production ; les autres dégradent l'expérience ou la conformité.</p>
+  </div>
+  <div class="panel" style="padding:8px 20px">
+    <table class="audit">
+      <thead><tr><th>Manquant</th><th>Pourquoi ça compte</th><th style="width:110px">Criticité</th></tr></thead>
+      <tbody>
+        <tr><td>Le second parent</td>
+          <td>Familles séparées, deux foyers : qui reçoit le résumé du soir, qui peut modifier les réglages, qui paie ? La CNIL est explicite — l'accord d'un parent suffit, l'autre est présumé, <b>mais le second doit pouvoir s'y opposer</b>. Aucun de nos documents n'aborde le sujet. C'est à la fois un cas d'usage fréquent, une exigence de conformité et une question de facturation.</td>
+          <td><span class="pri p0">Bloquant</span></td></tr>
+        <tr><td>La suppression de compte</td>
+          <td>Une app qui permet de créer un compte doit permettre de le supprimer depuis l'app — c'est une exigence App Store, doublée du droit à l'effacement (RGPD art. 17). Un rejet en revue à une semaine de la rentrée coûterait la fenêtre de lancement.</td>
+          <td><span class="pri p0">Bloquant</span></td></tr>
+        <tr><td>L'abonnement et sa résiliation</td>
+          <td>Aucun écran de paywall, aucun écran de gestion, aucune décision sur le moment de présentation. Et en France la résiliation doit être aussi simple que la souscription. Le CR du 20 juin évoque 9,99 € sans trancher — l'UI ne peut plus attendre cette décision.</td>
+          <td><span class="pri p0">Bloquant</span></td></tr>
+        <tr><td>Le signalement d'un échange</td>
+          <td>Une IA générative parle à un mineur. Il faut un chemin de signalement côté parent <i>et</i> côté enfant, plus un journal consultable. Le teardown note que Sam&amp;Me offre déjà la visualisation des conversations ; nous n'avons rien décidé. Risque réputationnel et probablement exigence de modération.</td>
+          <td><span class="pri p0">Bloquant</span></td></tr>
+        <tr><td>L'exception horaire</td>
+          <td>« Contrôle demain, il est 19h05, l'enfant est bloqué. » C'est <b>le</b> scénario du produit — celui-là même que le CR du 7 mai identifie comme le trou dans la cuirasse n°2 — et il n'a aucun écran. Sans soupape encadrée, le parent désactive les plages horaires, et la promesse de contrôle s'effondre par le milieu.</td>
+          <td><span class="pri p1">Haute</span></td></tr>
+        <tr><td>Le jour 0</td>
+          <td>Le parent finit l'onboarding un mardi soir ; l'enfant n'a pas encore travaillé. L'écran « Aujourd'hui » est vide au moment le plus critique pour la rétention. Un état vide générique ne suffit pas : il faut une vraie première visite qui donne envie de revenir demain.</td>
+          <td><span class="pri p1">Haute</span></td></tr>
+        <tr><td>Le multi-enfant</td>
+          <td>J'ai mis un sélecteur « Léa / Tom » dans la maquette précédente sans que ce soit décidé. À trancher : réglages par enfant ou globaux, vue agrégée ou pas, tarification par enfant ou par famille. Au-delà de trois enfants, le sélecteur segmenté ne tient plus.</td>
+          <td><span class="pri p1">Haute</span></td></tr>
+        <tr><td>Les états dégradés</td>
+          <td>Que voit le parent quand le résumé du soir n'a pas pu être produit ? Que voit l'enfant sans réseau ? Le CR du 20 juin évoque un « modèle IA local » dont le sens technique reste à préciser — si c'est embarqué, le hors-ligne change tout ; si c'est du cloud, il faut des écrans dégradés partout.</td>
+          <td><span class="pri p1">Haute</span></td></tr>
+        <tr><td>Les notifications</td>
+          <td>On a le réglage « résumé vocal du soir », pas la stratégie : quelles notifications, à quelle heure, que faire si le parent refuse la permission iOS, et surtout comment relancer <b>sans culpabiliser</b>. Le parti-pris anti-culpabilisation se joue en grande partie ici.</td>
+          <td><span class="pri p2">Moyenne</span></td></tr>
+        <tr><td>Les appareils connectés</td>
+          <td>Conséquence directe du mono-app : il faut savoir quel appareil est « l'appareil du parent » (pour autoriser la biométrie) et pouvoir déconnecter un appareil à distance. La tablette familiale n'est pas le téléphone du parent.</td>
+          <td><span class="pri p2">Moyenne</span></td></tr>
+        <tr><td>L'accessibilité en réglages</td>
+          <td>La v0.1 prévoit l'option « police lisible » et le respect de la réduction des animations, mais aucun écran ne les expose. Pour une app scolaire dont une partie des utilisateurs a des troubles DYS, ce n'est pas un réglage de confort.</td>
+          <td><span class="pri p2">Moyenne</span></td></tr>
+        <tr><td>La preuve d'âge du parent</td>
+          <td>Nous retenons la déclaration plus consentement explicite : proportionné pour un MVP, tracé, cohérent avec le fait que le parent crée le compte et paie. C'est une <b>dette de conformité assumée</b>, à réévaluer si le produit grossit ou si le cadre se durcit.</td>
+          <td><span class="pri p2">Assumé</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div style="text-align:center;font-size:12px;color:var(--n550);line-height:1.75;border-top:1px solid var(--n200);padding-top:24px">
+  Nurtura — Parcours parent v0.1 · 13 août 2026 · Cible React Native / Expo · Complète le styleguide v0.1<br>
+  Document de travail interne. Prénoms, dates et données affichés sont fictifs et servent au dimensionnement.<br>
+  Les points juridiques signalés sont des éléments de cadrage, non un avis juridique — à faire valider par un conseil avant mise en production.
+</div>
+</div>
+</body>
+</html>
