@@ -7,6 +7,7 @@ import { border, componentSize, typography } from '../../theme/theme';
 import { AffordanceGlyph } from './AffordanceGlyph';
 import { resolveShadow, resolveVariantColors, type ButtonVariant } from './variants';
 
+export type { ButtonVariant };
 export type ButtonSize = keyof typeof componentSize.button;
 
 type ButtonCommonProps = {
