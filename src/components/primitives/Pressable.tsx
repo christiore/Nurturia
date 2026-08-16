@@ -48,8 +48,16 @@ function useReduceMotion(): boolean {
   return reduceMotion;
 }
 
+export type PressableRenderState = { pressed: boolean; focused: boolean };
+
 export type PressableProps = {
-  children: React.ReactNode;
+  /**
+   * Comme le `Pressable` natif : soit un noeud fixe, soit une fonction de
+   * rendu qui reçoit { pressed, focused } — pour que `Button`/`IconButton`
+   * ajustent leur ombre ou leur anneau de focus sans dupliquer le suivi
+   * d'état ni l'animation, portés une seule fois ici.
+   */
+  children: React.ReactNode | ((state: PressableRenderState) => React.ReactNode);
   onPress?: (event: GestureResponderEvent) => void;
   disabled?: boolean;
   /**
@@ -83,6 +91,8 @@ export function Pressable({
   // lecture de `.current` pendant le rendu (compatibilité React Compiler).
   const [scaleValue] = useState(() => new Animated.Value(1));
   const [measuredSize, setMeasuredSize] = useState<{ width: number; height: number } | null>(null);
+  const [pressed, setPressed] = useState(false);
+  const [focused, setFocused] = useState(false);
 
   const handleLayout = useCallback((event: LayoutChangeEvent) => {
     const { width, height } = event.nativeEvent.layout;
@@ -101,8 +111,16 @@ export function Pressable({
     [reduceMotion, scaleValue],
   );
 
-  const handlePressIn = useCallback(() => animateTo(motion.press.scale), [animateTo]);
-  const handlePressOut = useCallback(() => animateTo(1), [animateTo]);
+  const handlePressIn = useCallback(() => {
+    setPressed(true);
+    animateTo(motion.press.scale);
+  }, [animateTo]);
+  const handlePressOut = useCallback(() => {
+    setPressed(false);
+    animateTo(1);
+  }, [animateTo]);
+  const handleFocus = useCallback(() => setFocused(true), []);
+  const handleBlur = useCallback(() => setFocused(false), []);
 
   return (
     <RNPressable
@@ -110,6 +128,8 @@ export function Pressable({
       onPress={onPress}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
       disabled={disabled}
       hitSlop={computeHitSlop(measuredSize)}
       accessibilityLabel={accessibilityLabel}
@@ -118,7 +138,9 @@ export function Pressable({
       accessibilityState={{ ...accessibilityState, disabled }}
       testID={testID}
     >
-      <Animated.View style={{ transform: [{ scale: scaleValue }] }}>{children}</Animated.View>
+      <Animated.View style={{ transform: [{ scale: scaleValue }] }}>
+        {typeof children === 'function' ? children({ pressed, focused }) : children}
+      </Animated.View>
     </RNPressable>
   );
 }
