@@ -1,4 +1,4 @@
-# Nurtura — Instructions projet
+# Nurturia — Instructions projet
 
 > Fichier lu à chaque session. Il porte les règles du projet, pas sa documentation.
 > Les specs détaillées vivent dans `/docs`. Ici, seulement ce qui ne se négocie pas.
@@ -20,10 +20,15 @@ mode enfant étant protégée par un code à 6 chiffres.
 Le produit **refuse explicitement les mécaniques d'engagement compétitives**. Ce n'est pas une
 préférence esthétique, c'est le positionnement commercial et le socle de différenciation.
 
-> **Nom :** « Nurtura » est un nom de travail. Le nom définitif n'est pas arrêté (risque
-> juridique connu sur « IAdibou »). Ne l'écris jamais en dur dans une chaîne affichée : tout
-> libellé visible passe par les fichiers de traduction, et l'identifiant de marque dans le
-> thème s'appelle `brand` / `primary`, jamais du nom du produit.
+> **Nom : « Nurturia », arrêté le 16 août 2026.** C'est le nom du produit partout — dépôt,
+> identifiant de bundle, documentation, interface.
+>
+> La règle d'écriture ne change pas pour autant : **ne l'écris jamais en dur dans une chaîne
+> affichée.** Tout libellé visible passe par `i18n/fr.json`, clé `app.name`, et l'identifiant
+> de marque dans le thème reste `brand` / `primary`, jamais le nom du produit. Deux raisons :
+> la localisation, et le fait que la recherche d'antériorité au registre des marques n'a pas
+> encore été faite — voir `DECISIONS-OUVERTES.md` §1.1. Si elle revenait défavorable, un
+> renommage doit rester un changement de clé de traduction et d'asset, pas un refactor.
 
 ---
 
@@ -111,16 +116,11 @@ Aucune chaîne en dur dans un composant.
 /DECISIONS-OUVERTES.md       Ce qui n'est pas tranché — à lire avant toute hypothèse
 ```
 
-> **Avertissement sur les fichiers HTML.** Les deux maquettes (`nurtura-styleguide.html`,
-> `nurtura-parcours-parent.html`) sont des **références visuelles à ouvrir dans un
+> **Avertissement sur les fichiers HTML.** Les deux maquettes (`nurturia-styleguide.html`,
+> `nurturia-parcours-parent.html`) sont des **références visuelles à ouvrir dans un
 > navigateur**, pas des sources à lire. Leur CSS est un rendu web : le transposer produirait
 > des ombres cassées sur Android et des valeurs hors tokens. Si tu as besoin d'une valeur,
 > elle est dans `theme.ts` ou dans les guidelines — jamais dans le HTML.
->
-> **`/design/tokens.json` n'a pas encore été livré au dépôt** (seul `theme.ts` a été fourni
-> à la session 1). Ne le fabrique pas depuis `theme.ts` — l'inverse serait vrai en théorie
-> (tokens.json → theme.ts), pas le contraire. Tant qu'il n'est pas fourni, `theme.ts` reste
-> la seule source de vérité utilisable par le code.
 
 ### Ce qui fait foi dans les guidelines
 
@@ -132,6 +132,10 @@ Aucune chaîne en dur dans un composant.
   verrou, arborescence des réglages). Les sections 1, 5, 6 et 7 sont du contexte, un audit et
   des alertes destinés à l'équipe : elles décrivent des manques et des décisions à prendre,
   pas des specs. **N'implémente rien à partir de la section 5.**
+
+> Ces deux fichiers viennent de `NURTURIA-UI-GUIDELINES.md` et
+> `NURTURIA-PARCOURS-ET-AUDIT.md`. Renomme-les en `UI-GUIDELINES.md` et `PARCOURS.md` en les
+> plaçant dans `/docs`, ou corrige les chemins ci-dessus.
 
 ---
 
@@ -241,4 +245,4 @@ revue manuelle.
 
 ---
 
-*Nurtura — CLAUDE.md v0.1 · 14 août 2026 · À mettre à jour à chaque décision tranchée.*
+*Nurturia — CLAUDE.md v0.1 · 14 août 2026 · À mettre à jour à chaque décision tranchée.*

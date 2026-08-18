@@ -1,4 +1,4 @@
-# Nurtura — Décisions ouvertes
+# Nurturia — Décisions ouvertes
 
 > **Ce document existe pour dire où ne pas improviser.**
 >
@@ -26,16 +26,28 @@
 
 # 1 · Produit
 
-### 1.1 Nom du produit
+### 1.1 Nom du produit — TRANCHÉ le 16 août 2026
 
-**Question** — « IAdibou » ou un autre nom ?
-**Depuis** — CR de cadrage, 7 mai 2026. Risque juridique connu : proximité avec la marque
-Adibou (Ubisoft).
-**Bloque** — icône, écran de lancement, identifiant de bundle, dépôt de marque, nom de domaine.
-**Instruction** — utilise `Nurtura` comme identifiant technique uniquement. **Jamais de nom
-de produit en dur dans une chaîne affichée** : tout libellé visible passe par `i18n/fr.json`,
-avec une clé `app.name`. Les tokens de marque s'appellent `brand` / `primary`, jamais du nom
-du produit. Un renommage doit se faire en changeant une clé de traduction et un asset.
+**Décision** — le produit s'appelle **Nurturia**. Le nom est scellé : dépôt, identifiant de
+bundle, documentation, interface. « IAdibou » et « Nurtura » sont abandonnés.
+
+**Reste ouvert, et ce n'est pas une décision de conception** — la **recherche d'antériorité
+au registre des marques n'a pas été faite**. Le risque initial portait sur la proximité entre
+« IAdibou » et la marque Adibou d'Ubisoft ; choisir un autre nom ne supprime pas le risque,
+il le déplace sur « Nurturia », qui n'a pas été vérifié. Action à confier à un conseil en
+propriété industrielle, hors périmètre du code.
+
+**Instruction** — écris `Nurturia` partout, **sauf dans une chaîne affichée** : tout libellé
+visible passe par `i18n/fr.json`, clé `app.name`. Les tokens de marque restent `brand` /
+`primary`. Cette règle survit à la décision, pour deux raisons : la localisation, et le fait
+qu'un retour défavorable de la recherche d'antériorité doit rester un changement de clé de
+traduction et d'asset, pas un refactor.
+
+**Note de provenance** — le document `docs/design-review-2026-07-31.md` est issu d'une session
+Claude, pas d'une décision d'équipe. Il n'est **pas autoritatif**. Sa mention de « Nurturia »
+a coïncidé avec la décision, mais ne l'a pas produite ; ses autres affirmations (choix de
+Supabase déduit d'une mention de RLS, « code de pairing ») restent non validées et ne doivent
+pas être reprises.
 
 ### 1.2 Tranche d'âge cible
 
@@ -275,6 +287,34 @@ un conseil.
 **Bloque** — l'écran de résiliation.
 **Instruction** — n'implémente rien avant l'arbitrage sur 1.4 et cette vérification.
 
+### 4.5 AI Act — situation vérifiée le 16 août 2026
+
+**Ce n'est pas une décision ouverte, c'est une clarification** — le document
+`docs/design-review-2026-07-31.md` présente l'AI Act Annexe III comme un risque de calendrier.
+C'est inexact depuis le 27 juillet 2026.
+
+**Fait vérifié** — le règlement (UE) 2026/1744 (« omnibus numérique »), publié le 24 juillet
+2026 et en vigueur depuis le 27, reporte les obligations des systèmes à haut risque de
+l'**Annexe III du 2 août 2026 au 2 décembre 2027**. Ces dates sont explicitement
+inconditionnelles : elles ne dépendent plus de la disponibilité des normes harmonisées.
+Pour un lancement mi-septembre 2026, l'échéance est à 15 mois.
+
+**S'applique en revanche depuis le 2 août 2026** :
+- **Article 50, transparence** — un système d'IA interagissant avec une personne doit se
+  signaler comme tel. À rendre explicite et non contournable côté enfant.
+- **Article 5, interdictions** — dont l'exploitation des vulnérabilités liées à l'âge pour
+  altérer substantiellement le comportement. Le refus des mécaniques d'engagement
+  manipulatrices n'est donc pas seulement un positionnement commercial, c'est aussi la zone
+  de sécurité réglementaire.
+
+**Reste à faire confirmer par un conseil** — savoir si le produit relève de l'Annexe III. Un
+coach socratique qui ne note pas et ne conditionne aucun accès en sort probablement ; les
+analytics comportementaux pourraient être plaidés comme une évaluation des acquis. **Je ne
+sais pas.** Sans urgence de calendrier.
+
+**Instruction** — ne conçois aucune obligation de haut risque dans le MVP. Assure en revanche
+que l'identification de l'IA auprès de l'enfant est présente et non désactivable.
+
 ---
 
 # 5 · Ce qui, à l'inverse, est tranché
@@ -283,6 +323,7 @@ Pour éviter de rouvrir ce qui est fermé. Ces points sont décidés et document
 
 | Décidé | Où |
 | --- | --- |
+| **Nom du produit : Nurturia** | Décision du 16 août |
 | Application unique avec bascule de mode | Décision du 14 août |
 | Verrou par code à 6 chiffres + biométrie conditionnelle | `PARCOURS.md` §3 |
 | Authentification par lien magique + code de secours à 6 chiffres | `PARCOURS.md` §2 |
@@ -303,5 +344,5 @@ pas commencées.
 
 ---
 
-*Nurtura — DECISIONS-OUVERTES.md v0.1 · 14 août 2026.*
+*Nurturia — DECISIONS-OUVERTES.md v0.1 · 14 août 2026.*
 *Chaque décision tranchée sort de ce fichier et entre dans `CLAUDE.md`. Mettre à jour la date.*
