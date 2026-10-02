@@ -7,6 +7,10 @@ import { Text } from '../../components/primitives/Text';
 import { Button, type ButtonVariant } from '../../components/Button/Button';
 import { IconButton } from '../../components/Button/IconButton';
 import { Chip, ChipRow } from '../../components/Chip/Chip';
+import { EmptyState, ErrorState } from '../../components/EmptyState/EmptyState';
+import { ListGroup } from '../../components/List/ListGroup';
+import { ListLeading, ListRow } from '../../components/List/ListRow';
+import { ListRowSkeleton, SkeletonGroup } from '../../components/Skeleton/Skeleton';
 import { RadioCardGroup } from '../../components/RadioCard/RadioCard';
 import { Segmented } from '../../components/Segmented/Segmented';
 import { Switch } from '../../components/Switch/Switch';
@@ -49,6 +53,7 @@ export function DevGallery(): React.JSX.Element {
         <SwitchSection />
         <SegmentedSection />
         <ChipSection />
+        <ListSection />
       </View>
     </ScrollView>
   );
@@ -379,6 +384,83 @@ function ChipSection(): React.JSX.Element {
           <Chip key={key} label={t(`subject.${key}`)} selected={key === selected} onPress={() => setSelected(key)} />
         ))}
       </ChipRow>
+    </Box>
+  );
+}
+
+type DemoListState = 'loading' | 'empty' | 'error' | 'full';
+
+const DEMO_LIST_STATES: readonly { value: DemoListState; key: 'listStateLoading' | 'listStateEmpty' | 'listStateError' | 'listStateFull' }[] = [
+  { value: 'loading', key: 'listStateLoading' },
+  { value: 'empty', key: 'listStateEmpty' },
+  { value: 'error', key: 'listStateError' },
+  { value: 'full', key: 'listStateFull' },
+];
+
+/**
+ * Démonstration statique des quatre états. `AsyncList` est une FlatList : on
+ * ne l'imbrique pas dans le ScrollView de la galerie, on en montre les briques.
+ */
+function ListSection(): React.JSX.Element {
+  const [demoState, setDemoState] = useState<DemoListState>('full');
+
+  return (
+    <Box gap={3}>
+      <SectionTitle>{t('devGallery.listSectionTitle')}</SectionTitle>
+      <ChipRow accessibilityLabel={t('devGallery.listStateLabel')}>
+        {DEMO_LIST_STATES.map((option) => (
+          <Chip
+            key={option.value}
+            label={t(`devGallery.${option.key}`)}
+            selected={option.value === demoState}
+            onPress={() => setDemoState(option.value)}
+          />
+        ))}
+      </ChipRow>
+      {demoState === 'loading' ? (
+        <SkeletonGroup accessibilityLabel={t('common.loading')}>
+          <ListGroup withLeading>
+            <ListRowSkeleton />
+            <ListRowSkeleton />
+            <ListRowSkeleton />
+          </ListGroup>
+        </SkeletonGroup>
+      ) : null}
+      {demoState === 'empty' ? (
+        <EmptyState
+          title={t('devGallery.listEmptyTitle')}
+          body={t('devGallery.listEmptyBody')}
+          action={{ label: t('devGallery.listEmptyAction'), onPress: () => undefined }}
+        />
+      ) : null}
+      {demoState === 'error' ? (
+        <ErrorState
+          title={t('devGallery.listErrorTitle')}
+          body={t('devGallery.listErrorBody')}
+          onRetry={() => setDemoState('full')}
+        />
+      ) : null}
+      {demoState === 'full' ? (
+        <ListGroup title={t('devGallery.listGroupTitle')} withLeading>
+          <ListRow
+            title={t('devGallery.listRowMathsTitle')}
+            subtitle={t('devGallery.listRowMathsSubtitle')}
+            leading={<ListLeading subjectKey="maths" />}
+            onPress={() => undefined}
+          />
+          <ListRow
+            title={t('devGallery.listRowFrenchTitle')}
+            subtitle={t('devGallery.listRowFrenchSubtitle')}
+            leading={<ListLeading subjectKey="francais" />}
+            onPress={() => undefined}
+          />
+          <ListRow
+            title={t('devGallery.listRowDataTitle')}
+            value={t('devGallery.listRowDataValue')}
+            leading={<ListLeading subjectKey="sciences" />}
+          />
+        </ListGroup>
+      ) : null}
     </Box>
   );
 }
