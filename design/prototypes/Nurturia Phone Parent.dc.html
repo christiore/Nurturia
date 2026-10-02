@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>body{margin:0;background:#E6EAF2}a{color:#1A3B70}a:hover{color:#F27121}button{font-family:inherit}input{font-family:inherit}*{box-sizing:border-box}</style>
+</helmet>
+<div style="min-height:100vh;background:#E6EAF2;padding:24px;font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:#0B132B;display:flex;flex-wrap:wrap;gap:36px;justify-content:center;align-items:flex-start">
+
+<div style="flex:none;width:{{ fw }}px;height:{{ fh }}px;background:#0F1B35;border-radius:{{ fr }}px;padding:10px">
+<div style="position:relative;height:100%;border-radius:{{ sr }}px;overflow:hidden;background:{{ screenBg }};display:flex;flex-direction:column">
+  <div style="flex:none;height:{{ topInset }}px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:calc(13px * {{ ts }});font-weight:700;color:#0B132B">
+    <span>9:41</span><sc-if value="{{ isIos }}"><span style="width:110px;height:30px;border-radius:16px;background:#0F1B35"></span></sc-if><span>{{ netLabel }}</span>
+  </div>
+
+  <sc-if value="{{ notifShown }}">
+  <button onClick="{{ fillCode }}" style="min-height:48px;min-width:48px;position:absolute;left:10px;right:10px;top:{{ notifTop }}px;z-index:9;border:0;cursor:pointer;text-align:left;background:rgba(245,246,250,0.97);box-shadow:0 8px 24px rgba(15,27,53,0.25);border-radius:22px;padding:12px 14px;display:flex;gap:12px;align-items:center;min-height:48px">
+    <span style="flex:none;width:38px;height:38px;border-radius:10px;background:#3A6BB0;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-size:calc(12px * {{ ts }});font-weight:800">Mail</span>
+    <span style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:calc(12px * {{ ts }});font-weight:700;color:#51607A">MAIL · maintenant</span><span style="font-size:calc(14px * {{ ts }});font-weight:700;color:#0B132B">Nurturia</span><span style="font-size:calc(13px * {{ ts }});color:#1F2B40">Votre code de connexion : 482913</span></span>
+  </button>
+  </sc-if>
+
+  <!-- ===== SIGN IN ===== -->
+  <sc-if value="{{ sEmail }}" hint-placeholder-val="{{ true }}">
+  <div style="flex:1;overflow-y:auto;padding:20px 20px 16px;display:flex;flex-direction:column;gap:16px">
+    <img src="assets/nurtu-01-idle.svg" alt="" style="width:110px;height:124px;align-self:center;flex-shrink:0">
+    <h1 style="margin:0;font-size:calc(26px * {{ ts }});line-height:1.2;font-weight:800;text-align:center">Connexion</h1>
+    <p style="margin:0;font-size:calc(15px * {{ ts }});line-height:1.5;color:#51607A;text-align:center">Vous recevrez un lien de connexion et un code à 6 chiffres par e-mail.</p>
+    <label style="display:flex;flex-direction:column;gap:8px;font-size:calc(14px * {{ ts }});font-weight:600;color:#34425C">Adresse e-mail
+      <input type="email" value="{{ email }}" onChange="{{ onEmail }}" style="min-height:52px;border-radius:16px;border:2px solid #DCE2EC;background:#FFFFFF;padding:0 16px;font-size:calc(17px * {{ ts }});outline:none">
+    </label>
+    <button onClick="{{ sendLink }}" style="min-height:48px;min-width:48px;margin-top:auto;min-height:56px;border:0;border-radius:999px;background:#0F1B35;color:#FFFFFF;font-size:calc(17px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">Recevoir le lien</button>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ sCode }}">
+  <div style="flex:1;overflow-y:auto;padding:16px 20px 8px;display:flex;flex-direction:column;gap:14px">
+    <h1 style="margin:0;font-size:calc(24px * {{ ts }});line-height:1.2;font-weight:800">Vérifiez votre boîte de réception</h1>
+    <p style="margin:0;font-size:calc(15px * {{ ts }});line-height:1.5;color:#51607A">Lien et code envoyés à {{ email }}. Touchez le lien, ou saisissez le code.</p>
+    <div style="display:flex;gap:8px;justify-content:space-between">
+      <sc-for list="{{ codeBoxes }}" as="b" hint-placeholder-count="6"><span style="flex:1;min-height:56px;border-radius:14px;background:#FFFFFF;border:2px solid {{ b.border }};display:flex;align-items:center;justify-content:center;font-size:calc(24px * {{ ts }});font-weight:800">{{ b.v }}</span></sc-for>
+    </div>
+    <div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap">
+      <button onClick="{{ resend }}" disabled="{{ resendLocked }}" style="min-height:48px;min-width:48px;border:0;background:none;padding:0 4px;min-height:48px;font-size:calc(15px * {{ ts }});font-weight:700;cursor:pointer;color:{{ resendColor }};min-height:48px">{{ resendLabel }}</button>
+      <button onClick="{{ changeEmail }}" style="min-height:48px;min-width:48px;border:0;background:none;padding:0 4px;min-height:48px;font-size:calc(15px * {{ ts }});font-weight:700;color:#1A3B70;cursor:pointer;text-decoration:underline;min-height:48px">Changer d'adresse</button>
+    </div>
+  </div>
+  <div style="flex:none;background:#D3D8E0;padding:8px 8px 6px;display:flex;flex-direction:column;gap:8px">
+    <sc-if value="{{ suggestShown }}"><button onClick="{{ fillCode }}" style="min-height:48px;min-width:48px;align-self:center;border:0;cursor:pointer;background:#FFFFFF;border-radius:12px;min-height:48px;padding:0 18px;font-size:calc(15px * {{ ts }});font-weight:700;color:#0B132B;min-height:48px">Depuis Mail : 482913</button></sc-if>
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px">
+      <sc-for list="{{ numKeys }}" as="k" hint-placeholder-count="12"><button onClick="{{ k.onClick }}" style="min-height:48px;min-width:48px;min-height:50px;border:0;border-radius:10px;background:{{ k.bg }};font-size:calc(22px * {{ ts }});font-weight:600;color:#0B132B;cursor:pointer;min-height:48px">{{ k.label }}</button></sc-for>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ===== KID BAR (tab screens) ===== -->
+  <sc-if value="{{ showKidBar }}">
+  <div style="flex:none;padding:6px 16px 10px;display:flex;flex-direction:column;gap:10px">
+    <h1 style="margin:0;font-size:calc(28px * {{ ts }});line-height:1.15;font-weight:800;letter-spacing:-0.02em">{{ tabTitle }}</h1>
+    <sc-if value="{{ fewKids }}">
+    <div style="display:flex;gap:8px">
+      <sc-for list="{{ kids }}" as="k" hint-placeholder-count="2"><button onClick="{{ k.onClick }}" style="min-height:48px;min-width:48px;border:0;cursor:pointer;min-height:48px;padding:0 16px 0 6px;border-radius:999px;background:{{ k.bg }};color:{{ k.fg }};display:flex;align-items:center;gap:8px;font-size:calc(15px * {{ ts }});font-weight:700;min-height:48px"><span style="width:36px;height:36px;border-radius:50%;background:{{ k.dot }};color:#0B132B;display:flex;align-items:center;justify-content:center;font-size:calc(14px * {{ ts }});font-weight:800">{{ k.initial }}</span>{{ k.label }}</button></sc-for>
+    </div>
+    </sc-if>
+    <sc-if value="{{ manyKids }}">
+    <button onClick="{{ openKidList }}" style="min-height:48px;min-width:48px;align-self:flex-start;border:0;cursor:pointer;min-height:48px;padding:0 16px 0 6px;border-radius:999px;background:#0F1B35;color:#FFFFFF;display:flex;align-items:center;gap:8px;font-size:calc(15px * {{ ts }});font-weight:700;min-height:48px"><span style="width:36px;height:36px;border-radius:50%;background:#FFAD66;color:#0B132B;display:flex;align-items:center;justify-content:center;font-size:calc(14px * {{ ts }});font-weight:800">{{ kidInitial }}</span>{{ kidLabel }} · changer</button>
+    </sc-if>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ offlineBanner }}">
+  <div style="flex:none;margin:0 16px 8px;background:#0F1B35;color:#FFFFFF;border-radius:16px;padding:10px 14px;font-size:calc(13px * {{ ts }});line-height:1.45">Pas de connexion. Vous voyez les données enregistrées le 30 sept. à 8 h 12. Elles se mettront à jour au retour de la connexion.</div>
+  </sc-if>
+
+  <!-- ===== ERRORS / SIGNALS fixed controls ===== -->
+  <sc-if value="{{ showSeg1 }}">
+  <div style="flex:none;padding:0 16px 8px;display:flex;flex-direction:column;gap:8px">
+    <div style="display:flex;gap:8px;background:#FFFFFF;padding:4px;border-radius:999px"><sc-for list="{{ seg1 }}" as="s" hint-placeholder-count="3"><button onClick="{{ s.onClick }}" style="min-height:48px;min-width:48px;flex:1;border:0;cursor:pointer;min-height:48px;border-radius:999px;font-size:calc(14px * {{ ts }});font-weight:700;background:{{ s.bg }};color:{{ s.fg }};min-height:48px">{{ s.label }}</button></sc-for></div>
+    <sc-if value="{{ showSeg2 }}"><div style="display:flex;gap:8px;background:rgba(255,255,255,0.6);padding:4px;border-radius:999px"><sc-for list="{{ seg2 }}" as="s" hint-placeholder-count="2"><button onClick="{{ s.onClick }}" style="min-height:48px;min-width:48px;flex:1;border:0;cursor:pointer;min-height:48px;border-radius:999px;font-size:calc(14px * {{ ts }});font-weight:700;background:{{ s.bg }};color:{{ s.fg }};min-height:48px">{{ s.label }}</button></sc-for></div></sc-if>
+  </div>
+  </sc-if>
+
+  <!-- ===== PUSHED NAV BAR ===== -->
+  <sc-if value="{{ showNav }}">
+  <div style="flex:none;padding:2px 8px 6px;display:flex;align-items:center;gap:8px">
+    <button onClick="{{ navBack }}" style="min-height:48px;min-width:48px;border:0;background:none;cursor:pointer;min-height:48px;padding:0 10px;font-size:calc(16px * {{ ts }});font-weight:700;color:#1A3B70;display:flex;align-items:center;gap:8px;min-height:48px">‹ {{ navBackLabel }}</button>
+    <span style="flex:1;text-align:center;font-size:calc(16px * {{ ts }});font-weight:800;padding-right:60px">{{ navTitle }}</span>
+  </div>
+  </sc-if>
+
+  <!-- ===== DATA STATES ===== -->
+  <sc-if value="{{ stLoading }}">
+  <div style="flex:1;overflow:hidden;padding:4px 16px;display:flex;flex-direction:column;gap:12px">
+    <div style="flex-shrink:0;height:150px;border-radius:24px;background:#E1E6EE"></div>
+    <div style="flex-shrink:0;height:72px;border-radius:20px;background:#E1E6EE"></div>
+    <div style="flex-shrink:0;height:72px;border-radius:20px;background:#E1E6EE"></div>
+    <div style="flex-shrink:0;display:flex;align-items:center;gap:10px;padding:8px 4px"><img src="assets/nurtu-07-patience.svg" alt="" style="width:44px;height:50px"><span style="font-size:calc(15px * {{ ts }});font-weight:600;color:#51607A">Chargement des données de {{ kidName }}…</span></div>
+  </div>
+  </sc-if>
+  <sc-if value="{{ stEmpty }}">
+  <div style="flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center">
+    <img src="assets/nurtu-01-idle.svg" alt="" style="flex-shrink:0;width:120px;height:136px">
+    <h2 style="margin:0;font-size:calc(21px * {{ ts }});font-weight:800">Pas encore assez de données</h2>
+    <p style="margin:0;font-size:calc(15px * {{ ts }});line-height:1.55;color:#34425C">{{ emptyBody }}</p>
+    <p style="margin:0;font-size:calc(14px * {{ ts }});line-height:1.55;color:#51607A">Cela ne dépend pas de ce que {{ kidName }} a fait : il faut simplement un peu plus de sessions.</p>
+  </div>
+  </sc-if>
+  <sc-if value="{{ stError }}">
+  <div style="flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center">
+    <img src="assets/nurtu-05-relance.svg" alt="" style="flex-shrink:0;width:120px;height:136px">
+    <h2 style="margin:0;font-size:calc(21px * {{ ts }});font-weight:800">Ces données ne s'affichent pas pour le moment</h2>
+    <p style="margin:0;font-size:calc(15px * {{ ts }});line-height:1.55;color:#34425C">Vous pouvez réessayer. Si l'affichage ne revient pas, fermez l'app puis rouvrez-la. Les données de {{ kidName }} sont conservées.</p>
+    <button onClick="{{ reload }}" style="min-height:48px;min-width:48px;margin-top:auto;width:100%;min-height:56px;border:0;border-radius:999px;background:#0F1B35;color:#FFFFFF;font-size:calc(16px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">Réessayer</button>
+  </div>
+  </sc-if>
+
+  <!-- ===== TODAY ===== -->
+  <sc-if value="{{ tToday }}" hint-placeholder-val="{{ true }}">
+  <div style="flex:1;overflow-y:auto;padding:0 16px 16px;display:flex;flex-direction:column;gap:12px">
+    <div style="flex-shrink:0;position:relative;background:#3A6BB0;border-radius:26px;padding:20px;overflow:hidden;display:flex;flex-direction:column;gap:8px">
+      <span style="font-size:calc(13px * {{ ts }});font-weight:600;color:#DDE7F8">Semaine du 22 au 28 sept.</span>
+      <span style="font-size:calc(20px * {{ ts }});line-height:1.25;font-weight:800;color:#FFFFFF;max-width:calc(100% - 90px)">La semaine dernière, Léa a fait 3 sessions.</span>
+      <span style="font-size:calc(14px * {{ ts }});line-height:1.5;color:#FFFFFF;max-width:calc(100% - 90px)">Une erreur est passée en cours. Une autre a été résolue le 23 sept.</span>
+      <img src="assets/nurtu-09-bienveillance.svg" alt="" style="position:absolute;right:-10px;bottom:-8px;width:100px;height:113px">
+    </div>
+    <div style="flex-shrink:0;background:#FF9F66;border-radius:26px;padding:18px;display:flex;flex-direction:column;gap:12px">
+      <span style="font-size:calc(19px * {{ ts }});font-weight:800">Progression des erreurs</span>
+      <p style="margin:0;font-size:calc(14px * {{ ts }});line-height:1.5;color:#3A1A00">{{ progSummary }}</p>
+      <div style="position:relative;height:290px">
+        <sc-for list="{{ lanes }}" as="l" hint-placeholder-count="3"><div style="position:absolute;top:0;bottom:0;left:{{ l.left }};width:calc(33.333% - 6px);background:rgba(255,255,255,0.3);border-radius:16px;padding:8px"><span style="font-size:calc(12px * {{ ts }});font-weight:800;color:#3A1A00">{{ l.label }}</span></div></sc-for>
+        <sc-for list="{{ chips }}" as="c" hint-placeholder-count="5"><div style="position:absolute;left:{{ c.left }};top:{{ c.top }};opacity:{{ c.op }};width:calc(33.333% - 14px);min-height:40px;background:{{ c.bg }};color:{{ c.fg }};border-radius:12px;padding:6px 8px;display:flex;align-items:center;font-size:calc(12px * {{ ts }});font-weight:700;line-height:1.2;transition:{{ chipTrans }}">{{ c.label }}</div></sc-for>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <sc-if value="{{ motionOn }}"><button onClick="{{ play }}" title="Lire" style="min-height:48px;min-width:48px;flex:none;width:48px;min-height:48px;border-radius:50%;border:0;background:#0F1B35;color:#FFFFFF;font-size:calc(14px * {{ ts }});cursor:pointer;min-height:48px">{{ playIcon }}</button></sc-if>
+        <button onClick="{{ prevWeek }}" title="Semaine précédente" style="min-height:48px;min-width:48px;flex:none;width:48px;min-height:48px;border-radius:50%;border:0;background:rgba(255,255,255,0.55);font-size:calc(18px * {{ ts }});font-weight:800;cursor:pointer;min-height:48px">‹</button>
+        <span style="flex:1;text-align:center;font-size:calc(14px * {{ ts }});font-weight:800">{{ weekTitle }}</span>
+        <button onClick="{{ nextWeek }}" title="Semaine suivante" style="min-height:48px;min-width:48px;flex:none;width:48px;min-height:48px;border-radius:50%;border:0;background:rgba(255,255,255,0.55);font-size:calc(18px * {{ ts }});font-weight:800;cursor:pointer;min-height:48px">›</button>
+      </div>
+      <sc-if value="{{ motionOff }}"><span style="font-size:calc(12px * {{ ts }});color:#3A1A00">Animations réduites : l'état final est affiché.</span></sc-if>
+    </div>
+    <div style="flex-shrink:0;background:#FFFFFF;border-radius:26px;padding:18px;display:flex;flex-direction:column;gap:12px">
+      <span style="font-size:calc(19px * {{ ts }});font-weight:800">Comment l'aider à la maison</span>
+      <sc-for list="{{ activeTips }}" as="t" hint-placeholder-count="2">
+      <button onClick="{{ t.onClick }}" style="min-height:48px;min-width:48px;border:0;cursor:pointer;text-align:left;background:#FFF1E6;border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:8px;min-height:48px">
+        <span style="font-size:calc(12px * {{ ts }});font-weight:800;color:#9A3C00">{{ t.notion }}</span>
+        <span style="font-size:calc(15px * {{ ts }});line-height:1.5;color:#1F2B40">{{ t.tip }}</span>
+        <span style="font-size:calc(13px * {{ ts }});font-weight:700;color:#9A3C00">Tous les conseils ›</span>
+      </button>
+      </sc-for>
+      <span style="font-size:calc(12px * {{ ts }});line-height:1.45;color:#51607A">Rédigés et relus par des enseignants. Ils ne sont pas générés par l'IA.</span>
+    </div>
+    <div style="flex-shrink:0;background:#FFFFFF;border-radius:26px;padding:18px;display:flex;flex-direction:column;gap:10px">
+      <span style="font-size:calc(19px * {{ ts }});font-weight:800">Activités de la semaine</span>
+      <sc-for list="{{ activities }}" as="a" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;gap:2px;background:#F5F6FA;border-radius:14px;padding:10px 12px"><span style="font-size:calc(15px * {{ ts }});font-weight:700">{{ a.t }}</span><span style="font-size:calc(13px * {{ ts }});line-height:1.4;color:#51607A">{{ a.subs }}</span></div></sc-for>
+    </div>
+    <button onClick="{{ goTransparency }}" style="min-height:48px;min-width:48px;flex-shrink:0;border:0;cursor:pointer;background:#0F1B35;color:#FFFFFF;border-radius:20px;min-height:56px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;font-size:calc(15px * {{ ts }});font-weight:700;text-align:left;min-height:48px">Comment ça marche ?<span>›</span></button>
+    <button onClick="{{ openChildSheet }}" style="min-height:48px;min-width:48px;flex-shrink:0;min-height:56px;border:0;border-radius:999px;background:#F27121;color:#0B132B;font-size:calc(16px * {{ ts }});font-weight:800;cursor:pointer;min-height:48px">Passer en mode enfant</button>
+  </div>
+  </sc-if>
+  <sc-if value="{{ tTodayNew }}">
+  <div style="flex:1;overflow-y:auto;padding:0 16px 16px;display:flex;flex-direction:column;gap:12px">
+    <div style="flex-shrink:0;background:#3A6BB0;border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:8px">
+      <span style="font-size:calc(13px * {{ ts }});font-weight:600;color:#DDE7F8">Nouveau compte · 1 session</span>
+      <span style="font-size:calc(20px * {{ ts }});line-height:1.25;font-weight:800;color:#FFFFFF">{{ kidName }} a fait sa première session le 29 sept.</span>
+      <span style="font-size:calc(14px * {{ ts }});line-height:1.5;color:#FFFFFF">Une erreur devient « récurrente » quand elle revient sur au moins deux questions. Il faut en général 2 ou 3 sessions.</span>
+    </div>
+    <div style="flex-shrink:0;background:#FFFFFF;border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:8px"><span style="font-size:calc(13px * {{ ts }});font-weight:700;color:#51607A">Observé une fois, le 29 sept.</span><span style="font-size:calc(15px * {{ ts }});font-weight:700;line-height:1.35">Pense qu'un plus grand dénominateur donne une plus grande fraction</span></div>
+    <div style="flex-shrink:0;background:#FFF1E6;border-radius:22px;padding:16px;font-size:calc(14px * {{ ts }});line-height:1.5">La progression semaine par semaine s'affichera après environ deux semaines d'utilisation.</div>
+    <button onClick="{{ openChildSheet }}" style="min-height:48px;min-width:48px;flex-shrink:0;margin-top:auto;min-height:56px;border:0;border-radius:999px;background:#F27121;color:#0B132B;font-size:calc(16px * {{ ts }});font-weight:800;cursor:pointer;min-height:48px">Passer en mode enfant</button>
+  </div>
+  </sc-if>
+
+  <!-- ===== ERRORS ===== -->
+  <sc-if value="{{ tErrList }}">
+  <div style="flex:1;overflow-y:auto;padding:0 16px 16px;display:flex;flex-direction:column;gap:10px">
+    <div style="flex-shrink:0;display:flex;gap:8px;overflow-x:auto;padding-bottom:2px"><sc-for list="{{ subjChips }}" as="s" hint-placeholder-count="6"><button onClick="{{ s.onClick }}" style="min-height:48px;min-width:48px;flex:none;border:0;cursor:pointer;min-height:48px;padding:0 16px;border-radius:999px;font-size:calc(14px * {{ ts }});font-weight:700;background:{{ s.bg }};color:{{ s.fg }};min-height:48px">{{ s.n }}</button></sc-for></div>
+    <sc-if value="{{ isMaths }}">
+    <p style="margin:0;font-size:calc(14px * {{ ts }});line-height:1.5;color:#34425C">{{ listSummary }}</p>
+    <sc-for list="{{ errs }}" as="e" hint-placeholder-count="5">
+    <button onClick="{{ e.onClick }}" style="min-height:48px;min-width:48px;flex-shrink:0;border:0;cursor:pointer;text-align:left;background:#FFFFFF;border-radius:20px;padding:14px;display:flex;align-items:center;gap:12px;width:100%;min-height:48px">
+      <span style="flex:none;width:12px;height:12px;border-radius:50%;background:{{ e.dot }}"></span>
+      <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:5px">
+        <span style="font-size:calc(15px * {{ ts }});font-weight:700;line-height:1.35;color:#0B132B">{{ e.label }}</span>
+        <span style="font-size:calc(13px * {{ ts }});color:#51607A">{{ e.notion }} · {{ e.lastTxt }}</span>
+        <span style="align-self:flex-start;padding:4px 10px;border-radius:999px;background:{{ e.bg }};color:{{ e.fg }};font-size:calc(12px * {{ ts }});font-weight:700">{{ e.st }}</span>
+      </span>
+      <span style="flex:none;font-size:calc(20px * {{ ts }});color:#A7B1C4">›</span>
+    </button>
+    </sc-for>
+    </sc-if>
+    <sc-if value="{{ notMaths }}">
+    <div style="flex-shrink:0;background:#FFFFFF;border-radius:22px;padding:18px;display:flex;flex-direction:column;gap:8px">
+      <span style="font-size:calc(18px * {{ ts }});font-weight:800">Pas encore de détail sur les erreurs en {{ subjLower }}</span>
+      <p style="margin:0;font-size:calc(14px * {{ ts }});line-height:1.55;color:#34425C">Pour l'instant, Nurturia détaille les erreurs récurrentes uniquement pour les fractions. En {{ subjLower }}, vous voyez seulement les signaux de comportement. Le détail viendra quand le contenu de cette matière sera prêt.</p>
+    </div>
+    <sc-for list="{{ subjSig }}" as="g"><div style="flex-shrink:0;background:{{ g.bg }};border-radius:20px;padding:14px 16px;display:flex;flex-direction:column;gap:8px"><span style="font-size:calc(15px * {{ ts }});font-weight:800">{{ g.t }} : {{ g.n }}</span><span style="font-size:calc(13px * {{ ts }});color:#34425C">{{ g.cmp }}</span></div></sc-for>
+    <sc-if value="{{ subjNoSig }}"><p style="margin:0;font-size:calc(14px * {{ ts }});line-height:1.55;color:#34425C">Aucune activité dans cette matière du 22 au 28 sept.</p></sc-if>
+    </sc-if>
+  </div>
+  </sc-if>
+  <sc-if value="{{ tErrTimeline }}">
+  <div style="flex:1;overflow-y:auto;padding:0 16px 16px;display:flex;flex-direction:column;gap:0">
+    <p style="flex-shrink:0;margin:0 0 12px;font-size:calc(14px * {{ ts }});line-height:1.5;color:#34425C">{{ tlSummary }}</p>
+    <sc-for list="{{ events }}" as="v" hint-placeholder-count="8">
+    <div style="flex-shrink:0;display:flex;gap:12px">
+      <div style="flex:none;width:26px;display:flex;flex-direction:column;align-items:center"><span style="width:{{ v.dotSize }};height:{{ v.dotSize }};border-radius:50%;background:{{ v.dot }};color:#FFFFFF;font-size:calc(12px * {{ ts }});font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:4px">{{ v.mark }}</span><span style="flex:1;width:2px;background:#C9D2E0;min-height:16px"></span></div>
+      <div style="flex:1;min-width:0;padding-bottom:14px;display:flex;flex-direction:column;gap:8px">
+        <span style="font-size:calc(13px * {{ ts }});font-weight:700;color:#51607A">{{ v.date }} · {{ v.kind }}</span>
+        <span style="font-size:{{ v.fs }};font-weight:{{ v.fw }};line-height:1.35;background:{{ v.bg }};border-radius:14px;padding:{{ v.pad }}">{{ v.label }}</span>
+      </div>
+    </div>
+    </sc-for>
+  </div>
+  </sc-if>
+  <sc-if value="{{ tErrNotions }}">
+  <div style="flex:1;overflow-y:auto;padding:0 16px 16px;display:flex;flex-direction:column;gap:10px">
+    <sc-for list="{{ notions }}" as="n" hint-placeholder-count="5">
+    <div style="flex-shrink:0;background:#FFFFFF;border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:10px">
+      <span style="font-size:calc(17px * {{ ts }});font-weight:800">{{ n.name }}</span>
+      <span style="font-size:calc(13px * {{ ts }});color:#34425C">{{ n.countTxt }}</span>
+      <sc-for list="{{ n.items }}" as="i"><button onClick="{{ i.onClick }}" style="min-height:48px;min-width:48px;border:0;cursor:pointer;text-align:left;background:#F5F6FA;border-radius:14px;padding:12px;display:flex;align-items:center;gap:10px;min-height:48px"><span style="flex:1;font-size:calc(14px * {{ ts }});font-weight:700;line-height:1.35;color:#0B132B">{{ i.label }}</span><span style="flex:none;padding:4px 10px;border-radius:999px;font-size:calc(12px * {{ ts }});font-weight:700;background:{{ i.bg }};color:{{ i.fg }}">{{ i.st }}</span></button></sc-for>
+    </div>
+    </sc-for>
+  </div>
+  </sc-if>
+
+  <!-- ===== SIGNALS ===== -->
+  <sc-if value="{{ tConf }}">
+  <div style="flex:1;overflow-y:auto;padding:0 16px 16px;display:flex;flex-direction:column;gap:10px">
+    <p style="flex-shrink:0;margin:0;font-size:calc(14px * {{ ts }});line-height:1.5;color:#34425C">{{ confSummary }}</p>
+    <sc-for list="{{ quads }}" as="q" hint-placeholder-count="4">
+    <div style="flex-shrink:0;background:{{ q.bg }};border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px"><span style="font-size:calc(16px * {{ ts }});font-weight:800;line-height:1.3">{{ q.title }}</span><span style="flex:none;white-space:nowrap;font-size:calc(14px * {{ ts }});font-weight:800;background:#FFFFFF;border-radius:999px;padding:4px 10px">{{ q.n }}</span></div>
+      <p style="margin:0;font-size:calc(14px * {{ ts }});line-height:1.5;color:#1F2B40">{{ q.meaning }}</p>
+      <p style="margin:0;font-size:calc(14px * {{ ts }});line-height:1.5;color:#1F2B40;background:#FFFFFF;border-radius:12px;padding:10px 12px"><strong>Vous pouvez</strong> {{ q.action }}</p>
+    </div>
+    </sc-for>
+  </div>
+  </sc-if>
+  <sc-if value="{{ tEng }}">
+  <div style="flex:1;overflow-y:auto;padding:0 16px 16px;display:flex;flex-direction:column;gap:10px">
+    <sc-for list="{{ engCards }}" as="g" hint-placeholder-count="3">
+    <div style="flex-shrink:0;background:{{ g.bg }};border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:8px">
+      <span style="font-size:calc(16px * {{ ts }});font-weight:800">{{ g.t }}</span>
+      <span style="font-size:calc(36px * {{ ts }});font-weight:800;line-height:1.1">{{ g.n }}</span>
+      <span style="font-size:calc(13px * {{ ts }});font-weight:600;color:#34425C">{{ g.cmp }}</span>
+      <span style="font-size:calc(13px * {{ ts }});line-height:1.5;color:#34425C">{{ g.note }}</span>
+    </div>
+    </sc-for>
+    <p style="flex-shrink:0;margin:0;font-size:calc(13px * {{ ts }});line-height:1.55;color:#34425C">Comparé uniquement avec la période précédente de {{ kidName }}. Un jour sans session n'est pas compté et n'a rien d'anormal.</p>
+  </div>
+  </sc-if>
+
+  <!-- ===== DETAIL ===== -->
+  <sc-if value="{{ pDetail }}">
+  <div style="flex:1;overflow-y:auto;padding:0 16px 16px;display:flex;flex-direction:column;gap:12px">
+    <div style="flex-shrink:0;display:flex;flex-wrap:wrap;gap:8px"><span style="padding:5px 12px;border-radius:999px;background:{{ d.bg }};color:{{ d.fg }};font-size:calc(13px * {{ ts }});font-weight:700">{{ d.st }}</span><span style="padding:5px 12px;border-radius:999px;background:#FFFFFF;font-size:calc(13px * {{ ts }});font-weight:600;color:#34425C">{{ d.notion }}</span></div>
+    <h1 style="flex-shrink:0;margin:0;font-size:calc(23px * {{ ts }});line-height:1.25;font-weight:800">{{ d.label }}</h1>
+    <span style="flex-shrink:0;font-size:calc(13px * {{ ts }});color:#51607A">{{ d.dates }}</span>
+    <p style="flex-shrink:0;margin:0;font-size:calc(15px * {{ ts }});line-height:1.6;color:#34425C">{{ d.explain }}</p>
+    <div style="flex-shrink:0;background:#FFFFFF;border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:10px">
+      <span style="font-size:calc(12px * {{ ts }});font-weight:800;letter-spacing:0.05em;color:#51607A">QUESTION VUE PAR LÉA · {{ d.qDate }}</span>
+      <span style="font-size:calc(17px * {{ ts }});font-weight:700;line-height:1.35">{{ d.qText }}</span>
+      <sc-for list="{{ d.opts }}" as="o"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 14px;border-radius:14px;background:{{ o.bg }};border:2px {{ o.bs }} {{ o.bc }}"><span style="font-size:calc(17px * {{ ts }});font-weight:700">{{ o.v }}</span><span style="font-size:calc(12px * {{ ts }});font-weight:700;color:{{ o.tc }}">{{ o.tag }}</span></div></sc-for>
+    </div>
+    <div style="flex-shrink:0;background:#FFFFFF;border-radius:22px;padding:16px;display:flex;flex-direction:column">
+      <span style="font-size:calc(17px * {{ ts }});font-weight:800;margin-bottom:10px">Historique</span>
+      <sc-for list="{{ d.attempts }}" as="a"><div style="display:flex;gap:12px"><div style="flex:none;width:18px;display:flex;flex-direction:column;align-items:center"><span style="width:14px;height:14px;border-radius:50%;background:{{ a.dot }};border:3px solid {{ a.ring }};margin-top:3px"></span><span style="flex:1;width:2px;background:#E2E7F0;min-height:14px"></span></div><div style="flex:1;padding-bottom:12px;display:flex;flex-direction:column;gap:2px"><span style="font-size:calc(13px * {{ ts }});color:#51607A">{{ a.date }}{{ a.firstTag }}</span><span style="font-size:calc(15px * {{ ts }});font-weight:700">{{ a.res }} · {{ a.help }}</span></div></div></sc-for>
+      <sc-if value="{{ d.resolved }}"><div style="display:flex;gap:10px;align-items:center;background:#DCF2E8;border-radius:14px;padding:12px"><span style="flex:none;width:30px;height:30px;border-radius:50%;background:#1E6B4E;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-weight:800">✓</span><span style="font-size:calc(15px * {{ ts }});font-weight:800">Résolue le {{ d.resDate }}</span></div></sc-if>
+    </div>
+    <div style="flex-shrink:0;background:{{ d.ruleBg }};border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:8px"><span style="font-size:calc(16px * {{ ts }});font-weight:800">Que veut dire « résolue » ?</span><p style="margin:0;font-size:calc(14px * {{ ts }});line-height:1.55">{{ d.rule }}</p></div>
+    <span style="flex-shrink:0;font-size:calc(17px * {{ ts }});font-weight:800;margin-top:4px">Comment l'aider à la maison</span>
+    <sc-for list="{{ d.tips }}" as="t"><div style="flex-shrink:0;background:#FFF1E6;border-radius:18px;padding:14px;font-size:calc(15px * {{ ts }});line-height:1.5">{{ t }}</div></sc-for>
+    <span style="flex-shrink:0;font-size:calc(12px * {{ ts }});color:#51607A">Rédigés et relus par des enseignants. Non générés par l'IA.</span>
+  </div>
+  </sc-if>
+
+  <!-- ===== TRANSPARENCY ===== -->
+  <sc-if value="{{ pTransp }}">
+  <div style="flex:1;overflow-y:auto;padding:0 16px 16px;display:flex;flex-direction:column;gap:10px">
+    <div style="flex-shrink:0;display:flex;gap:12px;align-items:center"><img src="assets/nurtu-06-guidage.svg" alt="" style="flex:none;width:70px;height:79px"><span style="font-size:calc(15px * {{ ts }});line-height:1.5">Nurturia utilise un coach IA, appelé {{ nm }}.</span></div>
+    <sc-for list="{{ transp }}" as="x" hint-placeholder-count="6"><div style="flex-shrink:0;background:{{ x.bg }};border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:8px"><span style="font-size:calc(16px * {{ ts }});font-weight:800">{{ x.t }}</span><span style="font-size:calc(14px * {{ ts }});line-height:1.55;color:#1F2B40">{{ x.d }}</span></div></sc-for>
+  </div>
+  </sc-if>
+
+  <!-- ===== SETTINGS ROOT ===== -->
+  <sc-if value="{{ tSettings }}">
+  <div style="flex:1;overflow-y:auto;padding:0 16px 16px;display:flex;flex-direction:column;gap:14px">
+    <sc-for list="{{ setGroups }}" as="g" hint-placeholder-count="2">
+    <div style="flex-shrink:0;display:flex;flex-direction:column;gap:8px">
+      <span style="font-size:calc(13px * {{ ts }});font-weight:700;color:#51607A;padding:0 6px">{{ g.title }}</span>
+      <div style="background:#FFFFFF;border-radius:20px;overflow:hidden;display:flex;flex-direction:column">
+        <sc-for list="{{ g.rows }}" as="r"><button onClick="{{ r.onClick }}" style="min-height:48px;min-width:48px;border:0;border-bottom:1px solid #EEF1F6;background:#FFFFFF;cursor:pointer;min-height:56px;padding:10px 16px;display:flex;align-items:center;gap:12px;text-align:left;min-height:48px"><span style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:calc(16px * {{ ts }});font-weight:700;color:#0B132B">{{ r.t }}</span><span style="font-size:calc(13px * {{ ts }});color:#51607A">{{ r.d }}</span></span><span style="font-size:calc(20px * {{ ts }});color:#A7B1C4">›</span></button></sc-for>
+      </div>
+    </div>
+    </sc-for>
+  </div>
+  </sc-if>
+
+  <!-- ===== SETTINGS PAGES ===== -->
+  <sc-if value="{{ pSet }}">
+  <div style="flex:1;overflow-y:auto;padding:0 16px 16px;display:flex;flex-direction:column;gap:14px">
+    <sc-for list="{{ setSections }}" as="g" hint-placeholder-count="3">
+    <div style="flex-shrink:0;display:flex;flex-direction:column;gap:8px">
+      <span style="font-size:calc(13px * {{ ts }});font-weight:700;color:#51607A;padding:0 6px">{{ g.title }}</span>
+      <div style="background:#FFFFFF;border-radius:20px;overflow:hidden;display:flex;flex-direction:column">
+        <sc-for list="{{ g.rows }}" as="r">
+        <div style="border-bottom:1px solid #EEF1F6;padding:10px 16px;min-height:56px;display:flex;flex-direction:column;justify-content:center;gap:8px">
+          <div style="display:flex;align-items:center;gap:12px">
+            <span style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:calc(15px * {{ ts }});font-weight:700">{{ r.t }}</span><span style="font-size:calc(13px * {{ ts }});line-height:1.4;color:#51607A">{{ r.d }}</span></span>
+            <sc-if value="{{ r.isToggle }}"><button onClick="{{ r.onClick }}" title="{{ r.t }}" style="min-height:48px;min-width:48px;flex:none;width:56px;min-height:48px;border:0;background:none;cursor:pointer;padding:0;display:flex;align-items:center;justify-content:center;min-height:48px"><span style="width:52px;height:32px;border-radius:16px;background:{{ r.track }};padding:3px;display:flex;justify-content:{{ r.justify }}"><span style="width:26px;height:26px;border-radius:50%;background:#FFFFFF"></span></span></button></sc-if>
+            <sc-if value="{{ r.isLink }}"><button onClick="{{ r.onClick }}" style="min-height:48px;min-width:48px;flex:none;border:0;background:none;cursor:pointer;min-height:48px;padding:0 6px;font-size:calc(14px * {{ ts }});font-weight:700;color:{{ r.color }};min-height:48px">{{ r.action }}</button></sc-if>
+          </div>
+          <sc-if value="{{ r.isSeg }}"><div style="display:flex;gap:8px;background:#F5F6FA;padding:4px;border-radius:999px"><sc-for list="{{ r.opts }}" as="o"><button onClick="{{ o.onClick }}" style="min-height:48px;min-width:48px;flex:1;border:0;cursor:pointer;min-height:48px;border-radius:999px;font-size:calc(14px * {{ ts }});font-weight:700;background:{{ o.bg }};color:{{ o.fg }};min-height:48px">{{ o.label }}</button></sc-for></div></sc-if>
+          <sc-if value="{{ r.hasExtra }}"><span style="font-size:calc(13px * {{ ts }});line-height:1.5;color:#1F2B40;background:#F5F6FA;border-radius:12px;padding:10px 12px">{{ r.extra }}</span></sc-if>
+        </div>
+        </sc-for>
+      </div>
+    </div>
+    </sc-for>
+    <sc-if value="{{ setFooter }}"><button onClick="{{ setFooterAction }}" style="min-height:48px;min-width:48px;flex-shrink:0;min-height:52px;border:2px solid #0F1B35;border-radius:999px;background:transparent;color:#0F1B35;font-size:calc(15px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">{{ setFooterLabel }}</button></sc-if>
+  </div>
+  </sc-if>
+
+  <!-- ===== TAB BAR ===== -->
+  <sc-if value="{{ showTabs }}">
+  <div style="flex:none;display:flex;gap:8px;padding:6px 8px 4px;background:rgba(255,255,255,0.92);border-top:1px solid #E1E6EE">
+    <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4"><button onClick="{{ t.onClick }}" style="min-height:48px;min-width:48px;flex:1;min-width:0;border:0;cursor:pointer;min-height:56px;border-radius:16px;background:{{ t.bg }};color:{{ t.fg }};display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;font-size:calc(11px * {{ ts }});font-weight:700;line-height:1.1;min-height:48px"><span style="width:18px;height:18px;border-radius:{{ t.shape }};border:2.5px solid {{ t.fg }};display:block"></span>{{ t.label }}</button></sc-for>
+  </div>
+  </sc-if>
+
+  <div style="flex:none;height:{{ bottomInset }}px;display:flex;align-items:center;justify-content:center;background:{{ bottomBg }}">
+    <sc-if value="{{ isIos }}"><span style="width:134px;height:5px;border-radius:3px;background:#0B132B"></span></sc-if>
+    <sc-if value="{{ isAndroid }}"><span style="display:flex;gap:56px;align-items:center"><span style="width:0;height:0;border-top:7px solid transparent;border-bottom:7px solid transparent;border-right:10px solid #34425C"></span><span style="width:14px;height:14px;border-radius:50%;border:2px solid #34425C"></span><span style="width:12px;height:12px;border:2px solid #34425C;border-radius:2px"></span></span></sc-if>
+  </div>
+
+  <!-- ===== SHEETS ===== -->
+  <sc-if value="{{ sheetOpen }}">
+  <div style="position:absolute;inset:0;z-index:8;background:rgba(15,27,53,0.5);display:flex;align-items:flex-end">
+    <div style="width:100%;max-height:85%;overflow-y:auto;background:#FFFFFF;border-radius:28px 28px 0 0;padding:16px 18px {{ sheetPad }}px;display:flex;flex-direction:column;gap:12px">
+      <span style="align-self:center;width:44px;height:5px;border-radius:3px;background:#DCE2EC;flex-shrink:0"></span>
+      <span style="font-size:calc(20px * {{ ts }});font-weight:800;flex-shrink:0">{{ sheet.title }}</span>
+      <sc-if value="{{ sheet.hasBody }}"><p style="margin:0;font-size:calc(15px * {{ ts }});line-height:1.55;color:#34425C">{{ sheet.body }}</p></sc-if>
+      <sc-for list="{{ sheet.choices }}" as="k"><button onClick="{{ k.onClick }}" style="min-height:48px;min-width:48px;flex-shrink:0;cursor:pointer;min-height:56px;display:flex;align-items:center;gap:12px;padding:8px 14px;border-radius:18px;background:{{ k.bg }};border:2px solid {{ k.border }};text-align:left;min-height:48px"><span style="width:38px;height:38px;border-radius:50%;background:{{ k.dot }};display:flex;align-items:center;justify-content:center;font-weight:800">{{ k.initial }}</span><span style="flex:1;font-size:calc(16px * {{ ts }});font-weight:700;color:#0B132B">{{ k.name }}</span></button></sc-for>
+      <sc-if value="{{ sheet.hasNote }}"><div style="flex-shrink:0;background:#FFF1E6;border-radius:14px;padding:12px 14px;font-size:calc(14px * {{ ts }});line-height:1.45;color:#3A1A00">{{ sheet.note }}</div></sc-if>
+      <sc-if value="{{ sheet.isLink }}"><a href="Nurturia Phone Enfant.dc.html" style="flex-shrink:0;min-height:56px;border-radius:999px;background:#0F1B35;color:#FFFFFF;font-size:calc(16px * {{ ts }});font-weight:700;text-decoration:none;display:flex;align-items:center;justify-content:center">{{ sheet.primary }}</a></sc-if>
+      <sc-if value="{{ sheet.isAction }}"><button onClick="{{ sheet.onPrimary }}" style="min-height:48px;min-width:48px;flex-shrink:0;min-height:56px;border:0;border-radius:999px;background:#0F1B35;color:#FFFFFF;font-size:calc(16px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">{{ sheet.primary }}</button></sc-if>
+      <button onClick="{{ closeSheet }}" style="min-height:48px;min-width:48px;flex-shrink:0;min-height:50px;border:0;border-radius:999px;background:#F5F6FA;color:#1A3B70;font-size:calc(15px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">Annuler</button>
+    </div>
+  </div>
+  </sc-if>
+</div>
+</div>
+
+<!-- ===== REVIEW PANEL ===== -->
+<div style="flex:1 1 320px;max-width:460px;display:flex;flex-direction:column;gap:14px">
+  <div style="display:flex;flex-direction:column;gap:6px">
+    <div style="display:flex;flex-wrap:wrap;gap:12px;font-size:13px;font-weight:600"><a href="Nurturia Parent.dc.html">Web</a><a href="Nurturia Phone Enfant.dc.html">Téléphone · mode enfant</a></div>
+    <h1 style="margin:0;font-size:28px;line-height:1.2;font-weight:800;letter-spacing:-0.02em">Nurturia · téléphone · mode parent</h1>
+    <p style="margin:0;font-size:14px;line-height:1.55;color:#34425C">App native, portrait. Cibles ≥ 48 pt, un seul bouton principal par écran. Sur téléphone, le parent peut modifier les accords, gérer les enfants, exporter ou supprimer les données.</p>
+  </div>
+  <div style="background:#FFFFFF;border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:10px">
+    <span style="font-size:12px;font-weight:800;color:#51607A">APPAREIL</span>
+    <div style="display:flex;gap:4px;background:#F5F6FA;padding:4px;border-radius:999px"><sc-for list="{{ osSeg }}" as="s"><button onClick="{{ s.onClick }}" style="flex:1;border:0;cursor:pointer;padding:8px;border-radius:999px;font-size:12px;font-weight:700;background:{{ s.bg }};color:{{ s.fg }}">{{ s.label }}</button></sc-for></div>
+    <div style="display:flex;gap:4px;background:#F5F6FA;padding:4px;border-radius:999px"><sc-for list="{{ wSeg }}" as="s"><button onClick="{{ s.onClick }}" style="flex:1;border:0;cursor:pointer;padding:8px;border-radius:999px;font-size:12px;font-weight:700;background:{{ s.bg }};color:{{ s.fg }}">{{ s.label }}</button></sc-for></div>
+    <span style="font-size:12px;font-weight:800;color:#51607A">TAILLE DU TEXTE</span>
+    <div style="display:flex;gap:4px;background:#F5F6FA;padding:4px;border-radius:999px"><sc-for list="{{ tsSeg }}" as="s"><button onClick="{{ s.onClick }}" style="flex:1;border:0;cursor:pointer;padding:8px;border-radius:999px;font-size:12px;font-weight:700;background:{{ s.bg }};color:{{ s.fg }}">{{ s.label }}</button></sc-for></div>
+    <span style="font-size:12px;font-weight:800;color:#51607A">ÉTAT DES LISTES</span>
+    <div style="display:flex;flex-wrap:wrap;gap:4px;background:#F5F6FA;padding:4px;border-radius:20px"><sc-for list="{{ dsSeg }}" as="s"><button onClick="{{ s.onClick }}" style="border:0;cursor:pointer;padding:8px 10px;border-radius:999px;font-size:12px;font-weight:700;background:{{ s.bg }};color:{{ s.fg }}">{{ s.label }}</button></sc-for></div>
+    <sc-for list="{{ toggles }}" as="t"><button onClick="{{ t.onClick }}" style="border:0;cursor:pointer;background:#F5F6FA;border-radius:14px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:13px;font-weight:600;color:#0B132B;text-align:left">{{ t.label }}<span style="flex:none;width:40px;height:24px;border-radius:12px;background:{{ t.track }};padding:3px;display:flex;justify-content:{{ t.justify }}"><span style="width:18px;height:18px;border-radius:50%;background:#FFFFFF"></span></span></button></sc-for>
+  </div>
+  <div style="background:#FFFFFF;border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:10px">
+    <span style="font-size:12px;font-weight:800;color:#51607A">ALLER À UN ÉCRAN</span>
+    <div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ jumps }}" as="j" hint-placeholder-count="18"><button onClick="{{ j.onClick }}" style="border:0;cursor:pointer;padding:8px 12px;border-radius:999px;background:#F5F6FA;font-size:12px;font-weight:600;color:#0B132B">{{ j.label }}</button></sc-for></div>
+  </div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;mascotName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Néo&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+const ST = {active:{t:'Active',bg:'#FFE6D5',fg:'#9A3C00',dot:'#F27121',cb:'#FFFFFF',cf:'#0B132B'},encours:{t:'En cours',bg:'#DDE7F8',fg:'#1A3B70',dot:'#3A6BB0',cb:'#1A3B70',cf:'#FFFFFF'},resolue:{t:'Résolue',bg:'#DCF2E8',fg:'#1E6B4E',dot:'#2F8F6B',cb:'#1E6B4E',cf:'#FFFFFF'}};
+const RA = "Une erreur est résolue quand Léa répond correctement 3 fois, sur au moins 2 jours différents, sans aide. Ce n'est pas encore arrivé pour celle-ci.";
+const E = [
+ {id:'add',label:"Additionne les numérateurs et les dénominateurs",short:'Addition',notion:"Addition",status:'active',first:"2 sept.",last:"26 sept.",weeks:['active','active','active','active','active'],
+  explain:"Léa ajoute les nombres du haut entre eux, puis ceux du bas entre eux, comme pour des nombres entiers. On ne peut additionner que des parts de même taille.",
+  q:{d:"26 sept.",t:"Combien font 1/2 + 1/3 ?",o:["2/5","5/6","2/6"],c:"2/5",x:"5/6"},at:[["2 sept.",0,0],["8 sept.",0,1],["15 sept.",1,1],["19 sept.",0,0],["26 sept.",0,0]],rule:RA,
+  tips:["Avec deux pizzas identiques, l'une coupée en 2 et l'autre en 3, vous pouvez demander à Léa si les parts ont la même taille.","Vous pouvez lui demander ce que donne 1/2 + 1/2 avec sa méthode, puis avec un dessin.","Vous pouvez chercher ensemble un découpage commun, par exemple en 6 parts."]},
+ {id:'cmp',label:"Pense qu'un plus grand dénominateur donne une plus grande fraction",short:'Comparaison',notion:"Comparaison",status:'active',first:"4 sept.",last:"29 sept.",weeks:['active','active','active','active','active'],
+  explain:"Léa applique une règle des nombres entiers : 8 est plus grand que 4, donc 1/8 lui semble plus grand. Or plus on partage en parts nombreuses, plus chaque part est petite.",
+  q:{d:"29 sept.",t:"Quelle fraction est la plus grande ?",o:["1/8","1/4","Elles sont égales"],c:"1/8",x:"1/4"},at:[["4 sept.",0,0],["11 sept.",0,0],["18 sept.",0,1],["29 sept.",0,0]],rule:RA,
+  tips:["Vous pouvez partager une tablette de chocolat en 4 puis en 8 et comparer la taille d'un morceau.","Vous pouvez lui demander si, avec plus de personnes pour le même gâteau, chaque part grandit ou rapetisse.","Vous pouvez placer 1/4 et 1/8 sur deux bandes de papier de même longueur."]},
+ {id:'grad',label:"Compte les graduations au lieu des intervalles",short:'Droite graduée',notion:"Droite graduée",status:'encours',first:"9 sept.",last:"16 sept.",weeks:[null,'active','active','encours','encours'],
+  explain:"Léa compte les traits, y compris celui du 0, au lieu de compter les espaces entre eux.",
+  q:{d:"16 sept.",t:"La droite va de 0 à 1, en 4 intervalles égaux. Quelle fraction indique le 3e trait après 0 ?",o:["3/4","3/5","4/5"],c:"3/5",x:"3/4"},at:[["9 sept.",0,0],["16 sept.",0,0],["22 sept.",1,1],["25 sept.",1,0]],
+  rule:"Des réponses attendues apparaissent : le 22 sept. (avec aide) et le 25 sept. (sans aide). Il en faut 3 sans aide, sur au moins 2 jours.",
+  tips:["Sur une règle, vous pouvez compter ensemble les espaces entre les traits.","Vous pouvez lui demander combien de « sauts » il faut pour aller de 0 à 1.","Vous pouvez dessiner une droite de 0 à 1 et la partager en 4 avec elle."]},
+ {id:'eq',label:"Ajoute le même nombre en haut et en bas pour trouver une fraction égale",short:'Égalité',notion:"Égalité de fractions",status:'resolue',first:"2 sept.",last:"9 sept.",resTxt:"23 sept.",weeks:['active','encours','encours','resolue','resolue'],
+  explain:"Pour trouver une fraction égale, Léa ajoutait le même nombre en haut et en bas. Il faut multiplier, ou diviser, les deux par le même nombre.",
+  q:{d:"9 sept.",t:"Quelle fraction est égale à 2/3 ?",o:["4/5","4/6","3/4"],c:"4/5",x:"4/6"},at:[["2 sept.",0,0],["9 sept.",0,0],["12 sept.",1,1],["17 sept.",1,0],["19 sept.",1,0],["23 sept.",1,0]],
+  rule:"Léa a répondu correctement 3 fois, sur 3 jours différents (17, 19 et 23 sept.), sans aide. Il a fallu environ 3 semaines.",
+  tips:["Vous pouvez plier une feuille en 3, colorier 2 parts, puis replier en 6.","Vous pouvez lui demander comment passer de 2/3 à 4/6.","Vous pouvez comparer 2/3 et 3/4 sur deux bandes de papier."]},
+ {id:'dec',label:"Lit 1/4 comme 0,4",short:'Décimaux',notion:"Fractions et décimaux",status:'resolue',first:"5 sept.",last:"5 sept.",resTxt:"16 sept.",weeks:['active','encours','resolue','resolue','resolue'],
+  explain:"Léa lisait les deux chiffres de la fraction comme ceux d'un nombre décimal. 1/4 signifie « 1 partagé en 4 », soit 0,25.",
+  q:{d:"5 sept.",t:"Comment s'écrit 1/4 en nombre décimal ?",o:["0,4","0,25","1,4"],c:"0,4",x:"0,25"},at:[["5 sept.",0,0],["10 sept.",1,0],["12 sept.",1,0],["16 sept.",1,0]],
+  rule:"Léa a répondu correctement 3 fois, sur 3 jours différents (10, 12 et 16 sept.), sans aide.",
+  tips:["Avec des pièces, vous pouvez montrer qu'un quart d'euro fait 25 centimes.","Vous pouvez lui demander combien vaut 1/2 en décimal, puis 1/4.","Vous pouvez placer 0,4 et 0,25 sur une règle graduée en dixièmes."]}
+];
+const WEEKS=[["S1","1–7 sept."],["S2","8–14 sept."],["S3","15–21 sept."],["S4","22–28 sept."],["S5","29–30 sept."]];
+const LANES=['active','encours','resolue'];
+const EVENTS=[[245,'2 sept.','add','a'],[245,'2 sept.','eq','a'],[247,'4 sept.','cmp','a'],[248,'5 sept.','dec','a'],[252,'9 sept.','grad','a'],[253,'10 sept.','dec','e'],[255,'12 sept.','eq','e'],[259,'16 sept.','dec','r'],[265,'22 sept.','grad','e'],[266,'23 sept.','eq','r']];
+const SUBJ=['Maths','Français','Sciences','Histoire-Géo','Anglais','Arts'];
+const SIG={'Français':[['Aide demandée à Néo',4,3],['Réponse demandée',1,2],['Questions laissées en cours',0,1]],'Sciences':[['Aide demandée à Néo',1,0],['Réponse demandée',0,0],['Questions laissées en cours',0,0]],'Anglais':[['Aide demandée à Néo',2,2],['Réponse demandée',0,1],['Questions laissées en cours',1,0]]};
+const cmpTxt=(n,p)=>p==null?"Pas de période précédente : Léa a commencé le 1er sept.":`Semaine précédente : ${p}${n===p?' (identique)':n<p?` (${p-n} de moins)`:` (${n-p} de plus)`}`;
+const KIDS4=[['lea','Léa · 6e','L','#FFAD66'],['tom','Tom · CM2','T','#A9C1EA'],['ines','Inès · CM1','I','#DCF2E8'],['sam','Sam · CE2','S','#E6E0F5']];
+
+class Component extends DCLogic {
+  state = { signedIn:false, si:'email', email:'claire.martin@exemple.fr', code:'', resendIn:60, notif:false, suggest:false,
+    tab:'today', push:null, child:'lea', errView:'list', subj:'Maths', np:'month', tl:'4w', sigView:'conf', sp:'month',
+    errId:'add', week:4, playing:false, ds:'auto', offline:false, manyKids:false, os:'ios', w:390, ts:1, reduce:false,
+    sheet:null, consents:{account:true,analysis:true,improve:false}, pendingConsent:null, exportSent:false, deleted:false,
+    prefs:{after:true,wed:true,we:false,voice:true,photo:true,read:false,weekly:true,resolved:true,login:true,bio:true,sysMotion:true},
+    kidClass:{lea:'6e',tom:'CM2'}, openLog:null, coachOpen:false, removed:{} };
+  componentDidMount(){
+    this.r=setInterval(()=>{ if(this.state.resendIn>0) this.setState(s=>({resendIn:s.resendIn-1})); },1000);
+  }
+  componentWillUnmount(){ clearInterval(this.r); clearInterval(this.t); (this.tm||[]).forEach(clearTimeout); }
+  later(f,ms){ (this.tm=this.tm||[]).push(setTimeout(f,ms)); }
+  motion(){ return !(this.state.reduce || (this.state.prefs.sysMotion && this.state.reduce)); }
+  play=()=>{ clearInterval(this.t); if(this.state.playing) return this.setState({playing:false});
+    this.setState(s=>({week:s.week>=4?0:s.week,playing:true}));
+    this.t=setInterval(()=>{ if(this.state.week>=4){clearInterval(this.t);this.setState({playing:false});} else this.setState(s=>({week:s.week+1})); },1400); };
+  goTab(tab){ this.setState({tab,push:null}); if(tab==='today'&&!this.state.reduce&&!this.played){ this.played=true; this.setState({week:0}); this.later(()=>this.play(),700);} }
+  stFor(){
+    const s=this.state; if(s.push||s.tab==='settings') return 'pop';
+    if(s.ds!=='auto') return s.ds==='new'?(s.tab==='today'?'new':'empty'):s.ds;
+    if(s.child==='tom') return s.tab==='today'?'new':'empty';
+    if(s.child!=='lea') return 'empty';
+    if(s.tab==='errors'&&s.errView==='notions'&&s.np==='week') return 'empty';
+    return 'pop';
+  }
+  seg(key,opts,dark='#0F1B35'){ return opts.map(([v,l])=>({label:l,onClick:()=>this.setState({[key]:v}),bg:this.state[key]===v?dark:'transparent',fg:this.state[key]===v?'#FFFFFF':'#34425C'})); }
+  press(k){ const s=this.state; if(k==='del') return this.setState({code:s.code.slice(0,-1)}); if(s.code.length>=6) return;
+    const code=s.code+k; this.setState({code}); if(code.length===6) this.later(()=>this.signIn(),450); }
+  signIn(){ this.setState({signedIn:true,si:'email',code:'',notif:false,suggest:false}); this.goTab('today'); }
+
+  renderVals(){
+    const s=this.state, nm=this.props.mascotName ?? 'Néo', st=this.stFor(), W=s.w, ios=s.os==='ios';
+    const kidName={lea:'Léa',tom:'Tom',ines:'Inès',sam:'Sam'}[s.child];
+    const motionOn=!s.reduce;
+    const tab=s.tab, push=s.push, signed=s.signedIn;
+    const pop=st==='pop';
+    const topInset=ios?54:32, bottomInset=ios?30:44;
+    const tabTitles={today:"Aujourd'hui",errors:'Erreurs récurrentes',signals:'Signaux',settings:'Réglages'};
+    const kidsList=(s.manyKids?KIDS4:KIDS4.slice(0,2)).filter(k=>!s.removed[k[0]]);
+    const kids=kidsList.map(([v,l,i,d])=>({label:l,initial:i,dot:d,onClick:()=>this.setState({child:v}),bg:s.child===v?'#0F1B35':'#FFFFFF',fg:s.child===v?'#FFFFFF':'#0B132B'}));
+    const curKid=KIDS4.find(k=>k[0]===s.child);
+    const w=s.week, slot={active:0,encours:0,resolue:0};
+    const chips=E.map(e=>{const k=e.weeks[w]; const lane=k?LANES.indexOf(k):0; const i=k?slot[k]++:0; const S=ST[k||'active'];
+      return {label:e.short,left:`calc(${lane*33.333}% + 7px)`,top:`${32+i*50}px`,op:k?1:0,bg:S.cb,fg:S.cf};});
+    const errs=E.map(e=>({label:e.label,notion:e.notion,lastTxt:e.status==='resolue'?`Résolue le ${e.resTxt}`:`Vue le ${e.last}`,st:ST[e.status].t,bg:ST[e.status].bg,fg:ST[e.status].fg,dot:ST[e.status].dot,onClick:()=>this.setState({push:'detail',errId:e.id})}));
+    const e=E.find(x=>x.id===s.errId)||E[0];
+    const d={label:e.label,notion:e.notion,st:ST[e.status].t,bg:ST[e.status].bg,fg:ST[e.status].fg,explain:e.explain,
+      dates:e.status==='resolue'?`Apparue le ${e.first} · résolue le ${e.resTxt}`:`Apparue le ${e.first} · vue le ${e.last}`,
+      qDate:e.q.d.toUpperCase(),qText:e.q.t,rule:e.rule,ruleBg:e.status==='resolue'?'#DCF2E8':'#DDE7F8',resolved:e.status==='resolue',resDate:e.resTxt,tips:e.tips,
+      opts:e.q.o.map(v=>{const ch=v===e.q.c,ex=v===e.q.x; return {v,tag:ch?'Choix de Léa':ex?'Réponse attendue':'',bg:ch?'#EEF3FB':'#F5F6FA',bs:ex?'dashed':'solid',bc:ch?'#1A3B70':ex?'#2F8F6B':'transparent',tc:ch?'#1A3B70':'#1E6B4E'};}),
+      attempts:e.at.map(([dt,ok,h],i)=>({date:dt,firstTag:i===0?' · première apparition':'',res:ok?'Attendue':'Non attendue',help:h?'avec aide':'sans aide',dot:ok?'#2F8F6B':'#FFFFFF',ring:ok?'#2F8F6B':'#F27121'}))};
+    const startD=s.tl==='4w'?245:0;
+    const lbl=id=>E.find(x=>x.id===id).label;
+    const events=EVENTS.filter(([dy])=>dy>=startD).slice().reverse().map(([dy,dt,id,k])=>{const r=k==='r';
+      return {date:dt,kind:k==='a'?'Apparition':k==='e'?'En cours':'Résolue',label:lbl(id),dot:r?'#1E6B4E':k==='e'?'#3A6BB0':'#F27121',dotSize:r?'24px':'14px',mark:r?'✓':'',
+        bg:r?'#DCF2E8':'transparent',pad:r?'10px 12px':'0',fs:r?'16px':'14px',fw:r?'800':'500'};});
+    const notions=['Comparaison','Égalité de fractions','Addition','Droite graduée','Fractions et décimaux'].map(n=>{const its=E.filter(x=>x.notion===n); const c=k=>its.filter(x=>x.status===k).length;
+      return {name:n,countTxt:`${c('active')} active · ${c('encours')} en cours · ${c('resolue')} résolue`,items:its.map(x=>({label:x.label,st:ST[x.status].t,bg:ST[x.status].bg,fg:ST[x.status].fg,onClick:()=>this.setState({push:'detail',errId:x.id})}))};});
+    const cm=s.sp==='month', Q=cm?[14,6,9,7]:[4,2,3,1];
+    const quads=[
+      ['Sûre, et la réponse était attendue','#DDE7F8',"Sa confiance correspond à ce qu'elle sait sur ces questions.","lui demander d'expliquer sa méthode."],
+      ["Sûre, mais la réponse n'était pas attendue",'#DDE7F8',"Léa pensait savoir. C'est souvent une stratégie bien installée qui ne marche pas dans ce cas.","lui demander comment elle vérifierait sa réponse."],
+      ['Pas sûre, mais la réponse était attendue','#FFEBDD',"Elle a trouvé sans en être certaine. La notion se construit.","lui faire remarquer ce qui l'a menée à la bonne réponse."],
+      ["Pas sûre, et la réponse n'était pas attendue",'#FFEBDD',"Elle avait signalé qu'elle hésitait. Elle repère ce qui n'est pas encore clair.","reprendre la notion avec un exemple concret, sans enjeu."]
+    ].map(([title,bg,meaning,action],i)=>({title,bg,meaning,action,n:`${Q[i]} fois`}));
+    const ew=s.sp==='week';
+    const engCards=[['Réponse demandée au coach',ew?3:11,ew?5:null,'#FFFFFF',ew?'Ensuite : 2 fois elle a réessayé seule, 1 fois elle a demandé un indice.':'Ensuite : 7 fois elle a réessayé seule, 3 fois un indice, 1 fois elle s\'est arrêtée.'],
+      ['Questions laissées en cours',ew?1:4,ew?2:null,'#FFE6D5',"Une question non terminée peut reprendre plus tard."],
+      ['Indices proposés et refusés',ew?2:6,ew?2:null,'#DDE7F8',"Refuser un indice veut souvent dire qu'elle préférait chercher seule."]].map(([t,n,p,bg,note])=>({t,n,bg,note,cmp:cmpTxt(n,p)}));
+    const tg=(on)=>({track:on?'#1E6B4E':'#C3CAD6',justify:on?'flex-end':'flex-start'});
+    const pref=k=>({isToggle:true,...tg(s.prefs[k]),onClick:()=>this.setState(x=>({prefs:{...x.prefs,[k]:!x.prefs[k]}}))});
+    const row=(t,dd,extra={})=>({t,d:dd,isToggle:false,isLink:false,isSeg:false,hasExtra:false,...extra});
+    const link=(action,onClick,color='#1A3B70')=>({isLink:true,action,onClick,color});
+    let setSections=[], setFooter=false, setFooterLabel='', setFooterAction=()=>{}, navTitle='', navBackLabel='Réglages';
+    if(push==='kid'){
+      const k=s.child, name=kidName;
+      navTitle=name;
+      setSections=[
+        {title:'Profil',rows:[row('Prénom',name),row('Année de naissance',k==='lea'?'2015 · détermine les règles de consentement':'2016 · détermine les règles de consentement'),
+          row('Classe','',{isSeg:true,opts:['CM2','6e'].map(c=>({label:c,onClick:()=>this.setState(x=>({kidClass:{...x.kidClass,[k]:c}})),bg:(s.kidClass[k]||'6e')===c?'#0F1B35':'transparent',fg:(s.kidClass[k]||'6e')===c?'#FFFFFF':'#34425C'}))})]},
+        {title:'Disponibilité du mode '+name,rows:[row("Après l'école",'16 h 30 – 19 h, du lundi au vendredi',pref('after')),row('Mercredi après-midi','13 h – 18 h',pref('wed')),row('Week-end','10 h – 18 h',pref('we'))]},
+        {title:'Coach '+nm,rows:[row('Saisie vocale',"L'enfant peut dicter ses réponses",pref('voice')),row("Photo de l'énoncé","Seulement l'énoncé imprimé, effacé après validation",pref('photo')),row(`Lecture à voix haute des messages de ${nm}`,'',pref('read'))]},
+        {title:'Ce que je reçois',rows:[row('Résumé de la semaine','Le dimanche soir, par notification',pref('weekly')),row('Erreur résolue','Une notification quand une erreur est résolue',pref('resolved'))]},
+        {title:'Journal des échanges',rows:[
+          ...[['29 sept.','Diagnostic · Fractions',"Néo : « Imagine une pizza coupée en 8 parts et une autre coupée en 4. Dans laquelle les parts sont les plus grandes ? » — Léa : « celle en 4 »"],['27 sept.','Devoir · Maths',"Léa : « Donne-moi la réponse » — Néo : « Je ne vais pas te la donner, mais on peut la trouver ensemble. »"],['25 sept.','Comprendre · Sciences',"Léa : « Pourquoi la glace fond ? » — Néo : « L'eau peut être solide, liquide ou gazeuse… »"]].map(([dt,act,txt],i)=>
+            row(`${dt} · ${act}`,'',{...link(s.openLog===i?'Fermer':'Lire',()=>this.setState({openLog:s.openLog===i?null:i})),hasExtra:s.openLog===i,extra:txt+' · Pour signaler cet échange : Aide › Signaler un échange.'}))]}
+      ];
+      setFooter=true; setFooterLabel=`Retirer ${name} du compte`; setFooterAction=()=>this.setState({sheet:'removeKid'});
+    } else if(push==='account'){
+      navTitle='Compte';
+      setSections=[{title:'Compte',rows:[row('Adresse e-mail',s.email,link('Modifier',()=>{})),row('Second parent',"Il peut consulter le suivi et s'opposer au traitement des données",link('Inviter',()=>{}))]},
+        {title:'Code parent',rows:[row('Code parent à 6 chiffres','Demandé pour quitter le mode enfant',link('Modifier',()=>{})),row(ios?'Face ID sur cet appareil':'Empreinte sur cet appareil',"Seulement sur un appareil marqué comme celui du parent",pref('bio'))]},
+        {title:'Appareils connectés',rows:[row('iPhone de Claire','Cet appareil · appareil du parent'),row('Tablette familiale','App enfant · 29 sept.',link('Déconnecter',()=>{},'#9A3C00')),row('Navigateur web','Tableau de bord · 30 sept.',link('Déconnecter',()=>{},'#9A3C00'))]}];
+    } else if(push==='privacy'){
+      navTitle='Confidentialité';
+      const cons=[['account','Création du compte','Requis · 1 sept. 2026 · texte v1.0'],['analysis','Analyse du travail de Léa',"Requis pour le service · inclut les photos d'énoncés imprimés, effacées après validation · 1 sept. 2026 · v1.0"],['improve',"Aide à l'amélioration du coach",'Facultatif · 1 sept. 2026 · v1.0']];
+      setSections=[{title:'Mes accords',rows:cons.map(([k,t,meta])=>row(t,(s.consents[k]?'Accordé · ':'Non accordé · ')+meta,{isToggle:true,...tg(s.consents[k]),onClick:()=>s.consents[k]?this.setState({sheet:'withdraw',pendingConsent:k}):this.setState(x=>({consents:{...x.consents,[k]:true}}))}))},
+        {title:'Mes données',rows:[row('Exporter mes données',s.exportSent?'Demande envoyée · lien par e-mail sous 72 h':'Un fichier avec les données du compte et des enfants',link(s.exportSent?'Envoyé':'Demander',()=>this.setState({exportSent:true}))),
+          row('Supprimer mon compte',s.deleted?'Demande enregistrée · suppression sous 30 jours':'Supprime le compte et les données des enfants',link(s.deleted?'Demandé':'Supprimer',()=>!s.deleted&&this.setState({sheet:'delete'}),'#9A3C00'))]},
+        {title:'Documents',rows:[row('Politique de confidentialité','Version du 1 sept. 2026',link('Lire',()=>{})),row("Conditions générales d'utilisation",'Version du 1 sept. 2026',link('Lire',()=>{}))]}];
+    } else if(push==='notif'){
+      navTitle='Notifications';
+      setSections=[{title:'Notifications',rows:[row('Résumé de la semaine','Le dimanche soir',pref('weekly')),row('Erreur résolue','',pref('resolved')),row('Nouvelle connexion au compte','Sécurité',pref('login'))]},
+        {title:'',rows:[row("Nurturia n'envoie pas de rappels pour pousser l'enfant à faire des sessions.",'')]}];
+    } else if(push==='a11y'){
+      navTitle='Accessibilité';
+      setSections=[{title:'Texte',rows:[row('Taille du texte','Suit aussi le réglage du téléphone',{isSeg:true,opts:[[1,'100 %'],[1.5,'150 %'],[2,'200 %']].map(([v,l])=>({label:l,onClick:()=>this.setState({ts:v}),bg:s.ts===v?'#0F1B35':'transparent',fg:s.ts===v?'#FFFFFF':'#34425C'}))})]},
+        {title:'Mouvement',rows:[row('Réduire les animations',"La progression affiche directement l'état final",{isToggle:true,...tg(s.reduce),onClick:()=>this.setState({reduce:!s.reduce,playing:false,week:4})})]}];
+    } else if(push==='help'){
+      navTitle='Aide';
+      setSections=[{title:'Comprendre',rows:[row(`Comment fonctionne le coach ${nm}`,'',{...link(s.coachOpen?'Fermer':'Lire',()=>this.setState({coachOpen:!s.coachOpen})),hasExtra:s.coachOpen,extra:`${nm} reformule les questions pour aider l'enfant à réfléchir. Il ne connaît pas la bonne réponse et ne la donne jamais. Les réponses sont vérifiées par des règles écrites par des enseignants.`}),row('Comment ça marche, en détail','Ce qui est observé, ce qui ne l\'est pas',link('Ouvrir',()=>this.setState({push:'transp'})))]},
+        {title:'Un problème ?',rows:[row('Signaler un échange','Depuis Réglages › un enfant › Journal des échanges, choisissez un échange.',link('Journal',()=>this.setState({push:'kid'}))),row('Nous contacter','aide@nurturia.fr · réponse sous 2 jours ouvrés',link('Écrire',()=>{}))]}];
+    }
+    if(push==='detail'){ navTitle='Erreur'; navBackLabel='Erreurs'; }
+    if(push==='transp'){ navTitle='Comment ça marche ?'; navBackLabel=s.tab==='settings'?'Aide':"Aujourd'hui"; }
+    const setGroups=[
+      {title:'Enfants',rows:[...kidsList.map(([v,l])=>({t:l,d:'Profil, disponibilité, coach, journal',onClick:()=>this.setState({child:v,push:'kid'})})),{t:'Ajouter un enfant',d:'Prénom, année de naissance, classe',onClick:()=>{}}]},
+      {title:'Général',rows:[['account','Compte','E-mail, second parent, code parent, appareils'],['privacy','Confidentialité & données','Mes accords, exporter, supprimer'],['notif','Notifications',''],['a11y','Accessibilité','Taille du texte, animations'],['help','Aide','Le coach, signaler un échange, contact']].map(([k,t,dd])=>({t,d:dd,onClick:()=>this.setState({push:k})}))}];
+    const sheets={
+      child:{title:'Qui va utiliser l\'app ?',choices:kidsList.map(([v,l,i,dd])=>({name:l,initial:i,dot:dd,onClick:()=>this.setState({child:v}),bg:s.child===v?'#EEF3FB':'#F5F6FA',border:s.child===v?'#1A3B70':'transparent'})),note:'Pour revenir, il faudra saisir votre code parent.',primary:'Passer en mode enfant',isLink:true},
+      kids:{title:'Choisir un enfant',choices:kidsList.map(([v,l,i,dd])=>({name:l,initial:i,dot:dd,onClick:()=>this.setState({child:v,sheet:null}),bg:s.child===v?'#EEF3FB':'#F5F6FA',border:s.child===v?'#1A3B70':'transparent'}))},
+      withdraw:{title:'Retirer cet accord ?',body:s.pendingConsent==='analysis'?"Sans cet accord, l'analyse du travail de Léa s'arrête et le suivi ne se met plus à jour.":s.pendingConsent==='account'?"Retirer cet accord ferme le compte. Les données seront supprimées sous 30 jours.":"Rien ne change pour Léa.",primary:"Retirer l'accord",isAction:true,onPrimary:()=>this.setState(x=>({consents:{...x.consents,[x.pendingConsent]:false},sheet:null}))},
+      delete:{title:'Supprimer le compte ?',body:'Le compte et toutes les données de vos enfants seront effacés sous 30 jours. Cette action ne peut pas être annulée.',primary:'Supprimer définitivement',isAction:true,onPrimary:()=>this.setState({deleted:true,sheet:null})},
+      removeKid:{title:`Retirer ${kidName} ?`,body:`Le profil de ${kidName} et ses données seront effacés sous 30 jours.`,primary:`Retirer ${kidName}`,isAction:true,onPrimary:()=>this.setState(x=>({removed:{...x.removed,[x.child]:true},child:'lea',sheet:null,push:null}))}
+    };
+    const sh=sheets[s.sheet]||{title:''};
+    const sheet={title:sh.title,hasBody:!!sh.body,body:sh.body||'',choices:sh.choices||[],hasNote:!!sh.note,note:sh.note||'',isLink:!!sh.isLink,isAction:!!sh.isAction,primary:sh.primary||'',onPrimary:sh.onPrimary||(()=>{})};
+    const emptyBodies={today:`Les premières observations apparaîtront après la première session de ${kidName}.`,errors:s.errView==='notions'&&s.np==='week'&&s.child==='lea'?"Cette semaine, Léa a fait une seule session. La répartition par notion s'affiche à partir de deux sessions dans la période, probablement d'ici quelques jours. Vous pouvez aussi choisir « Mois ».":"Les erreurs récurrentes apparaissent quand une erreur revient sur au moins deux questions, en général après 2 ou 3 sessions.",signals:"Ces signaux apparaissent après deux sessions, pour pouvoir comparer une période à la précédente."};
+    const showKidBar=signed&&!push&&tab!=='settings';
+    const jumps=[
+      ['Connexion e-mail',()=>this.setState({signedIn:false,si:'email'})],['Code · remplissage auto',()=>{this.setState({signedIn:false,si:'code',code:'',resendIn:60,notif:false,suggest:false}); this.later(()=>this.setState({notif:true,suggest:true}),1200);}],
+      ["Aujourd'hui",()=>this.setState({signedIn:true,tab:'today',push:null})],['Erreurs · liste',()=>this.setState({signedIn:true,tab:'errors',errView:'list',push:null,subj:'Maths'})],
+      ['Erreurs · autre matière',()=>this.setState({signedIn:true,tab:'errors',errView:'list',push:null,subj:'Français'})],
+      ['Détail erreur',()=>this.setState({signedIn:true,tab:'errors',push:'detail',errId:'eq'})],['Chronologie',()=>this.setState({signedIn:true,tab:'errors',errView:'timeline',push:null})],
+      ['Par notion · semaine vide',()=>this.setState({signedIn:true,tab:'errors',errView:'notions',np:'week',push:null})],['Confiance',()=>this.setState({signedIn:true,tab:'signals',sigView:'conf',push:null})],
+      ['Engagement',()=>this.setState({signedIn:true,tab:'signals',sigView:'eng',push:null})],['Réglages',()=>this.setState({signedIn:true,tab:'settings',push:null})],
+      ['Réglages › Léa',()=>this.setState({signedIn:true,tab:'settings',push:'kid',child:'lea'})],['Compte',()=>this.setState({signedIn:true,tab:'settings',push:'account'})],
+      ['Confidentialité & données',()=>this.setState({signedIn:true,tab:'settings',push:'privacy'})],['Accessibilité',()=>this.setState({signedIn:true,tab:'settings',push:'a11y'})],
+      ['Aide',()=>this.setState({signedIn:true,tab:'settings',push:'help'})],['Comment ça marche ?',()=>this.setState({signedIn:true,tab:'today',push:'transp'})],
+      ['Passer en mode enfant',()=>this.setState({signedIn:true,tab:'today',push:null,sheet:'child'})]
+    ].map(([label,onClick])=>({label,onClick}));
+    const fh=Math.round(W*2.165)+20;
+    return {
+      nm, fw:W+20, fh, fr:ios?56:40, sr:ios?46:30, topInset, bottomInset, isIos:ios, isAndroid:!ios, bottomBg:signed&&!push?'rgba(255,255,255,0.92)':'transparent',
+      screenBg:signed?'#EEF1F6':'#F5F6FA', netLabel:s.offline?'Hors ligne':(ios?'●●●':'▲ ●'),
+      notifShown:s.notif&&s.si==='code'&&!signed, notifTop:topInset-6,
+      sEmail:!signed&&s.si==='email', sCode:!signed&&s.si==='code', email:s.email, onEmail:ev=>this.setState({email:ev.target.value}),
+      sendLink:()=>{ this.setState({si:'code',code:'',resendIn:60,notif:false,suggest:false}); this.later(()=>this.setState({notif:true,suggest:true}),1500); },
+      codeBoxes:Array.from({length:6},(_,i)=>({v:s.code[i]||'',border:i===s.code.length?'#1A3B70':'#DCE2EC'})),
+      suggestShown:s.suggest&&s.code.length<6, fillCode:()=>{ this.setState({code:'482913',notif:false,suggest:false}); this.later(()=>this.signIn(),500); },
+      numKeys:['1','2','3','4','5','6','7','8','9','','0','del'].map(k=>({label:k==='del'?'⌫':k,bg:k===''?'transparent':'#FFFFFF',onClick:k===''?()=>{}:()=>this.press(k)})),
+      resend:()=>this.setState({resendIn:60}), resendLocked:s.resendIn>0, resendLabel:s.resendIn>0?`Renvoyer dans 0:${String(s.resendIn).padStart(2,'0')}`:'Renvoyer le lien', resendColor:s.resendIn>0?'#7A869C':'#1A3B70',
+      changeEmail:()=>this.setState({si:'email',notif:false}),
+      showKidBar, tabTitle:tabTitles[tab], fewKids:!s.manyKids, manyKids:s.manyKids, kids, kidInitial:curKid[2], kidLabel:curKid[1], openKidList:()=>this.setState({sheet:'kids'}), kidName,
+      offlineBanner:signed&&s.offline&&!push&&tab!=='settings',
+      showSeg1:signed&&!push&&(tab==='errors'||tab==='signals'),
+      seg1:tab==='errors'?this.seg('errView',[['list','Liste'],['timeline','Chronologie'],['notions','Par notion']]):this.seg('sigView',[['conf','Confiance'],['eng','Engagement']]),
+      showSeg2:signed&&!push&&((tab==='errors'&&s.errView!=='list')||tab==='signals'),
+      seg2:tab==='errors'?(s.errView==='notions'?this.seg('np',[['week','Semaine'],['month','Mois']],'#1A3B70'):this.seg('tl',[['4w','4 semaines'],['all','Depuis le début']],'#1A3B70')):this.seg('sp',[['week','Semaine'],['month','Mois']],'#1A3B70'),
+      showNav:signed&&!!push, navBack:()=>this.setState({push:push==='transp'&&tab==='settings'?'help':null}), navBackLabel, navTitle,
+      stLoading:signed&&!push&&tab!=='settings'&&st==='loading', stEmpty:signed&&!push&&tab!=='settings'&&st==='empty', stError:signed&&!push&&tab!=='settings'&&st==='error',
+      emptyBody:emptyBodies[tab]||'', reload:()=>{ this.setState({ds:'loading'}); this.later(()=>this.setState({ds:'auto'}),1000); },
+      tToday:signed&&!push&&tab==='today'&&(pop||st==='offline'), tTodayNew:signed&&!push&&tab==='today'&&st==='new',
+      progSummary:"En septembre, 2 erreurs sont passées de active à résolue. 1 est en cours, 2 sont encore actives.",
+      lanes:[['Active',0],['En cours',1],['Résolue',2]].map(([l,i])=>({label:l,left:`calc(${i*33.333}% + 3px)`})),
+      chips, chipTrans:motionOn?'left .8s cubic-bezier(.5,0,.2,1), top .8s cubic-bezier(.5,0,.2,1), background-color .6s, opacity .5s':'none',
+      motionOn, motionOff:!motionOn, play:this.play, playIcon:s.playing?'❚❚':'▶', weekTitle:`${WEEKS[w][0]} · ${WEEKS[w][1]}`,
+      prevWeek:()=>{clearInterval(this.t);this.setState({playing:false,week:Math.max(0,w-1)});}, nextWeek:()=>{clearInterval(this.t);this.setState({playing:false,week:Math.min(4,w+1)});},
+      activeTips:E.filter(x=>x.status==='active').map(x=>({notion:x.notion,tip:x.tips[0],onClick:()=>this.setState({push:'detail',errId:x.id})})),
+      activities:[['Diagnostic fractions','Maths'],['Faire un devoir','Maths · Français'],['Préparer une évaluation','Maths (fractions) · évaluation le 2 oct.'],['Comprendre une notion',"Sciences (les états de l'eau) · Anglais"]].map(([t,subs])=>({t,subs})),
+      goTransparency:()=>this.setState({push:'transp'}), openChildSheet:()=>this.setState({sheet:'child'}),
+      tErrList:signed&&!push&&tab==='errors'&&s.errView==='list'&&pop, tErrTimeline:signed&&!push&&tab==='errors'&&s.errView==='timeline'&&pop, tErrNotions:signed&&!push&&tab==='errors'&&s.errView==='notions'&&pop,
+      subjChips:SUBJ.map(n=>({n,onClick:()=>this.setState({subj:n}),bg:s.subj===n?'#0F1B35':'#FFFFFF',fg:s.subj===n?'#FFFFFF':'#0B132B'})),
+      isMaths:s.subj==='Maths', notMaths:s.subj!=='Maths', subjLower:s.subj.toLowerCase(),
+      subjSig:(SIG[s.subj]||[]).map(([t,n,p],i)=>({t,n,cmp:cmpTxt(n,p),bg:['#DDE7F8','#FFFFFF','#FFE6D5'][i]})), subjNoSig:s.subj!=='Maths'&&!SIG[s.subj],
+      listSummary:"Fractions : 2 erreurs actives, 1 en cours, 2 résolues. Touchez une erreur pour voir son détail.", errs,
+      tlSummary:s.tl==='4w'?"Sur les 4 dernières semaines, 5 erreurs sont apparues. 2 ont été résolues : le 16 et le 23 sept.":"Depuis le 1er sept., 5 erreurs sont apparues. 2 ont été résolues : le 16 et le 23 sept.", events,
+      notions, tConf:signed&&!push&&tab==='signals'&&s.sigView==='conf'&&pop, tEng:signed&&!push&&tab==='signals'&&s.sigView==='eng'&&pop,
+      confSummary:cm?"En septembre, Léa a répondu 36 fois en disant avant si elle était sûre. Voici les quatre situations.":"Du 22 au 28 sept., Léa a répondu 10 fois. Voici les quatre situations.", quads, engCards,
+      pDetail:signed&&push==='detail', d, pTransp:signed&&push==='transp',
+      transp:[["Le coach IA",`${nm} reformule les questions pour aider l'enfant à réfléchir. Il ne connaît pas la bonne réponse et ne la donne jamais.`,'#FFFFFF'],
+        ['Qui vérifie les réponses','Des règles fixes, écrites par des enseignants. L\'IA ne corrige pas et ne note pas.','#FFFFFF'],
+        ['Ce qui est observé',`Les réponses choisies, la confiance déclarée, le temps de réponse, les demandes d'aide ou de réponse, les messages écrits à ${nm}.`,'#DDE7F8'],
+        ["Photos d'énoncés","L'enfant peut photographier uniquement l'énoncé imprimé. La photo devient du texte, que l'enfant vérifie, puis l'image est effacée dès que le texte est confirmé. Nurturia ne corrige jamais le travail de l'enfant et ne photographie jamais ses réponses écrites.",'#FFF1E6'],
+        ["Ce qui n'est pas collecté",'Aucune photo de la copie, aucune localisation, aucun contact, aucune publicité, aucun suivi dans d\'autres applications.','#FFE6D5'],
+        ['Hébergement et IA',"Données hébergées dans l'Union européenne. Le fournisseur d'IA reçoit la question et le message de l'enfant, sans nom ni identifiant.",'#FFFFFF']].map(([t,dd,bg])=>({t,d:dd,bg})),
+      tSettings:signed&&!push&&tab==='settings', setGroups, pSet:signed&&['kid','account','privacy','notif','a11y','help'].includes(push), setSections, setFooter, setFooterLabel, setFooterAction,
+      showTabs:signed&&!push,
+      tabs:[['today',"Aujourd'hui",'4px'],['errors','Erreurs','50% 50% 4px 50%'],['signals','Signaux','50%'],['settings','Réglages','6px 50% 6px 50%']].map(([k,l,shape])=>({label:l,shape,onClick:()=>this.goTab(k),bg:tab===k?'#0F1B35':'transparent',fg:tab===k?'#FFFFFF':'#34425C'})),
+      sheetOpen:!!s.sheet, sheet, sheetPad:bottomInset+12, closeSheet:()=>this.setState({sheet:null}),
+      osSeg:[['ios','iPhone'],['android','Android']].map(([v,l])=>({label:l,onClick:()=>this.setState({os:v}),bg:s.os===v?'#0F1B35':'transparent',fg:s.os===v?'#FFFFFF':'#34425C'})),
+      wSeg:[360,390,430].map(v=>({label:`${v} pt`,onClick:()=>this.setState({w:v}),bg:s.w===v?'#0F1B35':'transparent',fg:s.w===v?'#FFFFFF':'#34425C'})),
+      tsSeg:[[1,'100 %'],[1.5,'150 %'],[2,'200 %']].map(([v,l])=>({label:l,onClick:()=>this.setState({ts:v}),bg:s.ts===v?'#0F1B35':'transparent',fg:s.ts===v?'#FFFFFF':'#34425C'})),
+      dsSeg:[['auto','Rempli'],['loading','Chargement'],['empty','Vide'],['error','Erreur'],['new','Nouveau compte']].map(([v,l])=>({label:l,onClick:()=>this.setState({ds:v}),bg:s.ds===v?'#0F1B35':'transparent',fg:s.ds===v?'#FFFFFF':'#34425C'})),
+      toggles:[['Pas de connexion',s.offline,()=>this.setState({offline:!s.offline})],['Réduire les animations (système)',s.reduce,()=>this.setState({reduce:!s.reduce,playing:false,week:4})],['Famille de 4 enfants',s.manyKids,()=>this.setState({manyKids:!s.manyKids})]].map(([label,on,onClick])=>({label,onClick,...tg(on)})),
+      jumps, ts:s.ts
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -15,3 +15,10 @@ Toute valeur nécessaire au code se trouve dans `src/theme/theme.ts` ou dans
 > `tokens.json` n'a pas encore été livré dans ce dossier — seul `theme.ts` a été fourni à la
 > session 1 des fondations. Ne le régénère pas depuis `theme.ts` : c'est `tokens.json` qui
 > devrait être la source, `theme.ts` sa transposition, jamais l'inverse.
+
+## Prototypes cliquables
+
+`design/prototypes/` contient les prototypes Claude Design reçus le 2 octobre 2026 (mode enfant,
+mode parent, tableau de bord web). Même statut que les maquettes ci-dessus : à ouvrir, pas à lire.
+Ils utilisent une palette qui n'est **pas** celle de `theme.ts` : voir `DECISIONS-OUVERTES.md` §7.1
+et `docs/design-review-2026-10-02.md`.

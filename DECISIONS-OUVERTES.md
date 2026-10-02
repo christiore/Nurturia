@@ -93,6 +93,8 @@ routeur d'onboarding et un état `subscription` dans le modèle, sans logique de
 **Instruction** — le thème définit six matières (`subject` dans `theme.ts`). Traite-les comme
 **données**, jamais comme code : aucune matière ne doit apparaître dans un nom de composant
 ou une condition.
+**Note du 2 octobre** — les prototypes proposent les six matières à l'enfant mais ne détaillent
+les erreurs que pour les fractions. Cela tranche la question implicitement : ce n'est pas une décision.
 
 ---
 
@@ -344,5 +346,123 @@ pas commencées.
 
 ---
 
-*Nurturia — DECISIONS-OUVERTES.md v0.1 · 14 août 2026.*
+# 7 · Ouvert par les prototypes du 2 octobre 2026
+
+Les prototypes Claude Design archivés dans `design/prototypes/` supposent plusieurs décisions
+qui n'ont pas été prises. Le détail et le contexte sont dans `docs/design-review-2026-10-02.md`
+(non autoritatif). **Qu'une mécanique apparaisse dans un prototype ne vaut pas décision.**
+
+### 7.1 Identité visuelle : remplacement de la palette
+
+**Question** — la palette marine/orange et la police Plus Jakarta Sans des prototypes
+remplacent-elles le système violet/corail, Nunito et Inter de `UI-GUIDELINES.md` §2, dans les
+deux modes ? Ou ne sont-elles qu'une piste ?
+**Depuis** — prototypes du 2 octobre. La revue du 31 juillet parlait d'un conflit « assumé »
+entre une palette enfant marine et une palette marque violette ; les prototypes abandonnent le
+violet aussi côté parent.
+**Bloque** — `theme.ts`, `tokens.json`, tous les composants visuels, l'icône d'application.
+**Instruction** — **ne modifie pas `theme.ts`.** Ne reprends aucune valeur des prototypes. Si
+la palette est validée, elle arrive sous forme de `design/tokens.json`, et `theme.ts` en
+devient la transposition (`design/README.md`).
+
+### 7.2 Résumé vocal quotidien ou résumé hebdomadaire
+
+**Question** — le résumé vocal quotidien (`CLAUDE.md` §1, `PARCOURS.md` §4) reste-t-il le
+cœur du mode parent ? Les prototypes le remplacent par une notification hebdomadaire et un
+tableau de bord.
+**Depuis** — prototypes du 2 octobre.
+**Bloque** — l'écran « Aujourd'hui » du parent, le pipeline vocal (§2.4), les notifications.
+**Instruction** — conserve la note vocale comme ressource asynchrone (§2.4). N'implémente pas
+le résumé hebdomadaire avant l'arbitrage.
+
+### 7.3 Tableau de bord parent sur le web
+
+**Question** — le MVP comprend-il un espace parent web, en lecture seule, en plus de l'app ?
+**Depuis** — prototype `Nurturia Parent.dc.html`.
+**Bloque** — le périmètre MVP, l'authentification web, l'hébergement (§2.1).
+**Instruction** — rien côté web. Côté app, garde les données du suivi derrière la couche
+`services/`, pour qu'une seconde surface puisse les consommer plus tard.
+
+### 7.4 Modèle d'erreurs récurrentes et règle de résolution
+
+**Question** — le suivi parent repose-t-il sur des erreurs récurrentes (stratégies d'erreur
+liées à chaque mauvaise option) avec les statuts active / en cours / résolue ? La règle « 3
+réponses correctes sans aide sur au moins 2 jours » est-elle retenue ? Les réponses sont-elles
+vérifiées par des règles d'enseignants plutôt que par l'IA ?
+**Depuis** — prototypes du 2 octobre. Ces affirmations figurent dans les écrans de transparence
+comme des faits.
+**Bloque** — §3.6 (signaux), §3.8 (référentiel), §2.2 (architecture du coach), le schéma de
+données et tout l'onglet « Erreurs ».
+**Instruction** — **ne code aucune règle de résolution ni aucun seuil.** Ne reprends pas les
+textes de transparence qui décrivent cette architecture : ils seraient des engagements publics
+envers les parents. Journalise les réponses brutes (option choisie, attendue ou non) pour que
+n'importe quelle définition reste calculable a posteriori (§3.5).
+
+### 7.5 Frontière de l'invariant n° 1 : exemple résolu et questions libres
+
+**Question** — un exemple entièrement résolu d'un problème voisin, affiché après trois réponses
+non attendues, est-il compatible avec « le coach ne donne jamais la réponse » ? Expliquer une
+notion en réponse à une question libre (onglet Explorer) l'est-il ? Comment distingue-t-on une
+notion d'un exercice ?
+**Depuis** — prototypes du 2 octobre. Dans le prototype, la distinction repose sur une
+expression régulière.
+**Bloque** — §3.1 (contrat pédagogique), §3.4 (blocage total), §3.7 (sécurité, puisque les
+questions deviennent ouvertes), l'onglet Explorer entier.
+**Instruction** — **n'implémente ni l'exemple résolu ni Explorer.** Ces décisions appartiennent
+au contrat pédagogique, qui n'est pas écrit. Signale toute demande qui y toucherait.
+
+### 7.6 Photo de l'énoncé (OCR) et dictée
+
+**Question** — l'enfant peut-il photographier un énoncé imprimé (reconnaissance de texte) et le
+dicter (transcription) ? Avec quels fournisseurs, sous quelle finalité de consentement, et
+comment prouve-t-on l'effacement de la photo « dès que tu valides » ?
+**Depuis** — prototypes du 2 octobre ; la revue du 31 juillet demandait déjà la transience de
+l'audio et des photos.
+**Bloque** — la saisie d'énoncé, le texte des consentements, l'AIPD, le choix des fournisseurs
+(§2.1, §2.2).
+**Instruction** — aucune capture photo, aucun envoi d'audio. Si la saisie d'énoncé est codée,
+commence par la saisie au clavier, derrière une interface qui accepte d'autres sources.
+
+### 7.7 Accord de l'enfant
+
+**Question** — demande-t-on un accord explicite de l'enfant avant la première session, qui
+s'ajoute à celui du parent et bloque l'usage en cas de refus ?
+**Depuis** — prototypes du 2 octobre. `PARCOURS.md` §2 ne prévoit que le consentement parent.
+**Bloque** — le flux de première bascule en mode enfant, le schéma des consentements.
+**Instruction** — modélise les consentements de façon à pouvoir y ajouter un « accord de
+l'enfant » versionné (§4.3) sans migration : un accord n'est pas nécessairement donné par un
+parent. N'ajoute pas l'écran avant l'arbitrage.
+
+### 7.8 Confiance déclarée avant chaque réponse
+
+**Question** — l'enfant indique-t-il son niveau de confiance (« sûre / je crois / je ne sais
+pas ») avant de voir les choix ? Ce signal alimente-t-il une vue parent ?
+**Depuis** — prototypes du 2 octobre.
+**Bloque** — l'écran de question, la vue « Confiance » côté parent, `EVENEMENTS.md`.
+**Instruction** — c'est un événement à journaliser dès le départ s'il est retenu
+(`EVENEMENTS.md` §1). Fais valider l'ajout d'un `confidence_declared` dans la spécification
+avant de coder l'écran.
+
+### 7.9 « Mon parcours » et la carte des notions
+
+**Question** — la carte des notions étiquetées (« Tu sais faire », « Pas encore exploré »…)
+est-elle acceptée côté enfant, ou se rapproche-t-elle trop d'une mécanique de collection
+(invariant n° 2) ?
+**Depuis** — prototypes du 2 octobre.
+**Bloque** — l'onglet « Mon parcours ».
+**Instruction** — n'implémente pas la carte. Si l'onglet est demandé, signale le risque avant
+de commencer.
+
+### 7.10 Nom du coach et de la mascotte
+
+**Question** — le coach s'appelle-t-il « Néo » ? La mascotte (« Nurtu », fichiers `nurtu-*.svg`)
+est-elle le même personnage ou un autre ?
+**Depuis** — prototypes du 2 octobre, revue du 31 juillet.
+**Bloque** — la microcopie du mode enfant, les assets.
+**Instruction** — le nom du coach passe par une clé de traduction (`coach.name`), comme
+`app.name`. Ne l'écris jamais en dur.
+
+---
+
+*Nurturia — DECISIONS-OUVERTES.md v0.1 · 14 août 2026 · §7 ajouté le 2 octobre 2026.*
 *Chaque décision tranchée sort de ce fichier et entre dans `CLAUDE.md`. Mettre à jour la date.*

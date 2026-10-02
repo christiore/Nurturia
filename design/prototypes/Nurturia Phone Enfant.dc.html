@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>body{margin:0;background:#E6EAF2}a{color:#1A3B70}a:hover{color:#F27121}button{font-family:inherit}input,textarea{font-family:inherit}*{box-sizing:border-box}@keyframes nt-dot{0%,80%,100%{opacity:.25}40%{opacity:1}}</style>
+</helmet>
+<div style="min-height:100vh;background:#E6EAF2;padding:24px;font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:#0B132B;display:flex;flex-wrap:wrap;gap:36px;justify-content:center;align-items:flex-start">
+
+<div style="flex:none;width:{{ fw }}px;height:{{ fh }}px;background:#0F1B35;border-radius:{{ fr }}px;padding:10px">
+<div style="position:relative;height:100%;border-radius:{{ sr }}px;overflow:hidden;background:{{ screenBg }};display:flex;flex-direction:column">
+  <div style="height:{{ topInset }}px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:calc(13px * {{ ts }});font-weight:700;color:{{ statusFg }}"><span>9:41</span><sc-if value="{{ isIos }}"><span style="width:110px;height:30px;border-radius:16px;background:#0F1B35"></span></sc-if><span>{{ netLabel }}</span></div>
+
+  <sc-if value="{{ showBanner }}">
+  <div style="flex:none;margin:0 14px 6px;background:#FF9F66;border-radius:20px;padding:8px 8px 8px 16px;display:flex;align-items:center;gap:10px">
+    <span style="width:26px;height:26px;border-radius:50%;background:#FFFFFF;display:flex;align-items:center;justify-content:center;font-size:calc(12px * {{ ts }});font-weight:800">L</span>
+    <span style="font-size:calc(15px * {{ ts }});font-weight:800;color:#3A1A00;flex:1">Mode Léa</span>
+    <button onClick="{{ goCode }}" title="Revenir au mode parent" style="min-height:48px;min-width:48px;border:0;cursor:pointer;min-height:48px;padding:0 12px;border-radius:999px;background:rgba(255,255,255,0.55);display:flex;align-items:center;gap:7px;font-size:calc(12px * {{ ts }});font-weight:700;color:#3A1A00;min-height:48px">
+      <span style="position:relative;width:12px;height:14px;display:block"><span style="position:absolute;left:2px;top:0;width:8px;height:8px;border:2px solid #3A1A00;border-bottom:0;border-radius:5px 5px 0 0"></span><span style="position:absolute;left:0;bottom:0;width:12px;height:8px;border-radius:2px;background:#3A1A00"></span></span>Parent
+    </button>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ toast }}">
+  <div style="position:absolute;left:24px;right:24px;top:108px;z-index:7;background:#0F1B35;color:#FFFFFF;border-radius:16px;padding:12px 16px;font-size:calc(13px * {{ ts }});font-weight:600;display:flex;align-items:center;gap:10px"><span style="width:20px;height:20px;border-radius:50%;background:#2F8F6B;display:flex;align-items:center;justify-content:center;font-size:calc(11px * {{ ts }})">✓</span>{{ toast }}</div>
+  </sc-if>
+
+  <!-- SUB-SCREEN HEADER -->
+  <sc-if value="{{ showSubHead }}">
+  <div style="flex:none;padding:4px 18px 8px;display:flex;align-items:center;gap:12px">
+    <button onClick="{{ back }}" title="Retour" style="min-height:48px;min-width:48px;flex:none;width:48px;min-height:48px;border-radius:50%;border:0;background:#FFFFFF;font-size:calc(18px * {{ ts }});font-weight:700;color:#1A3B70;cursor:pointer;min-height:48px">←</button>
+    <div style="flex:1;min-width:0;display:flex;flex-direction:column"><span style="font-size:calc(12px * {{ ts }});font-weight:600;color:#1A3B70">{{ ctxLabel }}</span><span style="font-size:calc(17px * {{ ts }});font-weight:800;line-height:1.2">{{ subTitle }}</span></div>
+  </div>
+  </sc-if>
+
+  <!-- PARENT HOME -->
+  <sc-if value="{{ sParent }}" hint-placeholder-val="{{ true }}">
+  <div style="flex:1;padding:14px 22px 24px;display:flex;flex-direction:column;gap:16px;background:#F5F6FA">
+    <div style="display:flex;align-items:center;gap:10px"><span style="width:40px;height:40px;border-radius:50%;background:#DDE7F8;overflow:hidden;display:flex;align-items:center;justify-content:center"><img src="assets/nurtu-01-idle.svg" alt="" style="width:36px;height:36px"></span><span style="font-size:calc(18px * {{ ts }});font-weight:800">Nurturia</span><span style="margin-left:auto;font-size:calc(12px * {{ ts }});font-weight:700;padding:5px 10px;border-radius:999px;background:#0F1B35;color:#FFFFFF">Mode parent</span></div>
+    <h2 style="margin:6px 0 0;font-size:calc(24px * {{ ts }});font-weight:800">Bonjour Claire</h2>
+    <div style="background:#FFFFFF;border-radius:24px;padding:18px;display:flex;flex-direction:column;gap:8px"><span style="font-size:calc(15px * {{ ts }});font-weight:700">Suivi de Léa et Tom</span><span style="font-size:calc(13px * {{ ts }});line-height:1.5;color:#51607A">Le tableau de bord détaillé est disponible sur le web.</span></div>
+    <div style="background:#FFFFFF;border-radius:24px;padding:18px;display:flex;flex-direction:column;gap:8px"><span style="font-size:calc(15px * {{ ts }});font-weight:700">Réglages → Données</span><span style="font-size:calc(13px * {{ ts }});line-height:1.5;color:#51607A">Consentements, export, suppression du compte.</span></div>
+    <button onClick="{{ openSheet }}" style="min-height:48px;min-width:48px;margin-top:auto;min-height:56px;border:0;border-radius:999px;background:#0F1B35;color:#FFFFFF;font-size:calc(16px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">Passer en mode enfant</button>
+  </div>
+  </sc-if>
+  <sc-if value="{{ sheet }}">
+  <div style="position:absolute;inset:0;background:rgba(15,27,53,0.5);display:flex;align-items:flex-end;z-index:5">
+    <div style="width:100%;background:#FFFFFF;border-radius:32px 32px 0 0;padding:24px 22px 30px;display:flex;flex-direction:column;gap:14px">
+      <span style="align-self:center;width:44px;height:5px;border-radius:3px;background:#DCE2EC"></span>
+      <span style="font-size:calc(20px * {{ ts }});font-weight:800">Qui va utiliser l'app ?</span>
+      <sc-for list="{{ kidOpts }}" as="k" hint-placeholder-count="2">
+      <button onClick="{{ k.onClick }}" style="min-height:48px;min-width:48px;cursor:pointer;display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:20px;background:{{ k.bg }};border:2px solid {{ k.border }};text-align:left;min-height:48px">
+        <span style="width:40px;height:40px;border-radius:50%;background:{{ k.dot }};display:flex;align-items:center;justify-content:center;font-weight:800">{{ k.initial }}</span>
+        <span style="flex:1;display:flex;flex-direction:column"><span style="font-size:calc(16px * {{ ts }});font-weight:700;color:#0B132B">{{ k.name }}</span><span style="font-size:calc(12px * {{ ts }});color:#51607A">{{ k.cls }}</span></span>
+        <span style="width:22px;height:22px;border-radius:50%;border:2px solid #1A3B70;background:{{ k.radio }}"></span>
+      </button>
+      </sc-for>
+      <div style="display:flex;gap:10px;align-items:flex-start;background:#FFF1E6;border-radius:16px;padding:12px 14px">
+        <span style="flex:none;width:22px;height:22px;border-radius:50%;background:#F27121;color:#FFFFFF;font-size:calc(12px * {{ ts }});font-weight:800;display:flex;align-items:center;justify-content:center">i</span>
+        <span style="font-size:calc(13px * {{ ts }});line-height:1.45;color:#3A1A00">Pour revenir, il faudra saisir votre code parent.</span>
+      </div>
+      <button onClick="{{ switchToChild }}" style="min-height:48px;min-width:48px;min-height:54px;border:0;border-radius:999px;background:#0F1B35;color:#FFFFFF;font-size:calc(16px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">Passer en mode enfant</button>
+      <button onClick="{{ closeSheet }}" style="min-height:48px;min-width:48px;min-height:48px;border:0;border-radius:999px;background:#F5F6FA;color:#1A3B70;font-size:calc(15px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">Annuler</button>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ sTransition }}">
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:30px;text-align:center">
+    <img src="assets/nurtu-09-bienveillance.svg" alt="" style="width:190px;height:214px">
+    <h1 style="margin:0;font-size:calc(32px * {{ ts }});font-weight:800;color:#FFFFFF">Bonjour {{ kidName }}</h1>
+    <span style="padding:8px 14px;border-radius:999px;background:rgba(255,255,255,0.12);color:#DDE7F8;font-size:calc(13px * {{ ts }});font-weight:600">Les réglages sont verrouillés</span>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ sConsent }}">
+  <div style="flex:1;overflow-y:auto;padding:6px 20px 22px;display:flex;flex-direction:column;gap:10px">
+    <img src="assets/nurtu-09-bienveillance.svg" alt="" style="width:96px;height:108px;align-self:center">
+    <h2 style="margin:0;font-size:calc(20px * {{ ts }});line-height:1.25;font-weight:800;text-align:center">Avant de commencer, voici comment ça marche.</h2>
+    <sc-for list="{{ consentPoints }}" as="c" hint-placeholder-count="5">
+    <div style="background:#FFFFFF;border-radius:18px;padding:10px 14px;display:flex;gap:12px;align-items:flex-start">
+      <span style="flex:none;width:26px;height:26px;border-radius:50%;background:#FF9F66;font-size:calc(13px * {{ ts }});font-weight:800;display:flex;align-items:center;justify-content:center">{{ c.n }}</span>
+      <span style="font-size:calc(14px * {{ ts }});line-height:1.45;font-weight:500">{{ c.t }}</span>
+    </div>
+    </sc-for>
+    <button onClick="{{ consentYes }}" style="min-height:48px;min-width:48px;flex:none;min-height:54px;border:0;border-radius:999px;background:#0F1B35;color:#FFFFFF;font-size:calc(17px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">D'accord</button>
+    <button onClick="{{ consentLater }}" style="min-height:48px;min-width:48px;flex:none;min-height:50px;border:0;border-radius:999px;background:#FFFFFF;color:#1A3B70;font-size:calc(16px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">Pas maintenant</button>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ sBlocked }}">
+  <div style="flex:1;padding:30px 26px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center">
+    <img src="assets/nurtu-07-patience.svg" alt="" style="width:160px;height:180px">
+    <h2 style="margin:0;font-size:calc(23px * {{ ts }});line-height:1.3;font-weight:800">{{ blockedTitle }}</h2>
+    <p style="margin:0;font-size:calc(15px * {{ ts }});line-height:1.55;color:#1F2B40">{{ blockedBody }}</p>
+    <sc-if value="{{ blockedByChild }}"><button onClick="{{ reopenConsent }}" style="min-height:48px;min-width:48px;margin-top:6px;min-height:48px;padding:0 22px;border:0;border-radius:999px;background:#FFFFFF;color:#1A3B70;font-size:calc(15px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">Revoir l'explication</button></sc-if>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ sReopen }}">
+  <div style="flex:1;overflow-y:auto;padding:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center">
+    <img src="assets/nurtu-01-idle.svg" alt="" style="flex-shrink:0;width:150px;height:170px">
+    <h1 style="margin:0;font-size:calc(24px * {{ ts }});font-weight:800">Tu es toujours en mode Léa.</h1>
+    <p style="margin:0;font-size:calc(15px * {{ ts }});line-height:1.55;color:#1F2B40">L'app a été fermée puis rouverte. Elle reste en mode Léa : pour revenir au mode parent, il faut le code parent.</p>
+    <button onClick="{{ goHome }}" style="min-height:48px;min-width:48px;margin-top:auto;width:100%;min-height:56px;border:0;border-radius:999px;background:#0F1B35;color:#FFFFFF;font-size:calc(16px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">Continuer</button>
+  </div>
+  </sc-if>
+
+  <!-- HOME / ACTIVITY CHOICE -->
+  <sc-if value="{{ sHome }}">
+  <div style="flex:1;overflow-y:auto;padding:4px 18px 16px;display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:12px">
+      <img src="assets/nurtu-01-idle.svg" alt="" style="flex:none;width:76px;height:86px">
+      <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:calc(14px * {{ ts }});font-weight:600;color:#1A3B70">Salut Léa</span><h1 style="margin:0;font-size:calc(23px * {{ ts }});line-height:1.2;font-weight:800">Qu'est-ce que tu veux faire ?</h1></div>
+    </div>
+    <sc-if value="{{ hasResume }}">
+    <div style="background:#FFFFFF;border-radius:22px;padding:14px;display:flex;align-items:center;gap:12px">
+      <span style="flex:1;font-size:calc(14px * {{ ts }});font-weight:600;line-height:1.4">{{ resumeText }}</span>
+      <button onClick="{{ resume }}" style="min-height:48px;min-width:48px;flex:none;min-height:48px;padding:0 16px;border:0;border-radius:999px;background:#0F1B35;color:#FFFFFF;font-size:calc(14px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">Reprendre</button>
+    </div>
+    </sc-if>
+    <sc-for list="{{ activities }}" as="a" hint-placeholder-count="3">
+    <button onClick="{{ a.onClick }}" style="min-height:48px;min-width:48px;flex-shrink:0;border:0;cursor:pointer;text-align:left;background:{{ a.bg }};border-radius:26px;padding:18px;display:flex;align-items:center;gap:14px;min-height:96px;min-height:48px">
+      <span style="flex:none;width:52px;height:52px;border-radius:18px;background:{{ a.iconBg }};color:{{ a.iconFg }};display:flex;align-items:center;justify-content:center;font-size:calc(20px * {{ ts }});font-weight:800">{{ a.glyph }}</span>
+      <span style="flex:1;display:flex;flex-direction:column;gap:3px"><span style="font-size:calc(18px * {{ ts }});font-weight:800;color:{{ a.fg }}">{{ a.t }}</span><span style="font-size:calc(13px * {{ ts }});line-height:1.4;color:{{ a.sub }}">{{ a.d }}</span></span>
+      <span style="font-size:calc(20px * {{ ts }});color:{{ a.fg }}">→</span>
+    </button>
+    </sc-for>
+    <button onClick="{{ goHow }}" style="min-height:48px;min-width:48px;border:0;cursor:pointer;background:rgba(255,255,255,0.7);border-radius:18px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;font-size:calc(14px * {{ ts }});font-weight:700;color:#1A3B70;min-height:48px">Comment ça marche ?<span>→</span></button>
+  </div>
+  </sc-if>
+
+  <!-- SUBJECT -->
+  <sc-if value="{{ sSubject }}">
+  <div style="flex:1;overflow-y:auto;padding:6px 18px 18px;display:grid;grid-template-columns:1fr 1fr;gap:10px;align-content:start">
+    <sc-for list="{{ subjects }}" as="s" hint-placeholder-count="6">
+    <button onClick="{{ s.onClick }}" style="min-height:48px;min-width:48px;border:0;cursor:pointer;background:#FFFFFF;border-radius:24px;padding:16px;min-height:118px;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;text-align:left;min-height:48px">
+      <span style="width:44px;height:44px;border-radius:50%;background:{{ s.c }};display:flex;align-items:center;justify-content:center;font-size:calc(15px * {{ ts }});font-weight:800">{{ s.g }}</span>
+      <span style="font-size:calc(16px * {{ ts }});font-weight:800;color:#0B132B">{{ s.n }}</span>
+    </button>
+    </sc-for>
+  </div>
+  </sc-if>
+
+  <!-- HOMEWORK INPUT -->
+  <sc-if value="{{ sHwInput }}">
+  <div style="flex:1;overflow-y:auto;padding:6px 18px 18px;display:flex;flex-direction:column;gap:10px">
+    <p style="margin:0 0 4px;font-size:calc(14px * {{ ts }});line-height:1.5;color:#1F2B40">Comment veux-tu me donner l'énoncé de ton exercice ?</p>
+    <button onClick="{{ goPhotoIntro }}" style="min-height:48px;min-width:48px;border:0;cursor:pointer;background:#FFFFFF;border-radius:22px;padding:18px;display:flex;align-items:center;gap:14px;text-align:left;min-height:48px"><span style="flex:none;width:48px;height:48px;border-radius:16px;background:#FFE6D5;display:flex;align-items:center;justify-content:center"><span style="width:24px;height:18px;border:3px solid #9A3C00;border-radius:5px;display:block"></span></span><span style="display:flex;flex-direction:column;gap:2px"><span style="font-size:calc(16px * {{ ts }});font-weight:800;color:#0B132B">Prendre en photo l'énoncé</span><span style="font-size:calc(12px * {{ ts }});color:#51607A">Seulement l'énoncé imprimé</span></span></button>
+    <button onClick="{{ goWrite }}" style="min-height:48px;min-width:48px;border:0;cursor:pointer;background:#FFFFFF;border-radius:22px;padding:18px;display:flex;align-items:center;gap:14px;text-align:left;min-height:48px"><span style="flex:none;width:48px;height:48px;border-radius:16px;background:#DDE7F8;display:flex;align-items:center;justify-content:center;font-size:calc(18px * {{ ts }});font-weight:800;color:#1A3B70">Aa</span><span style="display:flex;flex-direction:column;gap:2px"><span style="font-size:calc(16px * {{ ts }});font-weight:800;color:#0B132B">Écrire l'énoncé</span><span style="font-size:calc(12px * {{ ts }});color:#51607A">Tu le recopies</span></span></button>
+    <button onClick="{{ goDictate }}" style="min-height:48px;min-width:48px;border:0;cursor:pointer;background:#FFFFFF;border-radius:22px;padding:18px;display:flex;align-items:center;gap:14px;text-align:left;min-height:48px"><span style="flex:none;width:48px;height:48px;border-radius:16px;background:#DCF2E8;display:flex;align-items:center;justify-content:center"><span style="width:14px;height:22px;border-radius:7px;border:3px solid #1E6B4E;display:block"></span></span><span style="display:flex;flex-direction:column;gap:2px"><span style="font-size:calc(16px * {{ ts }});font-weight:800;color:#0B132B">Dicter l'énoncé</span><span style="font-size:calc(12px * {{ ts }});color:#51607A">Tu le lis à voix haute</span></span></button>
+    <p style="margin:6px 0 0;font-size:calc(12px * {{ ts }});line-height:1.5;color:#34425C">{{ nm }} t'aide à réfléchir avec des questions. Il ne fait pas l'exercice à ta place et ne corrige pas ta copie.</p>
+  </div>
+  </sc-if>
+
+  <!-- PHOTO INTRO -->
+  <sc-if value="{{ sPhotoIntro }}">
+  <div style="flex:1;overflow-y:auto;padding:6px 20px 20px;display:flex;flex-direction:column;gap:14px">
+    <h2 style="margin:0;font-size:calc(22px * {{ ts }});line-height:1.25;font-weight:800">{{ photoRule }}</h2>
+    <div style="display:flex;gap:10px">
+      <div style="flex:1;background:#FFFFFF;border-radius:20px;padding:12px;display:flex;flex-direction:column;gap:8px;border:3px solid #2F8F6B">
+        <div style="height:92px;border-radius:10px;background:repeating-linear-gradient(0deg,#F5F6FA 0 10px,#E4E8F0 10px 12px);display:flex;align-items:center;justify-content:center;font:600 10px ui-monospace,Menlo,monospace;color:#51607A">texte imprimé</div>
+        <span style="font-size:calc(13px * {{ ts }});font-weight:800;color:#1E6B4E">Oui : {{ photoYes }}</span>
+      </div>
+      <div style="flex:1;background:#FFFFFF;border-radius:20px;padding:12px;display:flex;flex-direction:column;gap:8px;border:3px dashed #A7B1C4">
+        <div style="height:92px;border-radius:10px;background:repeating-linear-gradient(-20deg,#F5F6FA 0 8px,#E4E8F0 8px 10px);display:flex;align-items:center;justify-content:center;font:600 10px ui-monospace,Menlo,monospace;color:#51607A">écriture à la main</div>
+        <span style="font-size:calc(13px * {{ ts }});font-weight:800;color:#34425C">Non : ta copie</span>
+      </div>
+    </div>
+    <div style="background:rgba(255,255,255,0.7);border-radius:16px;padding:12px 14px;font-size:calc(13px * {{ ts }});line-height:1.5;color:#1F2B40">La photo est transformée en texte. Tu vérifies le texte, puis la photo est effacée dès que tu valides.</div>
+    <button onClick="{{ openCamera }}" style="min-height:48px;min-width:48px;margin-top:auto;flex:none;min-height:56px;border:0;border-radius:999px;background:#0F1B35;color:#FFFFFF;font-size:calc(16px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">Ouvrir l'appareil photo</button>
+  </div>
+  </sc-if>
+
+  <!-- CAMERA -->
+  <sc-if value="{{ sCamera }}">
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:6px 22px 22px;gap:14px">
+    <span style="padding:7px 14px;border-radius:999px;background:rgba(255,255,255,0.14);color:#FFFFFF;font-size:calc(13px * {{ ts }});font-weight:600">{{ photoRuleShort }}</span>
+    <div style="position:relative;flex:1;width:100%;border-radius:20px;background:#1E2638;display:flex;align-items:center;justify-content:center;padding:26px">
+      <span style="position:absolute;left:12px;top:12px;width:30px;height:30px;border-left:4px solid #FFFFFF;border-top:4px solid #FFFFFF;border-radius:8px 0 0 0"></span>
+      <span style="position:absolute;right:12px;top:12px;width:30px;height:30px;border-right:4px solid #FFFFFF;border-top:4px solid #FFFFFF;border-radius:0 8px 0 0"></span>
+      <span style="position:absolute;left:12px;bottom:12px;width:30px;height:30px;border-left:4px solid #FFFFFF;border-bottom:4px solid #FFFFFF;border-radius:0 0 0 8px"></span>
+      <span style="position:absolute;right:12px;bottom:12px;width:30px;height:30px;border-right:4px solid #FFFFFF;border-bottom:4px solid #FFFFFF;border-radius:0 0 8px 0"></span>
+      <div style="width:100%;background:#F7F4EC;border-radius:6px;padding:16px;font-family:Georgia,serif;font-size:calc(14px * {{ ts }});line-height:1.5;color:#1F2B40;filter:{{ camBlur }}">{{ camText }}</div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;width:100%">
+      <button onClick="{{ back }}" style="min-height:48px;min-width:48px;border:0;background:none;color:#FFFFFF;font-size:calc(14px * {{ ts }});font-weight:600;cursor:pointer;width:70px;text-align:left;min-height:48px">Annuler</button>
+      <button onClick="{{ shoot }}" title="Prendre la photo" style="min-height:48px;min-width:48px;width:74px;min-height:74px;border-radius:50%;border:4px solid #FFFFFF;background:#FFFFFF;box-shadow:inset 0 0 0 4px #0F1B35;cursor:pointer;min-height:48px"></button>
+      <span style="width:70px"></span>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ sProcessing }}">
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px">
+    <img src="assets/nurtu-07-patience.svg" alt="" style="width:120px;height:136px">
+    <span style="font-size:calc(16px * {{ ts }});font-weight:700;color:#1A3B70">{{ processingText }}</span>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ sPhotoIssue }}">
+  <div style="flex:1;padding:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center">
+    <img src="assets/nurtu-05-relance.svg" alt="" style="width:140px;height:158px">
+    <h2 style="margin:0;font-size:calc(21px * {{ ts }});line-height:1.3;font-weight:800">{{ issueTitle }}</h2>
+    <p style="margin:0;font-size:calc(14px * {{ ts }});line-height:1.55;color:#1F2B40">{{ issueBody }}</p>
+    <sc-if value="{{ issueCanRetake }}"><button onClick="{{ openCamera }}" style="min-height:48px;min-width:48px;width:100%;min-height:52px;border:0;border-radius:999px;background:#0F1B35;color:#FFFFFF;font-size:calc(15px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">Reprendre la photo</button></sc-if>
+    <button onClick="{{ goWrite }}" style="min-height:48px;min-width:48px;width:100%;min-height:50px;border:0;border-radius:999px;background:#FFFFFF;color:#1A3B70;font-size:calc(15px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">{{ writeInsteadLabel }}</button>
+    <sc-if value="{{ issueOfferDictate }}"><button style="min-height:48px;min-width:48px;width:100%;min-height:50px;border:0;border-radius:999px;background:#FFFFFF;color:#1A3B70;font-size:calc(15px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">Ouvrir les réglages du téléphone</button></sc-if>
+    <sc-if value="{{ issueOfferDictate }}"><button onClick="{{ goDictate }}" style="min-height:48px;min-width:48px;width:100%;min-height:50px;border:0;border-radius:999px;background:#FFFFFF;color:#1A3B70;font-size:calc(15px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">Dicter à la place</button></sc-if>
+  </div>
+  </sc-if>
+
+  <!-- CHECK -->
+  <sc-if value="{{ sCheck }}">
+  <div style="flex:1;overflow-y:auto;padding:6px 20px 20px;display:flex;flex-direction:column;gap:12px">
+    <p style="margin:0;font-size:calc(14px * {{ ts }});line-height:1.5;color:#1F2B40">{{ checkIntro }}</p>
+    <textarea value="{{ statement }}" onChange="{{ onStatement }}" readOnly="{{ notEditing }}" rows="6" style="width:100%;border-radius:18px;border:{{ checkBorder }};background:#FFFFFF;padding:14px;font-size:calc(16px * {{ ts }});line-height:1.5;color:#0B132B;resize:none;outline:none"></textarea>
+    <sc-if value="{{ checkIsPhoto }}"><div style="display:flex;gap:10px;align-items:center;background:rgba(255,255,255,0.7);border-radius:14px;padding:10px 12px;font-size:calc(13px * {{ ts }});font-weight:600;color:#1A3B70"><span style="width:8px;height:8px;border-radius:50%;background:#1A3B70"></span>La photo est effacée dès que tu valides.</div></sc-if>
+    <button onClick="{{ confirmCheck }}" style="min-height:48px;min-width:48px;margin-top:auto;flex:none;min-height:54px;border:0;border-radius:999px;background:#0F1B35;color:#FFFFFF;font-size:calc(16px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">C'est bien ça</button>
+    <div style="display:flex;gap:8px">
+      <button onClick="{{ startEdit }}" style="min-height:48px;min-width:48px;flex:1;min-height:48px;border:0;border-radius:999px;background:#FFFFFF;color:#1A3B70;font-size:calc(14px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">{{ editLabel }}</button>
+      <button onClick="{{ redo }}" style="min-height:48px;min-width:48px;flex:1;min-height:48px;border:0;border-radius:999px;background:#FFFFFF;color:#1A3B70;font-size:calc(14px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">{{ redoLabel }}</button>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- WRITE -->
+  <sc-if value="{{ sWrite }}">
+  <div style="flex:1;overflow-y:auto;padding:6px 20px 20px;display:flex;flex-direction:column;gap:12px">
+    <p style="margin:0;font-size:calc(14px * {{ ts }});line-height:1.5;color:#1F2B40">{{ writeIntro }}</p>
+    <textarea value="{{ statement }}" onChange="{{ onStatement }}" rows="7" placeholder="{{ writePh }}" style="width:100%;border-radius:18px;border:2px solid #1A3B70;background:#FFFFFF;padding:14px;font-size:calc(16px * {{ ts }});line-height:1.5;color:#0B132B;resize:none;outline:none"></textarea>
+    <button onClick="{{ confirmWrite }}" disabled="{{ statementEmpty }}" style="min-height:48px;min-width:48px;margin-top:auto;flex:none;min-height:54px;border:0;border-radius:999px;background:{{ writeBtnBg }};color:#FFFFFF;font-size:calc(16px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">Continuer</button>
+  </div>
+  </sc-if>
+
+  <!-- DICTATE -->
+  <sc-if value="{{ sDictate }}">
+  <div style="flex:1;padding:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center">
+    <img src="assets/nurtu-08-intuition.svg" alt="" style="width:150px;height:170px">
+    <h2 style="margin:0;font-size:calc(22px * {{ ts }});font-weight:800">Je t'écoute…</h2>
+    <p style="margin:0;font-size:calc(14px * {{ ts }});line-height:1.5;color:#1F2B40">{{ dictateIntro }}</p>
+    <span style="display:flex;gap:5px">{{ dots }}</span>
+    <button onClick="{{ endDictate }}" style="min-height:48px;min-width:48px;margin-top:8px;min-height:54px;padding:0 28px;border:0;border-radius:999px;background:#0F1B35;color:#FFFFFF;font-size:calc(16px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">J'ai fini</button>
+  </div>
+  </sc-if>
+
+  <!-- EVAL INPUT -->
+  <sc-if value="{{ sEvalInput }}">
+  <div style="flex:1;overflow-y:auto;padding:6px 20px 20px;display:flex;flex-direction:column;gap:12px">
+    <p style="margin:0;font-size:calc(14px * {{ ts }});line-height:1.5;color:#1F2B40">Sur quoi porte ton évaluation ?</p>
+    <textarea value="{{ evalTopic }}" onChange="{{ onEvalTopic }}" rows="3" placeholder="Par exemple : les fractions, comparer et additionner" style="width:100%;border-radius:18px;border:2px solid #DCE2EC;background:#FFFFFF;padding:14px;font-size:calc(15px * {{ ts }});line-height:1.5;resize:none;outline:none"></textarea>
+    <div style="display:flex;gap:8px">
+      <button onClick="{{ goDictate }}" style="min-height:48px;min-width:48px;flex:1;min-height:48px;border:0;border-radius:999px;background:#FFFFFF;color:#1A3B70;font-size:calc(13px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">Dicter</button>
+      <button onClick="{{ goPhotoIntro }}" style="min-height:48px;min-width:48px;flex:1;min-height:48px;border:0;border-radius:999px;background:#FFFFFF;color:#1A3B70;font-size:calc(13px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">Photo de la liste</button>
+    </div>
+    <label style="display:flex;flex-direction:column;gap:8px;font-size:calc(13px * {{ ts }});font-weight:600;color:#34425C">Date de l'évaluation (si tu veux)
+      <input value="{{ evalDate }}" onChange="{{ onEvalDate }}" placeholder="jj/mm" style="height:48px;border-radius:16px;border:2px solid #DCE2EC;background:#FFFFFF;padding:0 14px;font-size:calc(15px * {{ ts }});outline:none">
+    </label>
+    <button onClick="{{ startEval }}" disabled="{{ evalEmpty }}" style="min-height:48px;min-width:48px;margin-top:auto;flex:none;min-height:54px;border:0;border-radius:999px;background:{{ evalBtnBg }};color:#FFFFFF;font-size:calc(16px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">Commencer l'entraînement</button>
+  </div>
+  </sc-if>
+
+  <!-- NOTION INPUT -->
+  <sc-if value="{{ sNotionInput }}">
+  <div style="flex:1;overflow-y:auto;padding:6px 20px 20px;display:flex;flex-direction:column;gap:12px">
+    <p style="margin:0;font-size:calc(14px * {{ ts }});line-height:1.5;color:#1F2B40">Qu'est-ce que tu n'as pas compris ?</p>
+    <div style="display:flex;gap:8px">
+      <input value="{{ notionQ }}" onChange="{{ onNotionQ }}" placeholder="C'est quoi un dénominateur ?" style="flex:1;min-width:0;height:50px;border-radius:999px;border:2px solid #DCE2EC;background:#FFFFFF;padding:0 16px;font-size:calc(15px * {{ ts }});outline:none">
+      <button onClick="{{ goDictate }}" title="Dicter" style="min-height:48px;min-width:48px;flex:none;width:50px;min-height:50px;border-radius:50%;border:0;background:#FFFFFF;cursor:pointer;display:flex;align-items:center;justify-content:center;min-height:48px"><span style="width:12px;height:20px;border-radius:6px;border:3px solid #0B132B;display:block"></span></button>
+      <button onClick="{{ submitNotionQ }}" title="Envoyer" style="min-height:48px;min-width:48px;flex:none;width:50px;min-height:50px;border-radius:50%;border:0;background:#1A3B70;color:#FFFFFF;font-size:calc(18px * {{ ts }});cursor:pointer;min-height:48px">↑</button>
+    </div>
+    <span style="font-size:calc(13px * {{ ts }});font-weight:700;color:#1A3B70;margin-top:6px">Ou choisis une notion</span>
+    <sc-for list="{{ subjNotions }}" as="n" hint-placeholder-count="5">
+    <button onClick="{{ n.onExplain }}" style="min-height:48px;min-width:48px;flex-shrink:0;border:0;cursor:pointer;background:#FFFFFF;border-radius:18px;padding:13px 16px;display:flex;justify-content:space-between;align-items:center;font-size:calc(15px * {{ ts }});font-weight:700;color:#0B132B;text-align:left;min-height:48px">{{ n.name }}<span style="color:#1A3B70">→</span></button>
+    </sc-for>
+  </div>
+  </sc-if>
+
+  <!-- EXPLAIN -->
+  <sc-if value="{{ sExplain }}">
+  <div ref="{{ explRef }}" style="flex:1;overflow-y:auto;padding:6px 18px 20px;display:flex;flex-direction:column;gap:10px">
+    <sc-for list="{{ expl.steps }}" as="s">
+    <div style="flex-shrink:0;display:flex;gap:8px;align-items:flex-start">
+      <span style="flex:none;width:32px;height:32px;border-radius:50%;background:#FFFFFF;overflow:hidden;display:flex;align-items:center;justify-content:center"><img src="assets/nurtu-06-guidage.svg" alt="" style="width:30px;height:30px"></span>
+      <div style="flex:1;background:#FFFFFF;border-radius:18px 18px 18px 6px;padding:12px 14px;display:flex;flex-direction:column;gap:8px">
+        <span style="font-size:calc(15px * {{ ts }});line-height:1.45">{{ s.t }}</span>
+        <sc-if value="{{ s.hasBars }}"><div style="display:flex;flex-direction:column;gap:8px;background:#F5F6FA;border-radius:12px;padding:10px"><sc-for list="{{ s.bars }}" as="b"><div style="display:flex;align-items:center;gap:8px"><div style="flex:1;display:flex;gap:2px;height:22px"><sc-for list="{{ b.segs }}" as="g"><span style="flex:1;border-radius:4px;background:{{ g.bg }};border:2px solid #1A3B70"></span></sc-for></div><span style="flex:none;width:30px;font-size:calc(13px * {{ ts }});font-weight:800">{{ b.label }}</span></div></sc-for></div></sc-if>
+        <sc-if value="{{ s.showAsk }}"><div style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ s.opts }}" as="o"><button onClick="{{ o.onClick }}" style="min-height:48px;min-width:48px;border:2px solid #1A3B70;background:#FFFFFF;border-radius:999px;padding:8px 16px;font-size:calc(15px * {{ ts }});font-weight:700;color:#1A3B70;cursor:pointer;min-height:48px">{{ o.v }}</button></sc-for></div></sc-if>
+        <sc-if value="{{ s.hasFb }}"><span style="font-size:calc(14px * {{ ts }});line-height:1.45;background:#DDE7F8;border-radius:12px;padding:10px 12px">Tu as dit {{ s.picked }}. {{ s.fb }}</span></sc-if>
+      </div>
+    </div>
+    </sc-for>
+    <sc-if value="{{ expl.canNext }}"><button onClick="{{ explNext }}" style="min-height:48px;min-width:48px;align-self:flex-end;min-height:48px;padding:0 20px;border:0;border-radius:999px;background:#0F1B35;color:#FFFFFF;font-size:calc(15px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">Continuer</button></sc-if>
+    <sc-if value="{{ expl.done }}">
+    <div style="background:#FF9F66;border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:10px">
+      <span style="font-size:calc(16px * {{ ts }});font-weight:800;color:#3A1A00">Un petit quiz pour vérifier ? C'est toi qui choisis.</span>
+      <div style="display:flex;gap:8px">
+        <button onClick="{{ explQuiz }}" style="min-height:48px;min-width:48px;flex:1;min-height:48px;border:0;border-radius:999px;background:#0F1B35;color:#FFFFFF;font-size:calc(14px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">Oui, un petit quiz</button>
+        <button onClick="{{ goHome }}" style="min-height:48px;min-width:48px;flex:1;min-height:48px;border:0;border-radius:999px;background:#FFFFFF;color:#1A3B70;font-size:calc(14px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">Pas maintenant</button>
+      </div>
+    </div>
+    <button onClick="{{ explAsk }}" style="min-height:48px;min-width:48px;border:0;background:none;font-size:calc(13px * {{ ts }});font-weight:700;color:#1A3B70;cursor:pointer;text-decoration:underline;min-height:48px">Poser une autre question à {{ nm }}</button>
+    </sc-if>
+  </div>
+  </sc-if>
+
+  <!-- CHAT (devoir / demander à Néo) -->
+  <sc-if value="{{ sChat }}">
+  <sc-if value="{{ chatIsHw }}">
+  <div style="flex:none;margin:0 14px 4px;background:rgba(255,255,255,0.75);border-radius:16px;padding:10px 14px;display:flex;flex-direction:column;gap:2px">
+    <span style="font-size:calc(11px * {{ ts }});font-weight:800;letter-spacing:0.05em;color:#1A3B70">TON ÉNONCÉ</span>
+    <span style="font-size:calc(13px * {{ ts }});line-height:1.4">{{ statement }}</span>
+  </div>
+  </sc-if>
+  <div ref="{{ chatRef }}" style="flex:1;overflow-y:auto;padding:10px 14px;display:flex;flex-direction:column;gap:10px">
+    <sc-for list="{{ cmsgs }}" as="m">
+    <div style="display:flex;gap:8px;align-items:flex-end;justify-content:{{ m.justify }}">
+      <sc-if value="{{ m.coach }}"><span style="flex:none;width:32px;height:32px;border-radius:50%;background:#FFFFFF;overflow:hidden;display:flex;align-items:center;justify-content:center"><img src="assets/nurtu-04-curiosite.svg" alt="" style="width:30px;height:30px"></span></sc-if>
+      <div style="max-width:80%;background:{{ m.bg }};color:{{ m.fg }};border-radius:{{ m.radius }};padding:11px 14px;display:flex;flex-direction:column;gap:8px">
+        <span style="font-size:calc(15px * {{ ts }});line-height:1.45;font-weight:500">{{ m.t }}</span>
+        <sc-if value="{{ m.ai }}"><span style="align-self:flex-start;font-size:calc(10px * {{ ts }});font-weight:800;letter-spacing:0.06em;padding:2px 7px;border-radius:6px;background:#DDE7F8;color:#1A3B70">IA</span></sc-if>
+      </div>
+    </div>
+    </sc-for>
+    <sc-if value="{{ typing }}">
+    <div style="display:flex;gap:8px;align-items:flex-end">
+      <span style="flex:none;width:32px;height:32px;border-radius:50%;background:#FFFFFF;overflow:hidden;display:flex;align-items:center;justify-content:center"><img src="assets/nurtu-07-patience.svg" alt="" style="width:30px;height:30px"></span>
+      <div style="background:#FFFFFF;border-radius:18px 18px 18px 6px;padding:12px 14px;display:flex;flex-direction:column;gap:8px"><span style="display:flex;gap:5px">{{ dots }}</span><sc-if value="{{ slow }}"><span style="font-size:calc(12px * {{ ts }});color:#51607A">{{ nm }} prend un peu plus de temps.</span></sc-if></div>
+    </div>
+    </sc-if>
+  </div>
+  <sc-if value="{{ offline }}"><div style="flex:none;margin:0 14px 6px;background:#0F1B35;color:#FFFFFF;border-radius:16px;padding:10px 12px;display:flex;align-items:center;gap:10px"><span style="flex:1;font-size:calc(13px * {{ ts }});line-height:1.45">Pas de connexion. {{ nm }} ne peut pas répondre pour l'instant. Vérifie la connexion puis touche Réessayer.</span><button onClick="{{ retryNet }}" style="min-height:48px;min-width:48px;flex:none;min-height:48px;padding:0 14px;border:0;border-radius:999px;background:#FFFFFF;color:#0F1B35;font-size:calc(14px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">Réessayer</button></div></sc-if>
+  <div style="flex:none;padding:8px 14px 16px;display:flex;flex-direction:column;gap:8px;background:rgba(255,255,255,0.5)">
+    <div style="display:flex;flex-wrap:wrap;gap:8px">
+      <sc-for list="{{ creplies }}" as="r"><button onClick="{{ r.onClick }}" disabled="{{ typing }}" style="min-height:48px;min-width:48px;border:2px solid #1A3B70;cursor:pointer;background:#FFFFFF;border-radius:999px;padding:9px 14px;font-size:calc(14px * {{ ts }});font-weight:700;color:#1A3B70;min-height:48px">{{ r.label }}</button></sc-for>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <input value="{{ cdraft }}" onChange="{{ onCdraft }}" onFocus="{{ kbOpenC }}" onKeyDown="{{ onCdraftKey }}" maxlength="160" placeholder="{{ cinputPh }}" style="flex:1;min-width:0;height:46px;border-radius:999px;border:2px solid #DCE2EC;background:#FFFFFF;padding:0 16px;font-size:calc(15px * {{ ts }});outline:none">
+      <button onClick="{{ csend }}" title="Envoyer" style="min-height:48px;min-width:48px;flex:none;width:48px;min-height:48px;border-radius:50%;border:0;background:#1A3B70;color:#FFFFFF;font-size:calc(18px * {{ ts }});cursor:pointer;min-height:48px">↑</button>
+      <button onClick="{{ cvoice }}" title="Parler" style="min-height:48px;min-width:48px;flex:none;min-height:48px;padding:0 14px;border-radius:999px;border:0;background:{{ cmicBg }};color:#0B132B;font-size:calc(13px * {{ ts }});font-weight:800;cursor:pointer;display:flex;align-items:center;gap:8px;min-height:48px"><span style="width:10px;height:16px;border-radius:5px;border:2px solid #0B132B;display:block"></span>{{ cmicLabel }}</button>
+    </div>
+    <sc-if value="{{ chatIsHw }}"><button onClick="{{ chwAnswer }}" disabled="{{ typing }}" style="min-height:48px;min-width:48px;min-height:48px;border:2px dashed #34425C;border-radius:999px;background:transparent;color:#34425C;font-size:calc(14px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">Donne-moi la réponse</button></sc-if>
+  </div>
+  <sc-if value="{{ kbShown }}">
+  <div style="flex:none;background:#D3D8E0;padding:8px 4px 6px;display:flex;flex-direction:column;gap:8px">
+    <sc-for list="{{ kbRows }}" as="r"><div style="display:flex;gap:5px;justify-content:center"><sc-for list="{{ r.keys }}" as="k"><button data-sys="1" onClick="{{ k.onClick }}" style="flex:{{ k.flex }};min-width:0;height:44px;border:0;border-radius:8px;background:{{ k.bg }};font-size:calc(17px * {{ ts }});font-weight:500;color:#0B132B;cursor:pointer;padding:0;box-shadow:0 1px 0 #9AA3B2">{{ k.l }}</button></sc-for></div></sc-for>
+  </div>
+  </sc-if>
+  </sc-if>
+
+  <!-- LOADING -->
+  <sc-if value="{{ sLoading }}">
+  <div style="flex:1;padding:14px 20px;display:flex;flex-direction:column;gap:14px">
+    <div style="height:22px;width:120px;border-radius:11px;background:rgba(255,255,255,0.7)"></div>
+    <div style="height:110px;border-radius:24px;background:rgba(255,255,255,0.7)"></div>
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px"><img src="assets/nurtu-07-patience.svg" alt="" style="width:110px;height:124px"><span style="font-size:calc(15px * {{ ts }});font-weight:600;color:#1A3B70">La question arrive…</span></div>
+    <div style="height:56px;border-radius:20px;background:rgba(255,255,255,0.7)"></div>
+  </div>
+  </sc-if>
+
+  <!-- QUESTION -->
+  <sc-if value="{{ sQuestion }}">
+  <div style="flex:1;overflow-y:auto;padding:4px 20px 22px;display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+      <div style="display:flex;flex-direction:column"><span style="font-size:calc(11px * {{ ts }});font-weight:700;color:#34425C">{{ setLabel }}</span><span style="font-size:calc(13px * {{ ts }});font-weight:800;color:#1A3B70">{{ qPos }}</span></div>
+      <button onClick="{{ stop }}" style="min-height:48px;min-width:48px;border:0;background:none;padding:4px 0;font-size:calc(13px * {{ ts }});font-weight:700;color:#1A3B70;cursor:pointer;text-decoration:underline;min-height:48px">Arrêter pour aujourd'hui</button>
+    </div>
+    <sc-if value="{{ resumed }}"><div style="background:#FFFFFF;border-radius:14px;padding:9px 14px;font-size:calc(13px * {{ ts }});font-weight:600;color:#1A3B70">On reprend là où tu t'étais arrêtée.</div></sc-if>
+    <sc-if value="{{ interruptNotice }}"><div style="flex-shrink:0;background:#FFFFFF;border-radius:14px;padding:10px 14px;font-size:calc(13px * {{ ts }});line-height:1.45;font-weight:600;color:#1A3B70">L'app a été mise en pause. On reprend ta question là où tu étais. Rien n'a été envoyé.</div></sc-if>
+    <div style="background:#FFFFFF;border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:16px">
+      <span style="font-size:calc(21px * {{ ts }});line-height:1.3;font-weight:800">{{ q.text }}</span>
+      <sc-if value="{{ q.hasBars }}"><div style="display:flex;flex-direction:column;gap:8px"><sc-for list="{{ q.bars }}" as="b"><div style="display:flex;align-items:center;gap:10px"><div style="flex:1;display:flex;gap:3px;height:30px"><sc-for list="{{ b.segs }}" as="g"><span style="flex:1;border-radius:6px;background:{{ g.bg }};border:2px solid #1A3B70"></span></sc-for></div><span style="flex:none;width:34px;font-size:calc(15px * {{ ts }});font-weight:800">{{ b.label }}</span></div></sc-for></div></sc-if>
+      <sc-if value="{{ q.hasLine }}">
+      <div style="position:relative;height:78px;margin:0 14px">
+        <span style="position:absolute;left:0;right:0;top:38px;height:3px;background:#1A3B70;border-radius:2px"></span>
+        <sc-for list="{{ q.ticks }}" as="t"><span style="position:absolute;left:{{ t.left }};top:28px;width:3px;height:22px;margin-left:-1px;background:#1A3B70;border-radius:2px"></span></sc-for>
+        <sc-for list="{{ q.pts }}" as="p"><span style="position:absolute;left:{{ p.left }};top:0;transform:translateX(-50%);width:24px;height:24px;border-radius:50%;background:#FF9F66;font-size:calc(12px * {{ ts }});font-weight:800;display:flex;align-items:center;justify-content:center">{{ p.l }}</span></sc-for>
+        <span style="position:absolute;left:0;top:56px;transform:translateX(-50%);font-size:calc(14px * {{ ts }});font-weight:800">0</span>
+        <span style="position:absolute;left:100%;top:56px;transform:translateX(-50%);font-size:calc(14px * {{ ts }});font-weight:800">1</span>
+      </div>
+      </sc-if>
+    </div>
+    <sc-if value="{{ offline }}">
+    <div style="background:#FFFFFF;border-radius:24px;padding:18px;display:flex;gap:14px;align-items:center">
+      <img src="assets/nurtu-05-relance.svg" alt="" style="flex:none;width:70px;height:80px">
+      <div style="display:flex;flex-direction:column;gap:10px"><span style="font-size:calc(14px * {{ ts }});line-height:1.45;font-weight:600">Pas de connexion pour l'instant. Vérifie la connexion puis touche Réessayer.</span><button onClick="{{ retryNet }}" style="min-height:48px;min-width:48px;align-self:flex-start;min-height:48px;padding:0 18px;border:0;border-radius:999px;background:#0F1B35;color:#FFFFFF;font-size:calc(14px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">Réessayer</button></div>
+    </div>
+    </sc-if>
+    <sc-if value="{{ phConf }}">
+      <span style="font-size:calc(15px * {{ ts }});font-weight:700;color:#1A3B70">Avant de voir les réponses, comment te sens-tu ?</span>
+      <sc-for list="{{ confOpts }}" as="c" hint-placeholder-count="3"><button onClick="{{ c.onClick }}" disabled="{{ offline }}" style="min-height:48px;min-width:48px;min-height:56px;border:0;border-radius:20px;background:#FFFFFF;font-size:calc(17px * {{ ts }});font-weight:700;color:#0B132B;cursor:pointer;display:flex;align-items:center;gap:12px;padding:0 18px;min-height:48px"><span style="width:14px;height:14px;border-radius:50%;background:{{ c.dot }}"></span>{{ c.label }}</button></sc-for>
+      <span style="font-size:calc(12px * {{ ts }});color:#34425C;text-align:center">Les réponses apparaissent après ton choix.</span>
+    </sc-if>
+    <sc-if value="{{ phAnswer }}">
+      <span style="align-self:flex-start;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,0.7);font-size:calc(12px * {{ ts }});font-weight:700;color:#1A3B70">Tu as dit : {{ confLabel }}</span>
+      <sc-for list="{{ q.opts }}" as="o" hint-placeholder-count="3"><button onClick="{{ o.onClick }}" disabled="{{ offline }}" style="min-height:48px;min-width:48px;min-height:58px;border:0;border-radius:20px;background:#FFFFFF;font-size:calc(20px * {{ ts }});font-weight:800;color:#0B132B;cursor:pointer;padding:10px 18px;text-align:left;min-height:48px" style-hover="background:#FFF1E6">{{ o.v }}</button></sc-for>
+    </sc-if>
+    <sc-if value="{{ phOk }}">
+    <div style="background:#FFFFFF;border-radius:24px;padding:18px;display:flex;gap:14px;align-items:center">
+      <img src="assets/nurtu-09-bienveillance.svg" alt="" style="flex:none;width:72px;height:82px">
+      <div style="display:flex;flex-direction:column;gap:8px"><span style="font-size:calc(18px * {{ ts }});font-weight:800">C'est bien ça.</span><span style="font-size:calc(14px * {{ ts }});color:#34425C">On passe à la suite.</span></div>
+    </div>
+    <button onClick="{{ next }}" style="min-height:48px;min-width:48px;min-height:56px;border:0;border-radius:999px;background:#0F1B35;color:#FFFFFF;font-size:calc(16px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">Continuer</button>
+    </sc-if>
+  </div>
+  </sc-if>
+
+  <!-- COACH (after unexpected answer) -->
+  <sc-if value="{{ sCoach }}">
+  <div style="flex:none;padding:2px 20px 8px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:calc(13px * {{ ts }});font-weight:700;color:#1A3B70">{{ qPos }}</span><button onClick="{{ stop }}" style="min-height:48px;min-width:48px;border:0;background:none;padding:4px 0;font-size:calc(13px * {{ ts }});font-weight:700;color:#1A3B70;cursor:pointer;text-decoration:underline;min-height:48px">Arrêter pour aujourd'hui</button></div>
+  <div style="flex:none;margin:0 14px;background:rgba(255,255,255,0.75);border-radius:18px;padding:10px 14px;display:flex;flex-direction:column;gap:2px"><span style="font-size:calc(13px * {{ ts }});font-weight:700">{{ q.text }}</span><span style="font-size:calc(12px * {{ ts }});color:#34425C">Ta réponse : {{ chosen }}</span></div>
+  <div ref="{{ msgRef }}" style="flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px">
+    <sc-for list="{{ msgs }}" as="m">
+    <div style="display:flex;gap:8px;align-items:flex-end;justify-content:{{ m.justify }}">
+      <sc-if value="{{ m.coach }}"><span style="flex:none;width:32px;height:32px;border-radius:50%;background:#FFFFFF;overflow:hidden;display:flex;align-items:center;justify-content:center"><img src="assets/nurtu-04-curiosite.svg" alt="" style="width:30px;height:30px"></span></sc-if>
+      <div style="max-width:80%;background:{{ m.bg }};color:{{ m.fg }};border-radius:{{ m.radius }};padding:11px 14px;display:flex;flex-direction:column;gap:8px">
+        <span style="font-size:calc(15px * {{ ts }});line-height:1.45;font-weight:500">{{ m.t }}</span>
+        <sc-if value="{{ m.hasBars }}"><div style="display:flex;flex-direction:column;gap:8px;background:#F5F6FA;border-radius:12px;padding:10px"><sc-for list="{{ m.bars }}" as="b"><div style="display:flex;align-items:center;gap:8px"><div style="flex:1;display:flex;gap:2px;height:22px"><sc-for list="{{ b.segs }}" as="g"><span style="flex:1;border-radius:4px;background:{{ g.bg }};border:2px solid #1A3B70"></span></sc-for></div><span style="flex:none;width:30px;font-size:calc(13px * {{ ts }});font-weight:800">{{ b.label }}</span></div></sc-for></div></sc-if>
+        <sc-if value="{{ m.ai }}"><span style="align-self:flex-start;font-size:calc(10px * {{ ts }});font-weight:800;letter-spacing:0.06em;padding:2px 7px;border-radius:6px;background:#DDE7F8;color:#1A3B70">IA</span></sc-if>
+      </div>
+    </div>
+    </sc-for>
+    <sc-if value="{{ typing }}">
+    <div style="display:flex;gap:8px;align-items:flex-end"><span style="flex:none;width:32px;height:32px;border-radius:50%;background:#FFFFFF;overflow:hidden;display:flex;align-items:center;justify-content:center"><img src="assets/nurtu-07-patience.svg" alt="" style="width:30px;height:30px"></span><div style="background:#FFFFFF;border-radius:18px 18px 18px 6px;padding:12px 14px;display:flex;flex-direction:column;gap:8px"><span style="display:flex;gap:5px">{{ dots }}</span><sc-if value="{{ slow }}"><span style="font-size:calc(12px * {{ ts }});color:#51607A">{{ nm }} prend un peu plus de temps. Tu peux attendre ou réessayer ta question.</span></sc-if></div></div>
+    </sc-if>
+  </div>
+  <sc-if value="{{ offline }}"><div style="flex:none;margin:0 14px 6px;background:#0F1B35;color:#FFFFFF;border-radius:16px;padding:10px 12px;display:flex;align-items:center;gap:10px"><span style="flex:1;font-size:calc(13px * {{ ts }});line-height:1.45">Pas de connexion. {{ nm }} ne peut pas répondre pour l'instant. Vérifie la connexion puis touche Réessayer.</span><button onClick="{{ retryNet }}" style="min-height:48px;min-width:48px;flex:none;min-height:48px;padding:0 14px;border:0;border-radius:999px;background:#FFFFFF;color:#0F1B35;font-size:calc(14px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">Réessayer</button></div></sc-if>
+  <div style="flex:none;padding:8px 14px 16px;display:flex;flex-direction:column;gap:8px;background:rgba(255,255,255,0.5)">
+    <div style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ replies }}" as="r"><button onClick="{{ r.onClick }}" disabled="{{ typing }}" style="min-height:48px;min-width:48px;border:2px solid #1A3B70;cursor:pointer;background:#FFFFFF;border-radius:999px;padding:9px 14px;font-size:calc(14px * {{ ts }});font-weight:700;color:#1A3B70;min-height:48px">{{ r.label }}</button></sc-for></div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <input value="{{ draft }}" onChange="{{ onDraft }}" onFocus="{{ kbOpenDraft }}" onKeyDown="{{ onDraftKey }}" maxlength="120" placeholder="{{ inputPh }}" style="flex:1;min-width:0;height:46px;border-radius:999px;border:2px solid #DCE2EC;background:#FFFFFF;padding:0 16px;font-size:calc(15px * {{ ts }});outline:none">
+      <button onClick="{{ sendDraft }}" title="Envoyer" style="min-height:48px;min-width:48px;flex:none;width:48px;min-height:48px;border-radius:50%;border:0;background:#1A3B70;color:#FFFFFF;font-size:calc(18px * {{ ts }});cursor:pointer;min-height:48px">↑</button>
+      <button onClick="{{ toggleVoice }}" title="Parler" style="min-height:48px;min-width:48px;flex:none;min-height:48px;padding:0 14px;border-radius:999px;border:0;background:{{ micBg }};color:#0B132B;font-size:calc(13px * {{ ts }});font-weight:800;cursor:pointer;display:flex;align-items:center;gap:8px;min-height:48px"><span style="width:10px;height:16px;border-radius:5px;border:2px solid #0B132B;display:block"></span>{{ micLabel }}</button>
+    </div>
+    <button onClick="{{ askAnswer }}" disabled="{{ typing }}" style="min-height:48px;min-width:48px;min-height:48px;border:2px dashed #34425C;border-radius:999px;background:transparent;color:#34425C;font-size:calc(14px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">Donne-moi la réponse</button>
+  </div>
+  <sc-if value="{{ kbShown }}">
+  <div style="flex:none;background:#D3D8E0;padding:8px 4px 6px;display:flex;flex-direction:column;gap:8px">
+    <sc-for list="{{ kbRows }}" as="r"><div style="display:flex;gap:5px;justify-content:center"><sc-for list="{{ r.keys }}" as="k"><button data-sys="1" onClick="{{ k.onClick }}" style="flex:{{ k.flex }};min-width:0;height:44px;border:0;border-radius:8px;background:{{ k.bg }};font-size:calc(17px * {{ ts }});font-weight:500;color:#0B132B;cursor:pointer;padding:0;box-shadow:0 1px 0 #9AA3B2">{{ k.l }}</button></sc-for></div></sc-for>
+  </div>
+  </sc-if>
+  </sc-if>
+
+  <!-- EXAMPLE -->
+  <sc-if value="{{ sExample }}">
+  <div style="flex:1;overflow-y:auto;padding:6px 20px 22px;display:flex;flex-direction:column;gap:12px">
+    <span style="align-self:flex-start;padding:6px 12px;border-radius:999px;background:#FFFFFF;font-size:calc(12px * {{ ts }});font-weight:800;color:#9A3C00">Exemple qui ressemble · ce n'est pas la réponse</span>
+    <h2 style="margin:0;font-size:calc(22px * {{ ts }});line-height:1.3;font-weight:800">{{ ex.title }}</h2>
+    <p style="margin:0;font-size:calc(13px * {{ ts }});line-height:1.45;color:#34425C">Les nombres sont différents de ta question, mais on réfléchit de la même façon.</p>
+    <sc-for list="{{ ex.steps }}" as="s" hint-placeholder-count="4">
+    <div style="flex-shrink:0;background:#FFFFFF;border-radius:20px;padding:14px;display:flex;gap:12px;align-items:flex-start">
+      <span style="flex:none;width:28px;height:28px;border-radius:50%;background:#1A3B70;color:#FFFFFF;font-size:calc(13px * {{ ts }});font-weight:800;display:flex;align-items:center;justify-content:center">{{ s.n }}</span>
+      <div style="flex:1;display:flex;flex-direction:column;gap:8px"><span style="font-size:calc(15px * {{ ts }});line-height:1.45">{{ s.t }}</span><sc-if value="{{ s.hasBars }}"><div style="display:flex;flex-direction:column;gap:8px"><sc-for list="{{ s.bars }}" as="b"><div style="display:flex;align-items:center;gap:8px"><div style="flex:1;display:flex;gap:2px;height:22px"><sc-for list="{{ b.segs }}" as="g"><span style="flex:1;border-radius:4px;background:{{ g.bg }};border:2px solid #1A3B70"></span></sc-for></div><span style="flex:none;width:30px;font-size:calc(13px * {{ ts }});font-weight:800">{{ b.label }}</span></div></sc-for></div></sc-if></div>
+    </div>
+    </sc-for>
+    <sc-if value="{{ exForced }}"><p style="margin:0;font-size:calc(13px * {{ ts }});line-height:1.45;color:#1A3B70;background:rgba(255,255,255,0.7);border-radius:14px;padding:10px 12px">On passe à la suite. Ta question reviendra une autre fois.</p></sc-if>
+    <button onClick="{{ exAction }}" style="min-height:48px;min-width:48px;flex:none;min-height:56px;border:0;border-radius:999px;background:#0F1B35;color:#FFFFFF;font-size:calc(16px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">{{ exBtn }}</button>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ sEnd }}">
+  <div style="flex:1;padding:30px 26px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center">
+    <img src="assets/nurtu-02-elan.svg" alt="" style="width:180px;height:204px">
+    <h1 style="margin:0;font-size:calc(28px * {{ ts }});font-weight:800">Merci, à bientôt.</h1>
+    <p style="margin:0;font-size:calc(15px * {{ ts }});line-height:1.55;color:#1F2B40;max-width:280px">{{ endText }}</p>
+    <button onClick="{{ goHome }}" style="min-height:48px;min-width:48px;margin-top:10px;min-height:52px;padding:0 26px;border:0;border-radius:999px;background:#FFFFFF;color:#1A3B70;font-size:calc(16px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">Revenir à l'accueil</button>
+  </div>
+  </sc-if>
+
+  <!-- HOW (child transparency) -->
+  <sc-if value="{{ sHow }}">
+  <div style="flex:1;overflow-y:auto;padding:4px 20px 22px;display:flex;flex-direction:column;gap:10px">
+    <div style="display:flex;align-items:center;gap:12px"><img src="assets/nurtu-06-guidage.svg" alt="" style="flex:none;width:72px;height:82px"><span style="font-size:calc(15px * {{ ts }});line-height:1.45;font-weight:600">Le coach s'appelle {{ nm }}.</span></div>
+    <div style="flex-shrink:0;background:#FFFFFF;border-radius:20px;padding:14px 16px;font-size:calc(15px * {{ ts }});line-height:1.5">Le coach est un programme d'ordinateur, pas une personne. Il ne connaît pas la réponse, il t'aide à réfléchir. Il ne corrige jamais ta copie.</div>
+    <div style="flex-shrink:0;background:#FFFFFF;border-radius:20px;padding:14px 16px;display:flex;flex-direction:column;gap:8px"><span style="font-size:calc(15px * {{ ts }});font-weight:800">Ce qu'on regarde</span><span style="font-size:calc(14px * {{ ts }});line-height:1.5">Tes réponses, si tu te sentais sûre, et ce que tu écris à {{ nm }}.</span></div>
+    <div style="flex-shrink:0;background:#FFFFFF;border-radius:20px;padding:14px 16px;display:flex;flex-direction:column;gap:8px"><span style="font-size:calc(15px * {{ ts }});font-weight:800">Les photos</span><span style="font-size:calc(14px * {{ ts }});line-height:1.5">Tu peux prendre en photo seulement l'énoncé imprimé d'un exercice. On le transforme en texte, tu le vérifies, et la photo est effacée dès que tu valides.</span></div>
+    <div style="flex-shrink:0;background:#FFFFFF;border-radius:20px;padding:14px 16px;display:flex;flex-direction:column;gap:8px"><span style="font-size:calc(15px * {{ ts }});font-weight:800">Ce qu'on ne regarde pas</span><span style="font-size:calc(14px * {{ ts }});line-height:1.5">Pas de photo de ta copie ni de tes réponses écrites à la main. Pas l'endroit où tu es. Pas tes contacts.</span></div>
+    <div style="background:#FF9F66;border-radius:20px;padding:14px 16px;font-size:calc(15px * {{ ts }});font-weight:700;color:#3A1A00">Tu peux arrêter quand tu veux.</div>
+  </div>
+  </sc-if>
+
+  <!-- MON PARCOURS -->
+  <sc-if value="{{ sParcours }}">
+  <div style="flex:1;overflow-y:auto;padding:4px 18px 16px;display:flex;flex-direction:column;gap:14px">
+    <h1 style="margin:0;font-size:calc(24px * {{ ts }});font-weight:800">Mon parcours</h1>
+    <sc-if value="{{ parcoursEmpty }}">
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:20px 6px">
+      <img src="assets/nurtu-01-idle.svg" alt="" style="width:150px;height:170px">
+      <h2 style="margin:0;font-size:calc(20px * {{ ts }});font-weight:800">Ton parcours va se remplir petit à petit.</h2>
+      <p style="margin:0;font-size:calc(14px * {{ ts }});line-height:1.55;color:#1F2B40">Après tes premières activités, tu verras ici ce que tu sais faire maintenant, ce que tu es en train de travailler, et les notions que tu as explorées.</p>
+      <button onClick="{{ goHome }}" style="min-height:48px;min-width:48px;min-height:50px;padding:0 24px;border:0;border-radius:999px;background:#0F1B35;color:#FFFFFF;font-size:calc(15px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">Choisir une activité</button>
+    </div>
+    </sc-if>
+    <sc-if value="{{ parcoursFull }}">
+    <div style="flex-shrink:0;background:#FF9F66;border-radius:24px;padding:16px;display:flex;flex-direction:column;gap:10px">
+      <span style="font-size:calc(12px * {{ ts }});font-weight:800;letter-spacing:0.06em;color:#3A1A00">ET MAINTENANT ?</span>
+      <span style="font-size:calc(16px * {{ ts }});line-height:1.4;font-weight:700;color:#3A1A00">Tu peux faire un petit quiz sur la droite graduée. La dernière fois, tu as commencé à compter les sauts entre les traits.</span>
+      <button onClick="{{ suggestQuiz }}" style="min-height:48px;min-width:48px;align-self:flex-start;min-height:48px;padding:0 18px;border:0;border-radius:999px;background:#0F1B35;color:#FFFFFF;font-size:calc(14px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">Un petit quiz</button>
+    </div>
+    <span style="font-size:calc(16px * {{ ts }});font-weight:800">Ce que tu sais faire maintenant</span>
+    <sc-for list="{{ mastered }}" as="m" hint-placeholder-count="2">
+    <div style="flex-shrink:0;background:#FFFFFF;border-radius:22px;overflow:hidden">
+      <button onClick="{{ m.onToggle }}" style="min-height:48px;min-width:48px;width:100%;border:0;cursor:pointer;background:transparent;padding:14px 16px;display:flex;align-items:center;gap:12px;text-align:left;min-height:48px">
+        <span style="flex:none;width:36px;height:36px;border-radius:50%;background:#DCF2E8;color:#1E6B4E;display:flex;align-items:center;justify-content:center;font-weight:800">✓</span>
+        <span style="flex:1;display:flex;flex-direction:column"><span style="font-size:calc(15px * {{ ts }});font-weight:800;color:#0B132B">{{ m.name }}</span><span style="font-size:calc(12px * {{ ts }});color:#51607A">{{ m.subj }}</span></span>
+        <span style="font-size:calc(13px * {{ ts }});font-weight:700;color:#1A3B70">{{ m.chev }}</span>
+      </button>
+      <sc-if value="{{ m.open }}">
+      <div style="padding:0 16px 16px;display:flex;flex-direction:column;gap:8px">
+        <div style="background:#F5F6FA;border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:8px"><span style="font-size:calc(11px * {{ ts }});font-weight:800;letter-spacing:0.06em;color:#51607A">AVANT</span><span style="font-size:calc(14px * {{ ts }});line-height:1.45">{{ m.before }}</span><span style="font-size:calc(16px * {{ ts }});font-weight:800;color:#34425C">{{ m.bex }}</span></div>
+        <div style="background:#DCF2E8;border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:8px"><span style="font-size:calc(11px * {{ ts }});font-weight:800;letter-spacing:0.06em;color:#1E6B4E">MAINTENANT</span><span style="font-size:calc(14px * {{ ts }});line-height:1.45">{{ m.now }}</span><span style="font-size:calc(16px * {{ ts }});font-weight:800;color:#1E6B4E">{{ m.nex }}</span></div>
+      </div>
+      </sc-if>
+    </div>
+    </sc-for>
+    <span style="font-size:calc(16px * {{ ts }});font-weight:800;margin-top:4px">En train de travailler</span>
+    <sc-for list="{{ working }}" as="w" hint-placeholder-count="3">
+    <div style="flex-shrink:0;background:#FFFFFF;border-radius:22px;padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;flex-direction:column"><span style="font-size:calc(15px * {{ ts }});font-weight:800">{{ w.name }}</span><span style="font-size:calc(12px * {{ ts }});color:#51607A">{{ w.subj }}</span></div>
+      <sc-if value="{{ w.hasNote }}"><span style="font-size:calc(13px * {{ ts }});line-height:1.45;color:#34425C">{{ w.note }}</span></sc-if>
+      <div style="display:flex;gap:8px">
+        <button onClick="{{ w.onResume }}" style="min-height:48px;min-width:48px;min-height:48px;padding:0 16px;border:0;border-radius:999px;background:#0F1B35;color:#FFFFFF;font-size:calc(13px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">Reprendre</button>
+        <sc-if value="{{ w.hasQuiz }}"><button onClick="{{ w.onQuiz }}" style="min-height:48px;min-width:48px;min-height:48px;padding:0 16px;border:2px solid #1A3B70;border-radius:999px;background:#FFFFFF;color:#1A3B70;font-size:calc(13px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">Un petit quiz</button></sc-if>
+      </div>
+    </div>
+    </sc-for>
+    <span style="font-size:calc(16px * {{ ts }});font-weight:800;margin-top:4px">La carte des notions</span>
+    <div style="flex-shrink:0;display:flex;gap:8px;overflow-x:auto;padding-bottom:2px">
+      <sc-for list="{{ mapSubjs }}" as="s" hint-placeholder-count="6"><button onClick="{{ s.onClick }}" style="min-height:48px;min-width:48px;flex:none;border:0;cursor:pointer;padding:8px 14px;border-radius:999px;font-size:calc(13px * {{ ts }});font-weight:700;background:{{ s.bg }};color:{{ s.fg }};min-height:48px">{{ s.n }}</button></sc-for>
+    </div>
+    <div style="flex-shrink:0;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <sc-for list="{{ mapNotions }}" as="n" hint-placeholder-count="6">
+      <button onClick="{{ n.onOpen }}" style="min-height:48px;min-width:48px;cursor:pointer;min-height:92px;border-radius:20px;padding:12px;background:{{ n.bg }};border:2px {{ n.bs }} {{ n.bc }};display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;gap:8px;text-align:left;min-height:48px">
+        <span style="font-size:calc(14px * {{ ts }});font-weight:700;line-height:1.3;color:#0B132B">{{ n.name }}</span>
+        <span style="font-size:calc(11px * {{ ts }});font-weight:700;padding:3px 8px;border-radius:999px;background:{{ n.tagBg }};color:{{ n.tagFg }}">{{ n.tag }}</span>
+      </button>
+      </sc-for>
+    </div>
+    <span style="font-size:calc(12px * {{ ts }});line-height:1.5;color:#34425C">Tu peux ouvrir n'importe quelle notion, quand tu veux.</span>
+    </sc-if>
+  </div>
+  </sc-if>
+
+  <!-- EXPLORER -->
+  <sc-if value="{{ sExplore }}">
+  <div style="flex:1;overflow-y:auto;padding:4px 18px 16px;display:flex;flex-direction:column;gap:14px">
+    <h1 style="margin:0;font-size:calc(24px * {{ ts }});font-weight:800">Explorer</h1>
+    <sc-if value="{{ hasCtx }}">
+    <button onClick="{{ backToCtx }}" style="min-height:48px;min-width:48px;flex-shrink:0;border:0;cursor:pointer;background:#0F1B35;border-radius:18px;padding:12px 16px;display:flex;align-items:center;gap:10px;text-align:left;min-height:48px"><span style="color:#FFFFFF;font-size:calc(16px * {{ ts }})">←</span><span style="flex:1;display:flex;flex-direction:column"><span style="font-size:calc(11px * {{ ts }});font-weight:700;color:#FFAD66">REVENIR À CE QUE TU FAISAIS</span><span style="font-size:calc(14px * {{ ts }});font-weight:700;color:#FFFFFF">{{ ctxText }}</span></span></button>
+    </sc-if>
+    <div style="flex-shrink:0;background:#FFFFFF;border-radius:24px;padding:16px;display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:center;gap:10px"><img src="assets/nurtu-04-curiosite.svg" alt="" style="flex:none;width:40px;height:45px"><span style="font-size:calc(16px * {{ ts }});font-weight:800">Demander à {{ nm }}</span></div>
+      <div style="display:flex;gap:8px">
+        <input value="{{ askDraft }}" onChange="{{ onAskDraft }}" onKeyDown="{{ onAskKey }}" placeholder="{{ askPh }}" style="flex:1;min-width:0;height:46px;border-radius:999px;border:2px solid #DCE2EC;background:#F5F6FA;padding:0 14px;font-size:calc(14px * {{ ts }});outline:none">
+        <button onClick="{{ askVoice }}" title="Parler" style="min-height:48px;min-width:48px;flex:none;width:48px;min-height:48px;border-radius:50%;border:0;background:{{ askMicBg }};cursor:pointer;display:flex;align-items:center;justify-content:center;min-height:48px"><span style="width:10px;height:18px;border-radius:5px;border:2px solid #0B132B;display:block"></span></button>
+        <button onClick="{{ askSend }}" title="Envoyer" style="min-height:48px;min-width:48px;flex:none;width:48px;min-height:48px;border-radius:50%;border:0;background:#1A3B70;color:#FFFFFF;font-size:calc(18px * {{ ts }});cursor:pointer;min-height:48px">↑</button>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ askChips }}" as="c"><button onClick="{{ c.onClick }}" style="min-height:48px;min-width:48px;border:0;cursor:pointer;background:#DDE7F8;border-radius:999px;padding:7px 12px;font-size:calc(12px * {{ ts }});font-weight:700;color:#1A3B70;min-height:48px">{{ c.t }}</button></sc-for></div>
+    </div>
+    <div style="flex-shrink:0;background:#FFFFFF;border-radius:24px;padding:16px;display:flex;flex-direction:column;gap:10px">
+      <span style="font-size:calc(16px * {{ ts }});font-weight:800">Fais-moi un quiz sur…</span>
+      <div style="display:flex;gap:8px">
+        <input value="{{ quizDraft }}" onChange="{{ onQuizDraft }}" onKeyDown="{{ onQuizKey }}" placeholder="les fractions égales" style="flex:1;min-width:0;height:46px;border-radius:999px;border:2px solid #DCE2EC;background:#F5F6FA;padding:0 14px;font-size:calc(14px * {{ ts }});outline:none">
+        <button onClick="{{ quizSend }}" title="Lancer" style="min-height:48px;min-width:48px;flex:none;width:48px;min-height:48px;border-radius:50%;border:0;background:#1A3B70;color:#FFFFFF;font-size:calc(18px * {{ ts }});cursor:pointer;min-height:48px">↑</button>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ quizChips }}" as="c"><button onClick="{{ c.onClick }}" style="min-height:48px;min-width:48px;border:0;cursor:pointer;background:#FFE6D5;border-radius:999px;padding:7px 12px;font-size:calc(12px * {{ ts }});font-weight:700;color:#9A3C00;min-height:48px">{{ c.t }}</button></sc-for></div>
+    </div>
+    <span style="font-size:calc(16px * {{ ts }});font-weight:800">Parcourir</span>
+    <div style="flex-shrink:0;display:flex;gap:8px;overflow-x:auto;padding-bottom:2px">
+      <sc-for list="{{ exploreSubjs }}" as="s" hint-placeholder-count="6"><button onClick="{{ s.onClick }}" style="min-height:48px;min-width:48px;flex:none;border:0;cursor:pointer;padding:8px 14px;border-radius:999px;font-size:calc(13px * {{ ts }});font-weight:700;background:{{ s.bg }};color:{{ s.fg }};min-height:48px">{{ s.n }}</button></sc-for>
+    </div>
+    <sc-for list="{{ exploreNotions }}" as="n" hint-placeholder-count="4">
+    <button onClick="{{ n.onOpen }}" style="min-height:48px;min-width:48px;flex-shrink:0;border:0;cursor:pointer;background:#FFFFFF;border-radius:18px;padding:13px 16px;display:flex;justify-content:space-between;align-items:center;font-size:calc(15px * {{ ts }});font-weight:700;color:#0B132B;text-align:left;min-height:48px">{{ n.name }}<span style="color:#1A3B70">→</span></button>
+    </sc-for>
+  </div>
+  </sc-if>
+
+  <!-- NOTION CARD -->
+  <sc-if value="{{ sCard }}">
+  <div style="flex:1;overflow-y:auto;padding:4px 18px 16px;display:flex;flex-direction:column;gap:12px">
+    <button onClick="{{ cardBack }}" style="min-height:48px;min-width:48px;align-self:flex-start;border:0;background:none;padding:0;font-size:calc(13px * {{ ts }});font-weight:700;color:#1A3B70;cursor:pointer;min-height:48px">← {{ cardBackLabel }}</button>
+    <span style="align-self:flex-start;padding:5px 12px;border-radius:999px;background:#FFFFFF;font-size:calc(12px * {{ ts }});font-weight:700;color:#1A3B70">{{ card.subj }}</span>
+    <h1 style="margin:0;font-size:calc(24px * {{ ts }});line-height:1.2;font-weight:800">{{ card.name }}</h1>
+    <div style="background:#FFFFFF;border-radius:22px;padding:16px;font-size:calc(15px * {{ ts }});line-height:1.55">{{ card.p }}</div>
+    <div style="background:#FFF1E6;border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:8px"><span style="font-size:calc(11px * {{ ts }});font-weight:800;letter-spacing:0.06em;color:#9A3C00">EXEMPLE</span><span style="font-size:calc(15px * {{ ts }});line-height:1.5">{{ card.ex }}</span></div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:auto">
+      <button onClick="{{ card.onExplain }}" style="min-height:48px;min-width:48px;min-height:50px;border:0;border-radius:999px;background:#0F1B35;color:#FFFFFF;font-size:calc(15px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">Comprendre avec {{ nm }}</button>
+      <sc-if value="{{ card.hasQuiz }}"><button onClick="{{ card.onQuiz }}" style="min-height:48px;min-width:48px;min-height:48px;border:2px solid #1A3B70;border-radius:999px;background:#FFFFFF;color:#1A3B70;font-size:calc(15px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">Un petit quiz</button></sc-if>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- PARENT CODE -->
+  <sc-if value="{{ sCode }}">
+  <div style="flex:1;padding:10px 26px 24px;display:flex;flex-direction:column;align-items:center;gap:14px">
+    <button onClick="{{ cancelCode }}" style="min-height:48px;min-width:48px;align-self:flex-start;border:0;background:none;padding:0;font-size:calc(13px * {{ ts }});font-weight:700;color:#C9D4EA;cursor:pointer;min-height:48px">← Retour au mode Léa</button>
+    <h2 style="margin:8px 0 0;font-size:calc(24px * {{ ts }});font-weight:800;color:#FFFFFF">Code parent</h2>
+    <span style="font-size:calc(14px * {{ ts }});color:#C9D4EA;text-align:center">Saisissez votre code à 6 chiffres pour revenir au mode parent.</span>
+    <div style="display:flex;gap:12px;margin:8px 0 2px"><sc-for list="{{ codeDots }}" as="d" hint-placeholder-count="6"><span style="width:16px;height:16px;border-radius:50%;border:2px solid #FFFFFF;background:{{ d.bg }}"></span></sc-for></div>
+    <span style="min-height:36px;font-size:calc(13px * {{ ts }});line-height:1.4;font-weight:600;color:{{ codeMsgColor }};text-align:center">{{ codeMsg }}</span>
+    <div style="display:grid;grid-template-columns:repeat(3,72px);gap:12px 22px;opacity:{{ padOp }}"><sc-for list="{{ keys }}" as="k" hint-placeholder-count="12"><button onClick="{{ k.onClick }}" style="min-height:48px;min-width:48px;width:72px;min-height:72px;border-radius:50%;border:0;background:{{ k.bg }};color:#FFFFFF;font-size:calc(26px * {{ ts }});font-weight:600;cursor:pointer;min-height:48px">{{ k.label }}</button></sc-for></div>
+    <div style="margin-top:auto;display:flex;flex-direction:column;align-items:center;gap:10px">
+      <sc-if value="{{ parentDevice }}"><button onClick="{{ bio }}" style="min-height:48px;min-width:48px;min-height:48px;padding:0 20px;border-radius:999px;border:2px solid #FFFFFF;background:transparent;color:#FFFFFF;font-size:calc(14px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">Utiliser Face ID</button></sc-if>
+      <button onClick="{{ forgot }}" style="min-height:48px;min-width:48px;border:0;background:none;padding:0;font-size:calc(14px * {{ ts }});font-weight:700;color:#FFAD66;cursor:pointer;min-height:48px">{{ forgotLabel }}</button>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- TAB BAR -->
+  <sc-if value="{{ showTabs }}">
+  <div style="flex:none;display:flex;gap:8px;padding:8px 14px 16px;background:rgba(255,255,255,0.85)">
+    <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+    <button onClick="{{ t.onClick }}" style="min-height:48px;min-width:48px;flex:1;border:0;cursor:pointer;min-height:54px;border-radius:18px;background:{{ t.bg }};color:{{ t.fg }};display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;font-size:calc(12px * {{ ts }});font-weight:700;min-height:48px"><span style="width:18px;height:18px;border-radius:{{ t.shape }};border:2.5px solid {{ t.fg }};display:block"></span>{{ t.label }}</button>
+    </sc-for>
+  </div>
+  </sc-if>
+  <div style="flex:none;height:{{ bottomInset }}px;display:flex;align-items:center;justify-content:center;background:{{ bottomBg }}">
+    <sc-if value="{{ isIos }}"><span style="width:134px;height:5px;border-radius:3px;background:{{ indicator }}"></span></sc-if>
+    <sc-if value="{{ isAndroid }}"><span style="display:flex;gap:56px;align-items:center"><span style="width:0;height:0;border-top:7px solid transparent;border-bottom:7px solid transparent;border-right:10px solid {{ indicator }}"></span><span style="width:14px;height:14px;border-radius:50%;border:2px solid {{ indicator }}"></span><span style="width:12px;height:12px;border:2px solid {{ indicator }};border-radius:2px"></span></span></sc-if>
+  </div>
+
+  <sc-if value="{{ camDialog }}">
+  <div style="position:absolute;inset:0;z-index:9;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;padding:30px">
+    <div style="width:100%;max-width:280px;background:rgba(245,246,250,0.98);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;text-align:center">
+      <div style="padding:18px 16px;display:flex;flex-direction:column;gap:8px"><span style="font-size:calc(16px * {{ ts }});font-weight:700">« Nurturia » souhaite accéder à l'appareil photo</span><span style="font-size:calc(13px * {{ ts }});line-height:1.4;color:#34425C">Pour photographier l'énoncé imprimé d'un exercice. La photo est effacée après validation du texte.</span></div>
+      <div style="display:flex;border-top:1px solid #C9D2E0"><button data-sys="1" onClick="{{ camDeny }}" style="flex:1;height:48px;border:0;border-right:1px solid #C9D2E0;background:transparent;font-size:calc(16px * {{ ts }});color:#1A5FD0;cursor:pointer">Refuser</button><button data-sys="1" onClick="{{ camAllow }}" style="flex:1;height:48px;border:0;background:transparent;font-size:calc(16px * {{ ts }});font-weight:700;color:#1A5FD0;cursor:pointer">Autoriser</button></div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ micSheet }}">
+  <div style="position:absolute;inset:0;z-index:8;background:rgba(15,27,53,0.5);display:flex;align-items:flex-end">
+    <div style="width:100%;background:#FFFFFF;border-radius:28px 28px 0 0;padding:18px 18px {{ sheetPad }}px;display:flex;flex-direction:column;gap:12px">
+      <span style="align-self:center;width:44px;height:5px;border-radius:3px;background:#DCE2EC"></span>
+      <span style="font-size:calc(19px * {{ ts }});font-weight:800">Le micro n'est pas autorisé</span>
+      <p style="margin:0;font-size:calc(15px * {{ ts }});line-height:1.5;color:#34425C">Tu peux écrire ta réponse avec le clavier. Ton parent peut autoriser le micro dans les réglages du téléphone.</p>
+      <button onClick="{{ micToKeyboard }}" style="min-height:48px;min-width:48px;min-height:56px;border:0;border-radius:999px;background:#0F1B35;color:#FFFFFF;font-size:calc(16px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">Écrire avec le clavier</button>
+      <button onClick="{{ closeMic }}" style="min-height:48px;min-width:48px;min-height:50px;border:0;border-radius:999px;background:#F5F6FA;color:#1A3B70;font-size:calc(15px * {{ ts }});font-weight:700;cursor:pointer;min-height:48px">Fermer</button>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ callOn }}">
+  <div style="position:absolute;inset:0;z-index:10;background:#11151E;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:90px 30px 70px;color:#FFFFFF">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:8px"><span style="font-size:calc(14px * {{ ts }});color:#A7B1C4">Appel entrant</span><span style="font-size:calc(30px * {{ ts }});font-weight:600">Papa</span></div>
+    <div style="display:flex;gap:60px"><button data-sys="1" onClick="{{ endCall }}" style="width:72px;height:72px;border-radius:50%;border:0;background:#D64545;color:#FFFFFF;font-size:calc(13px * {{ ts }});font-weight:700;cursor:pointer">Refuser</button><button data-sys="1" onClick="{{ endCall }}" style="width:72px;height:72px;border-radius:50%;border:0;background:#2F9E5B;color:#FFFFFF;font-size:calc(13px * {{ ts }});font-weight:700;cursor:pointer">Accepter</button></div>
+  </div>
+  </sc-if>
+</div>
+</div>
+
+<!-- REVIEW PANEL -->
+<div style="flex:1 1 320px;max-width:460px;display:flex;flex-direction:column;gap:16px">
+  <div style="display:flex;flex-direction:column;gap:6px">
+    <a href="Nurturia Parent.dc.html" style="font-size:13px;font-weight:600;text-decoration:none">← Tableau de bord parent</a>
+    <h1 style="margin:0;font-size:28px;line-height:1.2;font-weight:800;letter-spacing:-0.02em">Nurturia · téléphone · mode enfant</h1>
+    <p style="margin:0;font-size:14px;line-height:1.55;color:#34425C">Accueil (choix d'activité) · Mon parcours · Explorer. Le bandeau « Mode Léa » et le verrou restent visibles partout. Code parent de démo : 123456. Cibles ≥ 48 pt, zones sûres respectées, texte jusqu'à 200 %. <a href="Nurturia Phone Parent.dc.html">Téléphone · mode parent</a> · <a href="Nurturia Enfant v2.dc.html">version précédente</a>.</p>
+  </div>
+  <div style="background:#FFFFFF;border-radius:24px;padding:18px;display:flex;flex-direction:column;gap:10px">
+    <span style="font-size:13px;font-weight:800;color:#51607A">ALLER À UN ÉCRAN</span>
+    <div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ jumps }}" as="j" hint-placeholder-count="20"><button onClick="{{ j.onClick }}" style="border:0;cursor:pointer;padding:8px 12px;border-radius:999px;background:#F5F6FA;font-size:12px;font-weight:600;color:#0B132B">{{ j.label }}</button></sc-for></div>
+  </div>
+  <div style="background:#FFFFFF;border-radius:24px;padding:18px;display:flex;flex-direction:column;gap:10px">
+    <span style="font-size:13px;font-weight:800;color:#51607A">APPAREIL</span>
+    <div style="display:flex;gap:4px;background:#F5F6FA;padding:4px;border-radius:999px"><sc-for list="{{ osSeg }}" as="s"><button onClick="{{ s.onClick }}" style="flex:1;border:0;cursor:pointer;padding:8px;border-radius:999px;font-size:12px;font-weight:700;background:{{ s.bg }};color:{{ s.fg }}">{{ s.label }}</button></sc-for></div>
+    <div style="display:flex;gap:4px;background:#F5F6FA;padding:4px;border-radius:999px"><sc-for list="{{ wSeg }}" as="s"><button onClick="{{ s.onClick }}" style="flex:1;border:0;cursor:pointer;padding:8px;border-radius:999px;font-size:12px;font-weight:700;background:{{ s.bg }};color:{{ s.fg }}">{{ s.label }}</button></sc-for></div>
+    <span style="font-size:13px;font-weight:800;color:#51607A;margin-top:6px">TAILLE DU TEXTE</span>
+    <div style="display:flex;gap:4px;background:#F5F6FA;padding:4px;border-radius:999px"><sc-for list="{{ tsSeg }}" as="s"><button onClick="{{ s.onClick }}" style="flex:1;border:0;cursor:pointer;padding:8px;border-radius:999px;font-size:12px;font-weight:700;background:{{ s.bg }};color:{{ s.fg }}">{{ s.label }}</button></sc-for></div>
+    <span style="font-size:13px;font-weight:800;color:#51607A;margin-top:6px">AUTORISATION APPAREIL PHOTO</span>
+    <div style="display:flex;gap:4px;background:#F5F6FA;padding:4px;border-radius:999px"><sc-for list="{{ permSeg }}" as="s"><button onClick="{{ s.onClick }}" style="flex:1;border:0;cursor:pointer;padding:8px;border-radius:999px;font-size:12px;font-weight:700;background:{{ s.bg }};color:{{ s.fg }}">{{ s.label }}</button></sc-for></div>
+    <span style="font-size:13px;font-weight:800;color:#51607A;margin-top:6px">RÉSULTAT DE LA PROCHAINE PHOTO</span>
+    <div style="display:flex;gap:4px;background:#F5F6FA;padding:4px;border-radius:999px"><sc-for list="{{ camSeg }}" as="s" hint-placeholder-count="3"><button onClick="{{ s.onClick }}" style="flex:1;border:0;cursor:pointer;padding:8px 10px;border-radius:999px;font-size:12px;font-weight:700;background:{{ s.bg }};color:{{ s.fg }}">{{ s.label }}</button></sc-for></div>
+    <span style="font-size:13px;font-weight:800;color:#51607A;margin-top:6px">CONDITIONS</span>
+    <sc-for list="{{ toggles }}" as="t" hint-placeholder-count="6">
+    <button onClick="{{ t.onClick }}" style="border:0;cursor:pointer;background:#F5F6FA;border-radius:16px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:13px;font-weight:600;color:#0B132B;text-align:left">{{ t.label }}<span style="flex:none;width:40px;height:24px;border-radius:12px;background:{{ t.track }};padding:3px;display:flex;justify-content:{{ t.justify }}"><span style="width:18px;height:18px;border-radius:50%;background:#FFFFFF"></span></span></button>
+    </sc-for>
+  </div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;mascotName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Néo&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+const BAR = (n,k,label,col='#FF9F66') => ({label, segs:Array.from({length:n},(_,i)=>({bg:i<k?col:'#FFFFFF'}))});
+const T = {
+ cmp:{ask:"Imagine une pizza coupée en 8 parts et une autre coupée en 4 parts. Dans laquelle les parts sont les plus grandes ?",replies:['Celle en 4 parts','Celle en 8 parts','Je ne sais pas'],
+   hint:"Quand on coupe la même pizza en plus de parts, chaque part devient plus petite.",
+   visual:{t:"Regarde ces deux bandes de même longueur. Une part est coloriée dans chacune.",bars:[BAR(4,1,'1/4'),BAR(8,1,'1/8')]},
+   ex:{title:"Quelle fraction est la plus grande : 1/3 ou 1/6 ?",steps:[{t:"Les deux fractions ont 1 en haut : dans les deux cas, on prend une seule part."},{t:"1/3 : le tout est coupé en 3 parts égales. 1/6 : le même tout est coupé en 6 parts égales.",bars:[BAR(3,1,'1/3'),BAR(6,1,'1/6')]},{t:"Couper en 6, c'est faire plus de parts. Chaque part est donc plus petite."},{t:"Une part sur 3 est plus grande qu'une part sur 6. Donc 1/3 est plus grand que 1/6."}]}},
+ eq:{ask:"Si tu colories 2 parts sur 3 d'une bande, puis que tu coupes chaque part en deux, combien de parts coloriées as-tu ?",replies:['4 parts','3 parts','Je ne sais pas'],
+   hint:"Pour trouver une fraction égale, ajouter le même nombre en haut et en bas ne marche pas. On multiplie les deux par le même nombre.",
+   visual:{t:"La partie coloriée est la même sur les deux bandes.",bars:[BAR(3,2,'2/3'),BAR(6,4,'4/6')]},
+   ex:{title:"Quelle fraction est égale à 1/4 : 2/8 ou 2/5 ?",steps:[{t:"On part de 1/4 : une part coloriée sur 4.",bars:[BAR(4,1,'1/4')]},{t:"On coupe chaque part en deux. Il y a maintenant 8 parts, et 2 sont coloriées.",bars:[BAR(8,2,'2/8')]},{t:"On a multiplié le haut et le bas par 2 : 1 × 2 = 2 et 4 × 2 = 8."},{t:"La partie coloriée n'a pas changé. Donc 1/4 = 2/8."}]}},
+ add:{ask:"Si tu as 1 quart de gâteau et qu'on t'en donne 2 autres quarts, combien de quarts as-tu ?",replies:['3 quarts','3 huitièmes','Je ne sais pas'],
+   hint:"Quand les parts ont la même taille, on compte les parts. La taille des parts, elle, ne change pas.",
+   visual:{t:"Des quarts, puis encore des quarts, sur la même bande.",bars:[BAR(4,1,'1/4'),BAR(4,2,'2/4')]},
+   ex:{title:"Combien font 1/5 + 2/5 ?",steps:[{t:"Les deux fractions parlent de cinquièmes : les parts ont la même taille.",bars:[BAR(5,1,'1/5'),BAR(5,2,'2/5')]},{t:"On compte les parts : 1 part, plus 2 parts, ça fait 3 parts."},{t:"Les parts sont toujours des cinquièmes. Le 5 en bas ne change pas.",bars:[BAR(5,3,'3/5')]},{t:"Donc 1/5 + 2/5 = 3/5."}]}},
+ line:{ask:"Entre 0 et 1, combien de sauts égaux vois-tu sur la droite ?",replies:['4 sauts','5 sauts','Je ne sais pas'],
+   hint:"Sur une droite graduée, on compte les espaces entre les traits, pas les traits.",
+   visual:{t:"Chaque case est un saut. Compte les cases, pas les traits.",bars:[BAR(4,0,'')]},
+   ex:{title:"Sur une droite de 0 à 1 partagée en 3, où est 2/3 ?",steps:[{t:"On compte les espaces entre 0 et 1 : il y en a 3. Chaque saut vaut 1/3.",bars:[BAR(3,0,'')]},{t:"Pour 2/3, on fait 2 sauts depuis 0.",bars:[BAR(3,2,'2/3')]},{t:"Le point est au 2e trait après 0, juste avant le 1."}]}},
+ dec:{ask:"Un quart d'euro, ça fait combien de centimes ?",replies:['25 centimes','40 centimes','Je ne sais pas'],
+   hint:"1/4 veut dire « 1 partagé en 4 ». Ce n'est pas « 1 et 4 » écrits côte à côte.",
+   visual:{t:"1 euro partagé en 4 parts égales.",bars:[BAR(4,1,'1/4')]},
+   ex:{title:"Quel nombre décimal est égal à 1/2 ?",steps:[{t:"1/2 veut dire : 1 partagé en 2 parts égales.",bars:[BAR(2,1,'1/2')]},{t:"1 euro partagé en 2, ça fait 50 centimes chacun."},{t:"50 centimes, c'est 0,50 euro. Donc 1/2 = 0,5 (et pas 1,2)."}]}},
+ fr:{ask:"Relis la phrase à voix haute. Quel auxiliaire entends-tu : « être » ou « avoir » ? Et comment se termine le verbe ?",replies:['Avec être','Avec avoir','Je ne sais pas'],
+   hint:"Au passé composé, on écrit l'auxiliaire (être ou avoir), puis le participe passé : mangé, allé, regardé.",visual:null,
+   ex:{title:"« Tu es parti » ou « tu as parti » ?",steps:[{t:"« Partir » est un verbe de mouvement, comme « aller »."},{t:"Beaucoup de verbes de mouvement se conjuguent avec « être » au passé composé."},{t:"On dit donc « tu es parti », comme « tu es allé »."}]}}
+};
+const Q = [
+ {type:'cmp',text:"Quelle fraction est la plus grande ?",opts:['1/4','1/8','Elles sont égales'],ans:'1/4'},
+ {type:'eq',text:"Quelle fraction est égale à 2/3 ?",opts:['4/5','4/6','3/4'],ans:'4/6',bars:[BAR(3,2,'2/3')]},
+ {type:'add',text:"Combien font 1/4 + 2/4 ?",opts:['3/8','3/4','2/4'],ans:'3/4',bars:[BAR(4,1,'1/4'),BAR(4,2,'2/4')]},
+ {type:'line',text:"Quelle lettre est placée à 3/4 ?",opts:['A','B','C','D'],ans:'C',line:{n:4,pts:[['A',1],['B',2],['C',3],['D',4]]}},
+ {type:'dec',text:"Quel nombre décimal est égal à 1/4 ?",opts:['0,4','0,25','1,4'],ans:'0,25'},
+ {type:'cmp',text:"Quelle fraction est la plus petite ?",opts:['1/3','1/5','Elles sont égales'],ans:'1/5'},
+ {type:'eq',text:"Quelle fraction est égale à 1/2 ?",opts:['2/3','3/6','1/4'],ans:'3/6',bars:[BAR(2,1,'1/2')]},
+ {type:'add',text:"Combien font 1/5 + 3/5 ?",opts:['4/10','4/5','3/5'],ans:'4/5'},
+ {type:'fr',text:"Hier, nous ___ au parc.",opts:['sommes allés','avons allés','allons'],ans:'sommes allés'},
+ {type:'fr',text:"Elle ___ son goûter.",opts:['a mangé','a manger','est mangé'],ans:'a mangé'},
+ {type:'fr',text:"Ils ___ un film.",opts:['ont regardé','ont regarder','sont regardé'],ans:'ont regardé'}
+];
+const SETS = {diag:[0,1,2,3,4,5,6,7],eval:[0,1,2,3,4],eqf:[1,6],cmp:[0,5],add:[2,7],line:[3],dec:[4],denom:[0,5,1],frac:[0,1,2],fr:[8,9,10]};
+const REPLIES = {offer:['Oui, un indice','Non merci'],afterHint:['Je réessaie','Un dessin'],afterVisual:['Je réessaie','Un exemple qui ressemble'],decline:['Je réessaie','Un indice'],refusal:['Je réessaie','Un indice',"J'arrête"],free:['Je réessaie','Un indice']};
+const CONF = [['sure','Je suis sûre','#1A3B70'],['crois','Je crois','#3A6BB0'],['sais','Je ne sais pas','#A9C1EA']];
+const SUBJ = [['Maths','×','#FFE6D5'],['Français','Aa','#DDE7F8'],['Sciences','H₂O','#DCF2E8'],['Histoire-Géo','N','#F3E6C9'],['Anglais','En','#E6E0F5'],['Arts','◐','#FFE0E6']];
+const NOT = {
+ Maths:[
+  {id:'denom',name:'Le dénominateur',st:'explore',p:"Dans une fraction, le nombre du bas s'appelle le dénominateur. Il dit en combien de parts égales on coupe le tout.",ex:"Dans 3/5, le dénominateur est 5 : le tout est coupé en 5 parts.",set:'denom'},
+  {id:'eqf',name:'Fractions égales',st:'su',p:"Deux fractions sont égales quand elles représentent la même quantité. On en trouve une en multipliant le haut et le bas par le même nombre.",ex:"1/2 = 2/4 = 3/6.",set:'eqf'},
+  {id:'dec',name:'Fractions et décimaux',st:'su',p:"Une fraction peut s'écrire avec une virgule. 1/4 veut dire 1 partagé en 4.",ex:"1/4 = 0,25 et 1/2 = 0,5.",set:'dec'},
+  {id:'cmp',name:'Comparer des fractions',st:'encours',p:"Quand le haut est le même, plus le nombre du bas est grand, plus les parts sont petites.",ex:"1/3 est plus grand que 1/6.",set:'cmp'},
+  {id:'add',name:'Additionner des fractions',st:'encours',p:"Quand les parts ont la même taille, on additionne les nombres du haut. Le nombre du bas ne change pas.",ex:"1/5 + 2/5 = 3/5.",set:'add'},
+  {id:'line',name:'Droite graduée',st:'encours',p:"Sur une droite graduée, on compte les sauts entre les traits. Chaque saut a la même longueur.",ex:"De 0 à 1 en 4 sauts : chaque saut vaut 1/4.",set:'line'},
+  {id:'aires',name:'Les aires',st:'none',p:"L'aire, c'est la place qu'occupe une surface. On la mesure en carrés.",ex:"Un rectangle de 3 carrés sur 2 a une aire de 6 carrés."},
+  {id:'deci',name:'Les nombres décimaux',st:'none',p:"Un nombre décimal a une partie entière et une partie après la virgule.",ex:"Dans 2,5 : 2 unités et 5 dixièmes."}],
+ 'Français':[
+  {id:'fr',name:'Le passé composé',st:'encours',p:"Le passé composé raconte une action terminée. On l'écrit avec « être » ou « avoir », puis le participe passé.",ex:"J'ai mangé. Je suis allée au parc.",set:'fr'},
+  {id:'cdn',name:'Le complément du nom',st:'explore',p:"Le complément du nom précise un nom. Il est souvent introduit par « de » ou « à ».",ex:"Un gâteau au chocolat. La cour de l'école."},
+  {id:'homo',name:'Les homophones a / à',st:'none',p:"« a » est le verbe avoir. « à » est un petit mot qui indique un lieu ou un moment.",ex:"Elle a un vélo. Elle va à l'école."},
+  {id:'accord',name:"L'accord du participe passé",st:'none',p:"Avec « être », le participe passé s'accorde avec le sujet.",ex:"Elle est partie. Ils sont partis."}],
+ 'Sciences':[
+  {id:'eau',name:"Les états de l'eau",st:'explore',p:"L'eau peut être solide (glace), liquide, ou gazeuse (vapeur). Elle change d'état quand elle chauffe ou refroidit.",ex:"Un glaçon fond au soleil : il passe de solide à liquide."},
+  {id:'sol',name:'Le système solaire',st:'none',p:"Huit planètes tournent autour du Soleil. La Terre est la troisième.",ex:"Mercure est la plus proche du Soleil."},
+  {id:'dig',name:'La digestion',st:'none',p:"La digestion transforme les aliments pour que le corps puisse les utiliser.",ex:"Elle commence dans la bouche, quand on mâche."}],
+ 'Histoire-Géo':[
+  {id:'egy',name:"L'Égypte ancienne",st:'explore',p:"Il y a environ 5 000 ans, une grande civilisation s'est développée le long du Nil.",ex:"Les pyramides étaient des tombeaux pour les pharaons."},
+  {id:'carte',name:'Lire une carte',st:'none',p:"Une carte représente un lieu vu d'en haut. La légende explique les symboles.",ex:"Sur la légende, le bleu indique souvent l'eau."},
+  {id:'gaul',name:'Les Gaulois',st:'none',p:"Les Gaulois vivaient sur le territoire de la France actuelle, avant l'arrivée des Romains.",ex:"Ils vivaient en tribus, dans des villages."}],
+ 'Anglais':[
+  {id:'nums',name:'Les nombres',st:'explore',p:"En anglais, les nombres de 13 à 19 se terminent par « -teen ».",ex:"Thirteen (13), fourteen (14), fifteen (15)."},
+  {id:'pres',name:'Le présent simple',st:'none',p:"Le présent simple sert à parler d'habitudes. Avec he, she ou it, on ajoute un « s » au verbe.",ex:"I play. She plays."}],
+ 'Arts':[
+  {id:'coul',name:'Les couleurs primaires',st:'explore',p:"Les couleurs primaires sont le rouge, le jaune et le bleu. En les mélangeant, on obtient les autres couleurs.",ex:"Jaune + bleu = vert."},
+  {id:'persp',name:'La perspective',st:'none',p:"La perspective donne l'impression de profondeur sur un dessin plat.",ex:"Ce qui est loin est dessiné plus petit."}]
+};
+const ALLN = Object.entries(NOT).flatMap(([s,l])=>l.map(n=>({...n,subj:s})));
+const EXPL = {
+ denom:{title:"C'est quoi un dénominateur ?",set:'denom',steps:[
+  {t:"Dans une fraction, il y a deux nombres, l'un au-dessus de l'autre. Celui du bas s'appelle le dénominateur.",bars:[BAR(5,3,'3/5')]},
+  {t:"Le dénominateur dit en combien de parts égales on a coupé le tout. Ici, la bande est coupée en 5 parts."},
+  {t:"À toi : dans 3/5, quel est le dénominateur ?",ask:[['3',"Regarde bien : 3 est en haut, il dit combien de parts on prend. Le nombre du bas dit en combien de parts on coupe."],['5',"Oui, 5 est en bas : la bande est coupée en 5 parts."]]},
+  {t:"Et le nombre du haut s'appelle le numérateur. Il dit combien de parts on prend : ici, 3."}]},
+ eqf:{title:'Fractions égales',set:'eqf',steps:[
+  {t:"Regarde ces deux bandes. Sur la première, 1 part sur 2 est coloriée. Sur la deuxième, 2 parts sur 4.",bars:[BAR(2,1,'1/2'),BAR(4,2,'2/4')]},
+  {t:"À ton avis, la partie coloriée est-elle la même ?",ask:[['Oui',"Oui, c'est la même quantité, coupée différemment. On dit que 1/2 et 2/4 sont égales."],['Non',"Regarde la longueur coloriée sur chaque bande : elle arrive au même endroit. C'est la même quantité, coupée différemment."]]},
+  {t:"Pour passer de 1/2 à 2/4, on a multiplié le haut et le bas par 2."}]},
+ line:{title:'Droite graduée',set:'line',steps:[
+  {t:"Une droite graduée de 0 à 1 est coupée en sauts de même longueur.",bars:[BAR(4,0,'')]},
+  {t:"Combien de sauts vois-tu ici ?",ask:[['4',"Oui, 4 sauts. Chaque saut vaut 1/4."],['5',"Tu as peut-être compté les traits. Compte les cases : il y en a 4, donc chaque saut vaut 1/4."]]},
+  {t:"Pour placer 3/4, on fait 3 sauts depuis 0.",bars:[BAR(4,3,'3/4')]}]}
+};
+const STMT = {Maths:"Léo mange 1/4 d'une tarte et sa sœur en mange 2/4. Quelle fraction de la tarte ont-ils mangée en tout ?",'Français':"Conjugue les verbes entre parenthèses au passé composé. Hier, nous (aller) au parc et nous (jouer) au ballon.",'Sciences':"Explique pourquoi une flaque d'eau disparaît quand il fait chaud.",'Histoire-Géo':"Sur la carte, entoure le fleuve qui traverse l'Égypte et écris son nom.",'Anglais':"Complete with am, is or are: My brother ___ ten years old.",'Arts':"Cite les trois couleurs primaires et donne un exemple de mélange."};
+const TOPICS = "Les fractions : comparer, trouver des fractions égales, additionner";
+const HW = {
+ maths:{hint:"Quand les parts ont la même taille, on compte les parts. La taille des parts, elle, ne change pas.",steps:[
+  {q:"Merci Léa. Je ne vais pas faire l'exercice à ta place, mais on peut le faire ensemble. D'abord : qu'est-ce que l'énoncé te demande de trouver ?",r:["Ce qu'ils ont mangé en tout","Je ne sais pas"],w:"Relis la dernière phrase de l'énoncé. C'est souvent là qu'on trouve la question."},
+  {q:"Léo mange 1/4 et sa sœur 2/4. Est-ce que ces parts ont la même taille ?",r:["Oui, ce sont des quarts","Non","Je ne sais pas"],w:"Regarde le nombre du bas de chaque fraction. Est-ce que c'est le même ?"},
+  {q:"Alors tu peux compter les quarts mangés. Écris ta réponse sur ta copie, puis dis-moi comment tu as fait.",r:["J'ai compté les parts","Un indice","Je ne sais pas"],w:"Tu peux dessiner une tarte coupée en 4 et colorier ce que chacun a mangé."},
+  {q:"Tu m'as expliqué ta méthode. Relis l'énoncé : est-ce que ta réponse répond bien à la question ?",r:["C'est bon, j'ai fini","Je ne sais pas"],w:"Relis la question, puis ta phrase de réponse. Est-ce qu'elles parlent de la même chose ?"}]},
+ generic:{hint:"Tu peux souligner les mots importants de la consigne. Ils disent souvent par où commencer.",steps:[
+  {q:"Merci Léa. Je ne vais pas faire l'exercice à ta place, mais on peut le faire ensemble. D'abord : qu'est-ce que la consigne te demande de faire ?",r:["J'ai compris la consigne","Je ne sais pas"],w:"Cherche le verbe de la consigne : il dit ce qu'il faut faire."},
+  {q:"Qu'est-ce que tu sais déjà qui pourrait t'aider ?",r:["J'ai une idée","Je ne sais pas"],w:"Pense à ce que tu as vu en classe sur ce sujet cette semaine."},
+  {q:"Essaie d'écrire ta réponse sur ta copie, puis explique-moi comment tu as fait.",r:["C'est fait","Un indice","Je ne sais pas"],w:"Commence par une seule partie de la consigne."},
+  {q:"Tu m'as expliqué ta méthode. Relis la consigne : est-ce que ta réponse y répond bien ?",r:["C'est bon, j'ai fini","Je ne sais pas"],w:"Relis la consigne, puis ta réponse. Est-ce qu'elles parlent de la même chose ?"}]}
+};
+const isExercise = t => /\d\s*[\/+\-×x=]\s*\d/.test(t) || /(calcule|résous|conjugue|complète|trouve|entoure)/i.test(t);
+const explainFor = t => /dénominateur/i.test(t) ? "Le dénominateur, c'est le nombre du bas dans une fraction. Il dit en combien de parts égales on coupe le tout. Dans 3/5, on coupe en 5 parts. À ton avis, que dit le nombre du haut ?"
+ : /égal|équival/i.test(t) ? "Deux fractions sont égales quand elles représentent la même quantité. 1/2 et 2/4, c'est la même part de gâteau, coupée différemment. Tu vois pourquoi ?"
+ : /passé composé/i.test(t) ? "Le passé composé sert à raconter une action terminée. On l'écrit avec « être » ou « avoir », puis le participe passé : « j'ai mangé », « je suis allée ». Tu veux essayer avec un verbe ?"
+ : /eau|glace|vapeur/i.test(t) ? "L'eau peut être solide (la glace), liquide, ou gazeuse (la vapeur). Elle change d'état quand elle chauffe ou refroidit. Où as-tu déjà vu de la vapeur ?"
+ : `Je peux t'aider à comprendre ça. Pour commencer, dis-moi ce que tu sais déjà sur « ${t} ».`;
+const exampleFor = t => /dénominateur/i.test(t) ? "Par exemple, dans 2/8, on a coupé le tout en 8 parts, et on en prend 2." : /passé composé/i.test(t) ? "Par exemple : « Nous avons joué », « Elle est partie »." : "Par exemple, si tu me donnes un mot de ta leçon, je te propose un exemple avec.";
+const topicSet = t => /pass|compos|conjug/i.test(t)?'fr':/égal|équiv/i.test(t)?'eqf':/compar/i.test(t)?'cmp':/addi/i.test(t)?'add':/droite|gradu/i.test(t)?'line':/décim/i.test(t)?'dec':/dénomin/i.test(t)?'denom':'frac';
+const ACT = {devoir:'Faire un devoir',eval:'Préparer une évaluation',notion:'Comprendre une notion'};
+
+class Component extends DCLogic {
+  state = { screen:'parent', sheet:false, pick:'lea', consentChild:false, consentParent:true, blockedBy:null,
+    activity:'devoir', subject:'Maths', interrupted:{set:'diag',q:3,label:'Diagnostic · Fractions',when:'Hier'},
+    set:'diag', setLabel:'Diagnostic · Fractions', qi:0, phase:'confidence', conf:null, chosen:null, tries:0, resumed:false,
+    msgs:[], pending:null, hl:0, typing:false, slow:false, draft:'', listening:false, exForced:false,
+    offline:false, code:'', attempts:3, pause:0, forgotSent:false, parentDevice:false, codeErr:false, endReason:'done',
+    camPerm:'ask', camDialog:false, camResult:'ok', os:'ios', w:390, ts:1, reduce:false, kb:null, shift:false, micAllowed:true, micSheet:false, transcribing:false, call:false, interruptNotice:false, source:null, statement:'', editing:false, toast:null, photoIssue:null,
+    evalTopic:'', evalDate:'', notionQ:'', explKey:'denom', explStep:0, explAns:{},
+    cmode:'hw', cmsgs:[], cpending:null, hwStep:0, cdraft:'', clistening:false, lastAsk:'',
+    askDraft:'', askListening:false, quizDraft:'', mapSubj:'Maths', exploreSubj:'Maths', openM:null, cardId:'denom', cardFrom:'explore', newChild:false, hwActive:false, prevTab:'home' };
+  msgRef = React.createRef(); chatRef = React.createRef(); explRef = React.createRef();
+  timers = [];
+  later(fn,ms){ const t=setTimeout(fn,ms); this.timers.push(t); return t; }
+  componentDidMount(){ this.tick=setInterval(()=>{ if(this.state.pause>0) this.setState(s=>({pause:s.pause-1, attempts:s.pause-1===0?3:s.attempts})); },1000); }
+  componentWillUnmount(){ clearInterval(this.tick); this.timers.forEach(clearTimeout); }
+  componentDidUpdate(){ [this.msgRef,this.chatRef,this.explRef].forEach(r=>{ if(r.current) r.current.scrollTop=r.current.scrollHeight; }); }
+  showToast(t){ this.setState({toast:t}); this.later(()=>this.setState({toast:null}),2600); }
+  to(screen,extra={}){ this.setState({screen,sheet:false,...extra}); }
+
+  // ---------- quiz ----------
+  q(){ return Q[SETS[this.state.set][this.state.qi]]; }
+  startQuiz(set,label){ this.setState({set,setLabel:label}); this.later(()=>this.startAt(0,false),0); }
+  startAt(qi,resumed){ this.setState({screen:'question',qi,phase:'confidence',conf:null,chosen:null,tries:0,msgs:[],pending:null,hl:0,typing:false,slow:false,resumed,exForced:false,sheet:false}); }
+  coachSay(list,pending,ms=1100){
+    this.setState({typing:true,slow:false,pending:null});
+    const sl=this.later(()=>this.setState({slow:true}),3000);
+    this.later(()=>{ clearTimeout(sl); this.setState(s=>({typing:false,slow:false,pending,msgs:[...s.msgs,...list.map(m=>({...m,from:'coach'}))]})); },ms);
+  }
+  child(t){ this.setState(s=>({msgs:[...s.msgs,{from:'child',t}]})); }
+  choose(v){
+    const q=this.q(); if(this.state.offline) return;
+    if(v===q.ans){ this.setState({chosen:v,phase:'ok'}); return; }
+    const tries=this.state.tries+1;
+    if(tries>=3){ this.setState({chosen:v,tries,screen:'example',exForced:true}); return; }
+    const ask=T[q.type].ask, sample=this.state.set==='diag'&&this.state.qi===0&&tries===1;
+    this.setState({chosen:v,tries,screen:'coach',msgs:tries===1?[]:this.state.msgs});
+    this.coachSay([{t:tries===1?'Regardons ta réponse ensemble.':'Regardons encore ensemble.',ai:false},{t:`${tries===1?'Tu as choisi':'Cette fois, tu as choisi'} ${v}. ${ask}`,ai:!sample}],'l1');
+  }
+  retry(){ this.setState({screen:'question',phase:'confidence',conf:null,chosen:null,pending:null,resumed:false}); }
+  help(){
+    const t=T[this.q().type], hl=this.state.hl;
+    if(hl<1){ this.setState({hl:1}); this.coachSay([{t:t.hint,ai:false},{t:'Tu veux réessayer maintenant ?',ai:false}],'afterHint'); }
+    else if(hl<2 && t.visual){ this.setState({hl:2}); this.coachSay([{t:t.visual.t,ai:false,bars:t.visual.bars}],'afterVisual'); }
+    else this.setState({screen:'example',exForced:false});
+  }
+  reply(label){
+    const p=this.state.pending; this.child(label);
+    if(label==='Je réessaie') return this.later(()=>this.retry(),350);
+    if(label==="J'arrête") return this.later(()=>this.stop(),350);
+    if(label==='Un indice'||label==='Oui, un indice') return this.help();
+    if(label==='Un dessin'){ this.setState({hl:1}); return this.help(); }
+    if(label==='Un exemple qui ressemble') return this.later(()=>this.setState({screen:'example',exForced:false}),350);
+    if(label==='Non merci') return this.coachSay([{t:"D'accord, tu peux chercher seule. Tu veux réessayer ?",ai:false}],'decline');
+    if(p==='l1') return this.coachSay([{t:"Merci. Garde cette idée en tête et regarde de nouveau les réponses possibles.",ai:true},{t:'Tu veux un petit indice ?',ai:false}],'offer');
+  }
+  freeText(t){
+    if(this.state.offline||!t.trim()) return; this.child(t.trim()); this.setState({draft:''});
+    if(this.state.pending==='l1') return this.coachSay([{t:`Tu dis : « ${t.trim()} ». C'est une piste. Regarde de nouveau les réponses possibles avec cette idée.`,ai:true},{t:'Tu veux un petit indice ?',ai:false}],'offer',1500);
+    this.coachSay([{t:`Tu dis : « ${t.trim()} ». Qu'est-ce qui te fait penser ça ?`,ai:true}],'free',1500);
+  }
+  next(){
+    const len=SETS[this.state.set].length;
+    if(this.state.qi>=len-1){ this.setState({screen:'end',endReason:'done',interrupted:null}); return; }
+    this.setState({screen:'loading'}); this.later(()=>this.startAt(this.state.qi+1,false),900);
+  }
+  stop(){
+    if(this.state.screen==='chat') return this.setState({screen:'end',endReason:'hwStop',typing:false});
+    this.setState(s=>({screen:'end',endReason:'stopped',interrupted:{set:s.set,q:s.qi,label:s.setLabel,when:"Aujourd'hui"},typing:false}));
+  }
+
+  // ---------- chat (devoir / demander) ----------
+  hwScript(){ return this.state.subject==='Maths'?HW.maths:HW.generic; }
+  csay(list,pending,ms=1100){
+    this.setState({typing:true,slow:false,cpending:null});
+    const sl=this.later(()=>this.setState({slow:true}),3000);
+    this.later(()=>{ clearTimeout(sl); this.setState(s=>({typing:false,slow:false,cpending:pending,cmsgs:[...s.cmsgs,...list.map(m=>({...m,from:'coach'}))]})); },ms);
+  }
+  cchild(t){ this.setState(s=>({cmsgs:[...s.cmsgs,{from:'child',t}]})); }
+  startHw(){ this.setState({screen:'chat',cmode:'hw',cmsgs:[],hwStep:0,hwActive:true,activity:'devoir'}); this.csay([{t:this.hwScript().steps[0].q,ai:true}],'hw',900); }
+  askNeo(t){
+    t=t.trim(); if(!t) return;
+    this.setState({screen:'chat',cmode:'ask',cmsgs:[{from:'child',t}],lastAsk:t,askDraft:''});
+    if(isExercise(t)) this.csay([{t:"On dirait un exercice. Je ne vais pas le résoudre à ta place, mais on peut le faire ensemble. On le fait ensemble ?",ai:false}],'askEx');
+    else this.csay([{t:explainFor(t),ai:true}],'askDone',1300);
+  }
+  creply(label){
+    const s=this.state, sc=this.hwScript(); this.cchild(label);
+    if(s.cpending==='askEx'){
+      if(label==='On le fait ensemble') return this.later(()=>this.setState({statement:s.lastAsk,source:'text',screen:'check',editing:false,activity:'devoir'}),400);
+      return this.csay([{t:"D'accord. Pose-moi ta question, je t'explique la notion.",ai:false}],'askFree');
+    }
+    if(s.cpending==='askDone'||s.cpending==='askMore'||s.cpending==='askFree'){
+      if(label==='Un exemple') return this.csay([{t:exampleFor(s.lastAsk),ai:true}],'askMore');
+      if(label==='Un petit quiz') return this.later(()=>this.startQuiz(topicSet(s.lastAsk),`Quiz · ${s.lastAsk}`),400);
+      if(label==='Merci') return this.csay([{t:"Avec plaisir. Tu peux me poser une autre question quand tu veux.",ai:false}],'askFree');
+    }
+    if(label==="J'arrête") return this.later(()=>this.stop(),350);
+    if(label==="C'est bon, j'ai fini") return this.later(()=>this.setState({screen:'end',endReason:'hw',hwActive:false}),400);
+    if(label==='Un indice') return this.csay([{t:sc.hint,ai:false}],'hw');
+    if(label==='Je ne sais pas') return this.csay([{t:sc.steps[s.hwStep].w,ai:true}],'hw');
+    if(label==='Je réessaie') return this.csay([{t:"D'accord. "+sc.steps[s.hwStep].q,ai:true}],'hw');
+    const n=Math.min(s.hwStep+1,sc.steps.length-1); this.setState({hwStep:n}); this.csay([{t:sc.steps[n].q,ai:true}],'hw');
+  }
+  cfree(t){
+    if(this.state.offline) return; t=t.trim(); if(!t) return; this.setState({cdraft:''});
+    if(this.state.cmode==='ask'){ this.cchild(t); this.setState({lastAsk:t});
+      if(isExercise(t)) return this.csay([{t:"On dirait un exercice. Je ne vais pas le résoudre à ta place, mais on peut le faire ensemble. On le fait ensemble ?",ai:false}],'askEx');
+      return this.csay([{t:explainFor(t),ai:true}],'askDone',1300); }
+    this.cchild(t); this.csay([{t:`Tu dis : « ${t} ». Comment pourrais-tu vérifier ça ?`,ai:true}],'hw',1400);
+  }
+
+  // ---------- capture ----------
+  confirmStatement(){
+    const s=this.state, photo=s.source==='photo'||s.source==='topics';
+    if(photo) this.showToast('La photo a été effacée.');
+    if(s.activity==='eval') return this.setState({evalTopic:s.statement,screen:'evalInput',editing:false});
+    if(s.activity==='notion') return this.submitNotion(s.statement);
+    this.setState({editing:false}); this.startHw();
+  }
+  submitNotion(t){ t=(t||'').trim(); if(!t) return; if(/dénominateur/i.test(t)) return this.startExplain('denom'); this.askNeo(t); }
+  startExplain(key){ this.setState({screen:'explain',explKey:key,explStep:0,explAns:{}}); }
+  explFor(){
+    const k=this.state.explKey; if(EXPL[k]) return EXPL[k];
+    const n=ALLN.find(x=>x.id===k)||ALLN[0];
+    return {title:n.name,set:n.set,steps:[{t:n.p},{t:'Un exemple : '+n.ex},{t:"Tu veux me poser une question sur cette notion ? Tu peux aussi faire un petit quiz."}]};
+  }
+  enterChild(){
+    this.setState({sheet:false,screen:'transition'});
+    this.later(()=>{ const s=this.state; if(!s.consentParent) this.setState({screen:'blocked',blockedBy:'parent'}); else if(!s.consentChild) this.setState({screen:'consent'}); else this.setState({screen:'home'}); },1500);
+  }
+  press(d){
+    const s=this.state; if(s.pause>0) return;
+    if(d==='del') return this.setState({code:s.code.slice(0,-1),codeErr:false});
+    const code=(s.code+d).slice(0,6); this.setState({code,codeErr:false});
+    if(code.length===6) this.later(()=>{
+      if(code==='123456') this.setState({screen:'parent',code:'',attempts:3,forgotSent:false});
+      else { const a=this.state.attempts-1; this.setState(a<=0?{code:'',attempts:0,pause:60,codeErr:true}:{code:'',attempts:a,codeErr:true}); }
+    },250);
+  }
+  shoot(){
+    this.setState({screen:'processing'});
+    this.later(()=>{ const s=this.state;
+      if(s.camResult==='ok') this.setState({screen:'check',source:s.activity==='eval'?'topics':'photo',statement:s.activity==='eval'?TOPICS:STMT[s.subject],editing:false});
+      else this.setState({screen:'photoIssue',photoIssue:s.camResult});
+    },1300);
+  }
+
+  renderVals(){
+    const s=this.state, nm=this.props.mascotName ?? 'Néo', sc=s.screen, q=this.q(), t=T[q.type];
+    const tabScreens=['home','parcours','explore','card'];
+    const childScreens=['reopen','consent','blocked','home','subject','hwInput','photoIntro','processing','photoIssue','check','write','dictate','evalInput','notionInput','explain','chat','loading','question','coach','example','end','how','parcours','explore','card'];
+    const bgs={parent:'#F5F6FA',transition:'#1A3B70',code:'#0F1B35',camera:'#0B0F18'};
+    const actLabel=ACT[s.activity];
+    const heads={subject:[actLabel,'Dans quelle matière ?'],hwInput:[`${actLabel} · ${s.subject}`,"L'énoncé"],photoIntro:[`${actLabel} · ${s.subject}`,'Avant la photo'],
+      check:[`${actLabel} · ${s.subject}`,'Vérifie le texte'],write:[`${actLabel} · ${s.subject}`,s.activity==='notion'?'Ta question':"Écris l'énoncé"],
+      evalInput:[`${actLabel} · ${s.subject}`,'Ton évaluation'],notionInput:[`${actLabel} · ${s.subject}`,'Ta question'],
+      explain:[`Comprendre · ${(ALLN.find(n=>n.id===s.explKey)||{subj:s.subject}).subj}`,this.explFor().title],
+      chat:[s.cmode==='hw'?`Devoir · ${s.subject}`:`Demander à ${nm}`,s.cmode==='hw'?`Avec ${nm}`:'Explorer'],how:['Pour toi','Comment ça marche ?'],example:[s.setLabel,'Un exemple']};
+    const backMap={subject:'home',hwInput:'subject',photoIntro:s.activity==='eval'?'evalInput':'hwInput',camera:'photoIntro',check:s.source==='voice'?(s.activity==='eval'?'evalInput':s.activity==='notion'?'notionInput':'hwInput'):'photoIntro',
+      write:'hwInput',evalInput:'subject',notionInput:'subject',explain:'home',chat:s.cmode==='hw'?'hwInput':'explore',how:'home',photoIssue:'photoIntro',dictate:s.activity==='eval'?'evalInput':s.activity==='notion'?'notionInput':'hwInput'};
+    const withBars = b => (b||[]);
+    const bubble = m => {const c=m.from==='coach'; return {t:m.t,coach:c,ai:c&&!!m.ai,hasBars:!!m.bars,bars:withBars(m.bars),justify:c?'flex-start':'flex-end',bg:c?'#FFFFFF':'#1A3B70',fg:c?'#0B132B':'#FFFFFF',radius:c?'18px 18px 18px 6px':'18px 18px 6px 18px'};};
+    const dots = [0,1,2].map(i=>React.createElement('span',{key:i,style:{width:8,height:8,borderRadius:'50%',background:'#1A3B70',animation:s.reduce?'none':`nt-dot 1.2s ${i*0.2}s infinite`,opacity:s.reduce?0.6:1}}));
+    const qv = {text:q.text,hasBars:!!q.bars,bars:withBars(q.bars),hasLine:!!q.line,
+      ticks:q.line?Array.from({length:q.line.n+1},(_,i)=>({left:`${i/q.line.n*100}%`})):[],
+      pts:q.line?q.line.pts.map(([l,i])=>({l,left:`${i/q.line.n*100}%`})):[],
+      opts:q.opts.map(v=>({v,onClick:()=>this.choose(v)}))};
+    const repl = s.pending==='l1'?t.replies:(REPLIES[s.pending]||[]);
+    const hwS=this.hwScript();
+    const crep = s.cpending==='hw'?[...hwS.steps[s.hwStep].r.filter(r=>r!=='Un indice'),'Un indice']
+      : s.cpending==='hwRefusal'?['Je réessaie','Un indice',"J'arrête"]
+      : s.cpending==='askEx'?['On le fait ensemble',"Non, j'avais une question"]
+      : s.cpending==='askDone'?['Un exemple','Un petit quiz','Merci'] : s.cpending==='askMore'?['Un petit quiz','Merci'] : [];
+    const statusCol = {su:['Tu sais faire','#DCF2E8','#1E6B4E','#FFFFFF','solid','transparent'],encours:['En cours','#FFE6D5','#9A3C00','#FFFFFF','solid','transparent'],explore:['Exploré','#DDE7F8','#1A3B70','#FFFFFF','solid','transparent'],none:['Pas encore exploré','rgba(255,255,255,0.7)','#34425C','transparent','dashed','rgba(26,59,112,0.35)']};
+    const openCard=(id,from)=>()=>this.setState({screen:'card',cardId:id,cardFrom:from});
+    const nTile = n => {const c=statusCol[n.st]; return {name:n.name,tag:c[0],tagBg:c[1],tagFg:c[2],bg:c[3],bs:c[4],bc:c[5],onOpen:openCard(n.id,'parcours')};};
+    const subjChips = key => SUBJ.map(([n])=>({n,onClick:()=>this.setState({[key]:n}),bg:s[key]===n?'#0F1B35':'#FFFFFF',fg:s[key]===n?'#FFFFFF':'#0B132B'}));
+    const card = ALLN.find(n=>n.id===s.cardId)||ALLN[0];
+    const expl=this.explFor(), steps=expl.steps.slice(0,s.explStep+1);
+    const cur=expl.steps[s.explStep], curAnswered=!cur.ask||s.explAns[s.explStep]!=null, last=s.explStep>=expl.steps.length-1;
+    const explV={canNext:curAnswered&&!last,done:curAnswered&&last,steps:steps.map((x,i)=>{const a=s.explAns[i]; const o=x.ask&&a!=null?x.ask.find(z=>z[0]===a):null;
+      return {t:x.t,hasBars:!!x.bars,bars:withBars(x.bars),showAsk:!!x.ask&&a==null,opts:(x.ask||[]).map(([v])=>({v,onClick:()=>this.setState(z=>({explAns:{...z.explAns,[i]:v}}))})),hasFb:!!o,picked:a||'',fb:o?o[1]:''};})};
+    const ctx = s.interrupted?`${s.interrupted.label}, question ${s.interrupted.q+1}`:s.hwActive?`Ton devoir de ${s.subject.toLowerCase()}`:'';
+    const tg=(label,on,fn)=>({label,onClick:fn,track:on?'#1E6B4E':'#C3CAD6',justify:on?'flex-end':'flex-start'});
+    let codeMsg='', codeMsgColor='#FFAD66';
+    if(s.pause>0) codeMsg=`Pause d'une minute. Nouvel essai possible dans 0:${String(s.pause).padStart(2,'0')}.`;
+    else if(s.codeErr) codeMsg = s.attempts===1?"Ce code ne correspond pas. Encore 1 essai avant une pause d'une minute.":`Ce code ne correspond pas. Encore ${s.attempts} essais avant une pause d'une minute.`;
+    else if(s.forgotSent){ codeMsg='Un lien a été envoyé à c•••@exemple.fr.'; codeMsgColor='#C9D4EA'; }
+    const photoIsTopics = s.activity==='eval';
+    const issues={blurry:["La photo est un peu floue.","Tiens le téléphone bien droit, au-dessus de l'énoncé, avec assez de lumière. Puis reprends la photo."],
+      notext:["Je ne trouve pas de texte sur cette photo.","Vérifie que l'énoncé imprimé est bien dans le cadre, puis reprends la photo."],
+      refused:["L'appareil photo n'est pas autorisé.","Tu peux écrire l'énoncé ou le dicter à la place. Pour utiliser la photo, ton parent peut ouvrir les réglages du téléphone › Nurturia › Appareil photo."]};
+    const iss=issues[s.photoIssue]||issues.blurry;
+    const jumps=[
+      ['Mode parent → choix',()=>this.to('parent',{sheet:true})],['Consentement enfant',()=>this.to('consent')],['Consentement manquant',()=>this.to('blocked',{blockedBy:'parent'})],
+      ['Accueil',()=>this.to('home')],['Choix de matière',()=>this.to('subject',{activity:'devoir'})],['Devoir · 3 façons',()=>this.to('hwInput',{activity:'devoir',subject:'Maths'})],
+      ['Avant la photo',()=>this.to('photoIntro',{activity:'devoir'})],['Appareil photo',()=>this.to('camera',{activity:'devoir'})],
+      ['Vérifier le texte',()=>this.to('check',{activity:'devoir',source:'photo',statement:STMT[s.subject],editing:false})],
+      ['Photo floue',()=>this.to('photoIssue',{photoIssue:'blurry'})],['Aucun texte',()=>this.to('photoIssue',{photoIssue:'notext'})],['Appareil refusé',()=>this.to('photoIssue',{photoIssue:'refused'})],
+      ['Session devoir',()=>{this.setState({subject:'Maths',statement:STMT.Maths,sheet:false});this.later(()=>this.startHw(),0);}],
+      ['Évaluation',()=>this.to('evalInput',{activity:'eval',subject:'Maths'})],['Comprendre une notion',()=>this.to('notionInput',{activity:'notion',subject:'Maths'})],
+      ['Explication interactive',()=>this.to('explain',{explKey:'denom',explStep:0,explAns:{}})],
+      ['Question · confiance',()=>{this.setState({set:'diag',setLabel:'Diagnostic · Fractions',sheet:false});this.later(()=>this.startAt(0,false),0);}],
+      ['Coach',()=>{this.setState({set:'diag',setLabel:'Diagnostic · Fractions',qi:0,conf:'sure',tries:0,hl:0,msgs:[],sheet:false});this.later(()=>this.choose('1/8'),0);}],
+      ['Exemple similaire',()=>this.to('example',{set:'diag',qi:0,exForced:true})],['Fin de session',()=>this.to('end',{endReason:'done'})],
+      ['Mon parcours',()=>this.to('parcours')],['Explorer',()=>this.to('explore')],['Fiche notion',()=>this.to('card',{cardId:'cmp',cardFrom:'explore'})],
+      ['Demander à Néo · exercice',()=>{this.setState({sheet:false});this.askNeo('Calcule 2/5 + 1/5');}],
+      ['App rouverte (verrouillée)',()=>this.to('reopen')],
+      ['Appel pendant une question',()=>{this.setState({set:'diag',setLabel:'Diagnostic · Fractions',sheet:false,interruptNotice:false});this.later(()=>{this.startAt(1,false);this.setState({phase:'answer',conf:'crois'});this.later(()=>this.setState({call:true}),700);},0);}],
+      ['Néo · clavier ouvert',()=>{this.setState({set:'diag',setLabel:'Diagnostic · Fractions',qi:0,conf:'sure',tries:0,hl:0,msgs:[],sheet:false});this.later(()=>{this.choose('1/8');this.later(()=>this.setState({kb:'draft'}),1300);},0);}],
+      ['Micro refusé',()=>{this.setState({micAllowed:false,set:'diag',setLabel:'Diagnostic · Fractions',qi:0,conf:'sure',tries:0,hl:0,msgs:[],sheet:false});this.later(()=>{this.choose('1/8');this.later(()=>this.setState({micSheet:true}),1300);},0);}],
+      ['Néo hors connexion',()=>{this.setState({offline:true,subject:'Maths',statement:STMT.Maths,sheet:false});this.later(()=>this.startHw(),0);}],
+      ['Question hors connexion',()=>{this.setState({offline:true,set:'diag',setLabel:'Diagnostic · Fractions',sheet:false});this.later(()=>this.startAt(0,false),0);}],
+      ['Autorisation photo',()=>this.to('photoIntro',{activity:'devoir',camPerm:'ask'})],
+      ['Comment ça marche ?',()=>this.to('how')],['Code parent',()=>this.to('code',{code:'',pause:0,attempts:3,codeErr:false})],['Code · pause',()=>this.to('code',{code:'',pause:60,attempts:0,codeErr:true})]
+    ].map(([label,onClick])=>({label,onClick}));
+    const keys=['1','2','3','4','5','6','7','8','9','','0','del'].map(k=>({label:k==='del'?'⌫':k,bg:k===''?'transparent':'rgba(255,255,255,0.1)',onClick:k===''?()=>{}:()=>this.press(k)}));
+
+    return {
+      nm, screenBg:bgs[sc]||'#DDE7F8', statusFg:['transition','code','camera'].includes(sc)?'#FFFFFF':'#0B132B', netLabel:s.offline?'Hors ligne':'●●',
+      showBanner:childScreens.includes(sc)||sc==='camera', showTabs:tabScreens.includes(sc), toast:s.toast,
+      showSubHead:!!heads[sc], ctxLabel:(heads[sc]||['',''])[0], subTitle:(heads[sc]||['',''])[1], back:()=>this.setState({screen:backMap[sc]||'home'}),
+      kidName:s.pick==='lea'?'Léa':'Tom',
+      sParent:sc==='parent', sheet:s.sheet, sTransition:sc==='transition', sConsent:sc==='consent', sBlocked:sc==='blocked', sHome:sc==='home', sSubject:sc==='subject',
+      sHwInput:sc==='hwInput', sPhotoIntro:sc==='photoIntro', sCamera:sc==='camera', sProcessing:sc==='processing', sPhotoIssue:sc==='photoIssue', sCheck:sc==='check',
+      sWrite:sc==='write', sDictate:sc==='dictate', sEvalInput:sc==='evalInput', sNotionInput:sc==='notionInput', sExplain:sc==='explain', sChat:sc==='chat',
+      sLoading:sc==='loading', sQuestion:sc==='question', sCoach:sc==='coach', sExample:sc==='example', sEnd:sc==='end', sHow:sc==='how', sCode:sc==='code',
+      sParcours:sc==='parcours', sExplore:sc==='explore', sCard:sc==='card',
+      openSheet:()=>this.setState({sheet:true}), closeSheet:()=>this.setState({sheet:false}), switchToChild:()=>this.enterChild(),
+      kidOpts:[['lea','Léa','6e','L','#FFAD66'],['tom','Tom','CM2','T','#A9C1EA']].map(([v,n,c,i,d])=>({name:n,cls:c,initial:i,dot:d,onClick:()=>this.setState({pick:v}),bg:s.pick===v?'#EEF3FB':'#F5F6FA',border:s.pick===v?'#1A3B70':'transparent',radio:s.pick===v?'#1A3B70':'#FFFFFF'})),
+      consentPoints:[`Un programme d'ordinateur, pas une personne, t'aide à réfléchir. Il s'appelle ${nm}.`,`${nm} ne te donne pas la réponse et ne corrige pas ta copie. Il te pose des questions pour t'aider à trouver.`,`On regarde tes réponses, si tu te sentais sûre, et ce que tu écris à ${nm}.`,"Tu peux prendre en photo seulement l'énoncé imprimé. La photo est effacée dès que tu as vérifié le texte.","Tu peux t'arrêter quand tu veux."].map((x,i)=>({n:i+1,t:x})),
+      consentYes:()=>this.setState({consentChild:true,screen:'home'}), consentLater:()=>this.setState({screen:'blocked',blockedBy:'child'}),
+      blockedByChild:s.blockedBy==='child', reopenConsent:()=>this.setState({screen:'consent'}),
+      blockedTitle:s.blockedBy==='child'?'Pas de souci.':"On ne peut pas encore commencer.",
+      blockedBody:s.blockedBy==='child'?"Rien n'a commencé. Quand tu voudras, demande à ton parent de relancer le mode Léa.":"Demande à ton parent de donner son accord dans l'app, dans Réglages → Données. Ensuite, tu pourras commencer.",
+      hasResume:!!s.interrupted, resumeText:s.interrupted?`${s.interrupted.when}, tu t'es arrêtée à la question ${s.interrupted.q+1}. Tu veux reprendre ?`:'',
+      resume:()=>{ const i=s.interrupted; this.setState({set:i.set,setLabel:i.label}); this.later(()=>this.startAt(i.q,true),0); },
+      activities:[
+        ['devoir','Faire un devoir',"De l'aide pour un exercice de l'école",'#FF9F66','#0B132B','#3A1A00','rgba(255,255,255,0.6)','#3A1A00','✎'],
+        ['eval','Préparer une évaluation',"S'entraîner avant un contrôle",'#1A3B70','#FFFFFF','#DDE7F8','rgba(255,255,255,0.15)','#FFFFFF','✓'],
+        ['notion','Comprendre une notion',"Quelque chose que tu n'as pas compris",'#FFFFFF','#0B132B','#51607A','#DDE7F8','#1A3B70','?']
+      ].map(([k,tt,d,bg,fg,sub,iconBg,iconFg,glyph])=>({t:tt,d,bg,fg,sub,iconBg,iconFg,glyph,onClick:()=>this.setState({activity:k,screen:'subject'})})),
+      goHow:()=>this.setState({screen:'how'}), goHome:()=>this.setState({screen:'home'}),
+      subjects:SUBJ.map(([n,g,c])=>({n,g,c,onClick:()=>this.setState({subject:n,screen:s.activity==='devoir'?'hwInput':s.activity==='eval'?'evalInput':'notionInput',statement:'',evalTopic:s.activity==='eval'?'':s.evalTopic})})),
+      goPhotoIntro:()=>this.setState({screen:'photoIntro'}), goWrite:()=>this.setState({screen:'write',source:'text',statement:s.statement&&s.source==='text'?s.statement:''}),
+      goDictate:()=>this.setState({screen:'dictate'}),
+      photoRule:photoIsTopics?"Photographie seulement la liste des notions à réviser, pas ta copie.":"Photographie seulement l'énoncé, pas ta copie.",
+      photoYes:photoIsTopics?'la liste':"l'énoncé", photoRuleShort:photoIsTopics?'Seulement la liste imprimée':"Seulement l'énoncé imprimé",
+      openCamera:()=>this.setState(s.camPerm==='granted'?{screen:'camera'}:s.camPerm==='ask'?{camDialog:true}:{screen:'photoIssue',photoIssue:'refused'}),
+      camDialog:s.camDialog, camAllow:()=>this.setState({camDialog:false,camPerm:'granted',screen:'camera'}), camDeny:()=>this.setState({camDialog:false,camPerm:'denied',screen:'photoIssue',photoIssue:'refused'}),
+      camText:photoIsTopics?TOPICS:STMT[s.subject], camBlur:s.camResult==='blurry'?'blur(3px)':'none', shoot:()=>this.shoot(),
+      processingText:photoIsTopics?'Je lis la liste…':"Je lis l'énoncé…",
+      issueTitle:iss[0], issueBody:iss[1], issueCanRetake:s.photoIssue!=='refused', issueOfferDictate:s.photoIssue==='refused', writeInsteadLabel:photoIsTopics?'Écrire à la place':"Écrire l'énoncé à la place",
+      checkIntro:s.source==='voice'?"Voici ce que j'ai entendu. Vérifie que c'est bien ça.":"Voici le texte que j'ai lu sur la photo. Vérifie que c'est bien ça.",
+      statement:s.statement, onStatement:e=>this.setState({statement:e.target.value}), notEditing:!s.editing, checkBorder:s.editing?'2px solid #1A3B70':'2px solid transparent',
+      checkIsPhoto:s.source==='photo'||s.source==='topics', confirmCheck:()=>this.confirmStatement(),
+      startEdit:()=>this.setState({editing:!s.editing}), editLabel:s.editing?"J'ai corrigé":'Je corrige',
+      redo:()=>this.setState({screen:s.source==='voice'?'dictate':'camera'}), redoLabel:s.source==='voice'?'Je redicte':'Je reprends la photo',
+      writeIntro:"Recopie l'énoncé de ton exercice, sans ta réponse.", writePh:"Par exemple : Léo mange 1/4 d'une tarte…",
+      statementEmpty:!s.statement.trim(), writeBtnBg:s.statement.trim()?'#0F1B35':'#A7B1C4', confirmWrite:()=>this.startHw(),
+      dictateIntro:s.activity==='eval'?"Dis-moi sur quoi porte ton évaluation.":s.activity==='notion'?"Pose ta question à voix haute.":"Lis l'énoncé de ton exercice à voix haute, sans ta réponse.",
+      endDictate:()=>this.setState({screen:'check',source:'voice',editing:false,statement:s.activity==='eval'?TOPICS:s.activity==='notion'?"C'est quoi un dénominateur ?":STMT[s.subject]}),
+      evalTopic:s.evalTopic, onEvalTopic:e=>this.setState({evalTopic:e.target.value}), evalDate:s.evalDate, onEvalDate:e=>this.setState({evalDate:e.target.value}),
+      evalEmpty:!s.evalTopic.trim(), evalBtnBg:s.evalTopic.trim()?'#0F1B35':'#A7B1C4',
+      startEval:()=>this.startQuiz(s.subject==='Français'?'fr':(topicSet(s.evalTopic)==='frac'?'eval':topicSet(s.evalTopic)),`Entraînement · ${s.subject}${s.evalDate?' · évaluation du '+s.evalDate:''}`),
+      notionQ:s.notionQ, onNotionQ:e=>this.setState({notionQ:e.target.value}), submitNotionQ:()=>this.submitNotion(s.notionQ),
+      subjNotions:(NOT[s.subject]||[]).map(n=>({name:n.name,onExplain:()=>this.startExplain(n.id)})),
+      expl:explV, explRef:this.explRef, explNext:()=>this.setState({explStep:s.explStep+1}),
+      explQuiz:()=>this.startQuiz(expl.set||'frac',`Quiz · ${expl.title}`), explAsk:()=>this.setState({screen:'explore'}),
+      chatIsHw:s.cmode==='hw', cmsgs:s.cmsgs.map(bubble), chatRef:this.chatRef, creplies:(s.kb?[]:crep).map(r=>({label:r,onClick:()=>this.creply(r)})),
+      cdraft:s.cdraft, onCdraft:e=>this.setState({cdraft:e.target.value}), onCdraftKey:e=>{ if(e.key==='Enter') this.cfree(s.cdraft); }, csend:()=>this.cfree(s.cdraft),
+      cinputPh:s.clistening?"J'écoute…":s.transcribing?'Je transcris ce que tu as dit…':`Écris à ${nm}…`, cmicBg:s.clistening||s.transcribing?'#FF9F66':'#FFFFFF', cmicLabel:s.clistening?"J'écoute":s.transcribing?'Transcription…':'Parler',
+      cvoice:()=>{ if(!s.micAllowed) return this.setState({micSheet:true,kb:null}); if(s.clistening||s.transcribing) return; this.setState({clistening:true,kb:null}); this.later(()=>{ this.setState({clistening:false,transcribing:true}); this.later(()=>this.setState({transcribing:false,cdraft:s.cmode==='hw'?"je crois qu'il faut compter les quarts":"c'est quoi un numérateur"}),900); },1800); },
+      chwAnswer:()=>{ this.cchild('Donne-moi la réponse'); this.csay([{t:"Je ne vais pas te la donner, mais on peut la trouver ensemble. Par quoi veux-tu commencer ?",ai:false}],'hwRefusal'); },
+      setLabel:s.setLabel, qPos:`Question ${s.qi+1} sur ${SETS[s.set].length}`, resumed:s.resumed, q:qv, offline:s.offline, retryNet:()=>this.setState({offline:false}),
+      phConf:s.phase==='confidence', phAnswer:s.phase==='answer', phOk:s.phase==='ok',
+      confOpts:CONF.map(([v,l,d])=>({label:l,dot:d,onClick:()=>this.setState({conf:v,phase:'answer'})})), confLabel:(CONF.find(c=>c[0]===s.conf)||['','—'])[1],
+      next:()=>this.next(), stop:()=>this.stop(), chosen:s.chosen||'', msgs:s.msgs.map(bubble), msgRef:this.msgRef, typing:s.typing, slow:s.slow, dots,
+      replies:(s.kb?[]:repl).map(r=>({label:r,onClick:()=>this.reply(r)})),
+      draft:s.draft, onDraft:e=>this.setState({draft:e.target.value}), onDraftKey:e=>{ if(e.key==='Enter') this.freeText(s.draft); }, sendDraft:()=>this.freeText(s.draft),
+      inputPh:s.listening?"J'écoute…":s.transcribing?'Je transcris ce que tu as dit…':`Écris à ${nm}…`,
+      toggleVoice:()=>{ if(!s.micAllowed) return this.setState({micSheet:true,kb:null}); if(s.listening||s.transcribing) return; this.setState({listening:true,kb:null}); this.later(()=>{ this.setState({listening:false,transcribing:true}); this.later(()=>this.setState({transcribing:false,draft:q.type==='cmp'?"je crois que c'est celle en 4 parts":"je ne suis pas sûre"}),900); },1800); },
+      micBg:s.listening||s.transcribing?'#FF9F66':'#FFFFFF', micLabel:s.listening?"J'écoute":s.transcribing?'Transcription…':'Parler',
+      askAnswer:()=>{ this.child('Donne-moi la réponse'); this.coachSay([{t:"Je ne vais pas te la donner, mais on peut la trouver ensemble. Par quoi veux-tu commencer ?",ai:false}],'refusal'); },
+      ex:{title:t.ex.title,steps:t.ex.steps.map((x,i)=>({n:i+1,t:x.t,hasBars:!!x.bars,bars:withBars(x.bars)}))},
+      exForced:s.exForced, exBtn:s.exForced?'Continuer':'Je réessaie ma question', exAction:()=>s.exForced?this.next():this.retry(),
+      endText:s.endReason==='stopped'?`Tu pourras reprendre à la question ${(s.interrupted?s.interrupted.q:s.qi)+1} quand tu voudras.`:s.endReason==='hw'?"Tu as mené ton exercice jusqu'au bout avec tes idées.":s.endReason==='hwStop'?"Tu pourras reprendre ton devoir quand tu voudras.":'La session est terminée. Tu pourras revenir quand tu voudras.',
+      parcoursEmpty:s.newChild, parcoursFull:!s.newChild,
+      suggestQuiz:()=>this.startQuiz('line','Quiz · Droite graduée'),
+      mastered:ALLN.filter(n=>n.st==='su').map(n=>{const M={eqf:["Avant, tu ajoutais le même nombre en haut et en bas.","2/3 = 4/5","Maintenant, tu multiplies les deux nombres par le même nombre.","2/3 = 4/6"],dec:["Avant, tu lisais 1/4 comme 0,4.","1/4 → 0,4","Maintenant, tu partages 1 en 4 parts.","1/4 = 0,25"]}[n.id];
+        const open=s.openM===n.id; return {name:n.name,subj:n.subj,open,chev:open?'Fermer':'Avant / maintenant',before:M[0],bex:M[1],now:M[2],nex:M[3],onToggle:()=>this.setState({openM:open?null:n.id})};}),
+      working:ALLN.filter(n=>n.st==='encours').map(n=>({name:n.name,subj:n.subj,note:{line:"Tu comptes de plus en plus souvent les sauts entre les traits.",cmp:"Tu t'entraînes à regarder la taille des parts."}[n.id]||'',hasNote:['line','cmp'].includes(n.id),
+        hasQuiz:!!n.set,onResume:()=>this.startExplain(n.id),onQuiz:()=>this.startQuiz(n.set,`Quiz · ${n.name}`)})),
+      mapSubjs:subjChips('mapSubj'), mapNotions:(NOT[s.mapSubj]||[]).map(nTile),
+      hasCtx:!!ctx, ctxText:ctx, backToCtx:()=>{ if(s.interrupted){ const i=s.interrupted; this.setState({set:i.set,setLabel:i.label}); this.later(()=>this.startAt(i.q,true),0);} else this.setState({screen:'chat',cmode:'hw'}); },
+      askDraft:s.askDraft, onAskDraft:e=>this.setState({askDraft:e.target.value}), onAskKey:e=>{ if(e.key==='Enter') this.askNeo(s.askDraft); }, askSend:()=>this.askNeo(s.askDraft),
+      askPh:s.askListening?"J'écoute…":'Pose ta question', askMicBg:s.askListening?'#FF9F66':'#F5F6FA',
+      askVoice:()=>{ if(s.askListening) return; this.setState({askListening:true}); this.later(()=>this.setState({askListening:false,askDraft:"C'est quoi un dénominateur ?"}),1600); },
+      askChips:["C'est quoi un dénominateur ?","Calcule 2/5 + 1/5","Pourquoi la glace fond ?"].map(x=>({t:x,onClick:()=>this.askNeo(x)})),
+      quizDraft:s.quizDraft, onQuizDraft:e=>this.setState({quizDraft:e.target.value}), onQuizKey:e=>{ if(e.key==='Enter'&&s.quizDraft.trim()) this.startQuiz(topicSet(s.quizDraft),`Quiz · ${s.quizDraft}`); },
+      quizSend:()=>{ if(s.quizDraft.trim()) this.startQuiz(topicSet(s.quizDraft),`Quiz · ${s.quizDraft}`); },
+      quizChips:['les fractions égales','le passé composé','comparer des fractions'].map(x=>({t:x,onClick:()=>this.startQuiz(topicSet(x),`Quiz · ${x}`)})),
+      exploreSubjs:subjChips('exploreSubj'), exploreNotions:(NOT[s.exploreSubj]||[]).map(n=>({name:n.name,onOpen:openCard(n.id,'explore')})),
+      card:{subj:card.subj,name:card.name,p:card.p,ex:card.ex,hasQuiz:!!card.set,onExplain:()=>this.startExplain(card.id),onQuiz:()=>this.startQuiz(card.set,`Quiz · ${card.name}`)},
+      cardBack:()=>this.setState({screen:s.cardFrom}), cardBackLabel:s.cardFrom==='parcours'?'Mon parcours':'Explorer',
+      tabs:[['home','Accueil','4px'],['parcours','Mon parcours','50% 50% 4px 50%'],['explore','Explorer','50%']].map(([k,l,shape])=>{const on=sc===k||(sc==='card'&&k===s.cardFrom); return {label:l,shape,onClick:()=>this.setState({screen:k}),bg:on?'#0F1B35':'transparent',fg:on?'#FFFFFF':'#34425C'};}),
+      goCode:()=>this.setState({screen:'code',code:'',codeErr:false,forgotSent:false}), cancelCode:()=>this.setState({screen:'home'}),
+      codeDots:Array.from({length:6},(_,i)=>({bg:i<s.code.length?'#FFFFFF':'transparent'})), keys, codeMsg, codeMsgColor, padOp:s.pause>0?0.35:1,
+      parentDevice:s.parentDevice, bio:()=>this.setState({screen:'parent',code:''}), forgot:()=>this.setState({forgotSent:true}), forgotLabel:s.forgotSent?'Renvoyer le lien':'Code oublié',
+      fw:s.w+20, fh:Math.round(s.w*2.165)+20, fr:s.os==='ios'?56:40, sr:s.os==='ios'?46:30, topInset:s.os==='ios'?54:32, bottomInset:s.os==='ios'?30:44,
+      isIos:s.os==='ios', isAndroid:s.os!=='ios', indicator:['transition','code','camera'].includes(sc)?'#FFFFFF':'#0B132B', bottomBg:tabScreens.includes(sc)?'rgba(255,255,255,0.85)':'transparent', sheetPad:(s.os==='ios'?30:44)+12,
+      sReopen:sc==='reopen', interruptNotice:s.interruptNotice, callOn:s.call, endCall:()=>this.setState({call:false,interruptNotice:true}),
+      micSheet:s.micSheet, closeMic:()=>this.setState({micSheet:false}), micToKeyboard:()=>this.setState({micSheet:false,kb:sc==='chat'?'cdraft':'draft'}),
+      kbShown:!!s.kb&&(sc==='coach'||sc==='chat'), kbOpenDraft:()=>this.setState({kb:'draft'}), kbOpenC:()=>this.setState({kb:'cdraft'}),
+      kbRows:[['a','z','e','r','t','y','u','i','o','p'],['q','s','d','f','g','h','j','k','l','m'],['⇧','w','x','c','v','b','n',"'",'⌫'],['⌄','espace','↵']].map(r=>({keys:r.map(k=>({l:k==='espace'?'espace':(s.shift&&k.length===1?k.toUpperCase():k),flex:k==='espace'?'5 1 0':(['⇧','⌫','⌄','↵'].includes(k)?'1.4 1 0':'1 1 0'),bg:['⇧','⌫','⌄','↵'].includes(k)?'#AEB5C2':'#FFFFFF',
+        onClick:()=>{ const f=s.kb, cur=s[f]||'';
+          if(k==='⌫') return this.setState({[f]:cur.slice(0,-1)});
+          if(k==='⇧') return this.setState({shift:!s.shift});
+          if(k==='⌄') return this.setState({kb:null});
+          if(k==='↵'){ this.setState({kb:null}); return f==='draft'?this.freeText(cur):this.cfree(cur); }
+          this.setState({[f]:cur+(k==='espace'?' ':(s.shift?k.toUpperCase():k)),shift:false}); }}))})),
+      osSeg:[['ios','iPhone'],['android','Android']].map(([v,l])=>({label:l,onClick:()=>this.setState({os:v}),bg:s.os===v?'#0F1B35':'transparent',fg:s.os===v?'#FFFFFF':'#34425C'})),
+      wSeg:[360,390,430].map(v=>({label:`${v} pt`,onClick:()=>this.setState({w:v}),bg:s.w===v?'#0F1B35':'transparent',fg:s.w===v?'#FFFFFF':'#34425C'})),
+      tsSeg:[[1,'100 %'],[1.5,'150 %'],[2,'200 %']].map(([v,l])=>({label:l,onClick:()=>this.setState({ts:v}),bg:s.ts===v?'#0F1B35':'transparent',fg:s.ts===v?'#FFFFFF':'#34425C'})),
+      permSeg:[['ask','À demander'],['granted','Accordée'],['denied','Refusée']].map(([v,l])=>({label:l,onClick:()=>this.setState({camPerm:v}),bg:s.camPerm===v?'#0F1B35':'transparent',fg:s.camPerm===v?'#FFFFFF':'#34425C'})),
+      ts:s.ts,
+      jumps, camSeg:[['ok','Nette'],['blurry','Floue'],['notext','Sans texte']].map(([v,l])=>({label:l,onClick:()=>this.setState({camResult:v}),bg:s.camResult===v?'#0F1B35':'transparent',fg:s.camResult===v?'#FFFFFF':'#34425C'})),
+      toggles:[
+        tg('Connexion internet',!s.offline,()=>this.setState({offline:!s.offline})),
+        tg('Micro autorisé',s.micAllowed,()=>this.setState({micAllowed:!s.micAllowed})),
+        tg('Réduire les animations (système)',s.reduce,()=>this.setState({reduce:!s.reduce})),
+        tg('Nouvel enfant (parcours vide)',s.newChild,()=>this.setState({newChild:!s.newChild})),
+        tg('Appareil marqué comme celui du parent (biométrie)',s.parentDevice,()=>this.setState({parentDevice:!s.parentDevice})),
+        tg('Consentement parent donné',s.consentParent,()=>this.setState({consentParent:!s.consentParent})),
+        tg('Consentement de Léa déjà donné',s.consentChild,()=>this.setState({consentChild:!s.consentChild}))]
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>body{margin:0;background:#E6EAF2}a{color:#1A3B70}a:hover{color:#F27121}button{font-family:inherit}input{font-family:inherit}*{box-sizing:border-box}</style>
+</helmet>
+<div style="min-height:100vh;background:#E6EAF2;padding:20px;font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:#0B132B">
+
+<sc-if value="{{ showReviewBar }}" hint-placeholder-val="{{ true }}">
+<div style="max-width:1400px;margin:0 auto 16px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between">
+  <div style="display:flex;flex-wrap:wrap;gap:4px;background:#FFFFFF;padding:4px;border-radius:999px">
+    <sc-for list="{{ surfaces }}" as="s" hint-placeholder-count="4"><button onClick="{{ s.onClick }}" style="border:0;cursor:pointer;padding:9px 16px;border-radius:999px;font-size:13px;font-weight:600;background:{{ s.bg }};color:{{ s.fg }}">{{ s.label }}</button></sc-for>
+    <a href="Nurturia Enfant v2.dc.html" style="padding:9px 16px;border-radius:999px;font-size:13px;font-weight:700;background:#FF9F66;color:#0B132B;text-decoration:none">Mode enfant →</a>
+  </div>
+  <sc-if value="{{ isDash }}" hint-placeholder-val="{{ true }}">
+  <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">
+    <span style="font-size:12px;font-weight:600;color:#51607A">État des données</span>
+    <div style="display:flex;flex-wrap:wrap;gap:4px;background:#FFFFFF;padding:4px;border-radius:999px">
+      <sc-for list="{{ dataStates }}" as="s" hint-placeholder-count="5"><button onClick="{{ s.onClick }}" style="border:0;cursor:pointer;padding:7px 12px;border-radius:999px;font-size:12px;font-weight:600;background:{{ s.bg }};color:{{ s.fg }}">{{ s.label }}</button></sc-for>
+    </div>
+  </div>
+  </sc-if>
+</div>
+</sc-if>
+
+<!-- ============ WEB SIGN IN ============ -->
+<sc-if value="{{ isSignin }}">
+<div style="max-width:1400px;margin:0 auto;background:#0F1B35;border-radius:40px;padding:14px">
+  <div style="display:flex;align-items:center;gap:12px;padding:8px 14px 18px">
+    <div style="width:48px;height:48px;border-radius:50%;background:#DDE7F8;display:flex;align-items:center;justify-content:center;overflow:hidden"><img src="assets/nurtu-01-idle.svg" alt="" style="width:44px;height:44px"></div>
+    <span style="color:#FFFFFF;font-size:20px;font-weight:700">Nurturia</span>
+    <span style="color:#9FB0CF;font-size:13px">Espace parent</span>
+  </div>
+  <div style="background:#F5F6FA;border-radius:30px;padding:48px 24px;min-height:640px;display:flex;align-items:center;justify-content:center">
+    <div style="width:100%;max-width:440px;background:#FFFFFF;border-radius:32px;padding:36px;display:flex;flex-direction:column;gap:18px">
+      <sc-if value="{{ siEmail }}" hint-placeholder-val="{{ true }}">
+        <img src="assets/nurtu-01-idle.svg" alt="" style="width:110px;height:124px;align-self:center">
+        <div style="display:flex;flex-direction:column;gap:6px;text-align:center">
+          <h1 style="margin:0;font-size:26px;font-weight:800;letter-spacing:-0.02em">Connexion à l'espace parent</h1>
+          <p style="margin:0;font-size:15px;line-height:1.5;color:#51607A">Indiquez votre adresse e-mail. Vous recevrez un lien de connexion et un code à 6 chiffres.</p>
+        </div>
+        <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;color:#34425C">Adresse e-mail
+          <input type="email" value="{{ email }}" onChange="{{ onEmail }}" placeholder="vous@exemple.fr" style="height:52px;border-radius:16px;border:2px solid #DCE2EC;padding:0 16px;font-size:16px;color:#0B132B;outline:none">
+        </label>
+        <button onClick="{{ sendLink }}" disabled="{{ emailInvalid }}" style="height:54px;border:0;border-radius:999px;background:{{ sendBg }};color:#FFFFFF;font-size:16px;font-weight:700;cursor:pointer">Recevoir le lien</button>
+      </sc-if>
+      <sc-if value="{{ siCheck }}">
+        <img src="assets/nurtu-06-guidage.svg" alt="" style="width:110px;height:124px;align-self:center">
+        <div style="display:flex;flex-direction:column;gap:6px;text-align:center">
+          <h1 style="margin:0;font-size:26px;font-weight:800;letter-spacing:-0.02em">Vérifiez votre boîte de réception</h1>
+          <p style="margin:0;font-size:15px;line-height:1.5;color:#51607A">Un e-mail a été envoyé à <strong style="color:#0B132B">{{ email }}</strong>. Vous pouvez cliquer sur le lien qu'il contient, ou saisir ici le code à 6 chiffres.</p>
+        </div>
+        <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;color:#34425C">Code à 6 chiffres
+          <input inputmode="numeric" maxlength="6" value="{{ code }}" onChange="{{ onCode }}" placeholder="000000" style="height:60px;border-radius:16px;border:2px solid #DCE2EC;padding:0 16px;font-size:28px;letter-spacing:0.4em;text-align:center;font-weight:700;color:#0B132B;outline:none">
+        </label>
+        <button onClick="{{ signIn }}" disabled="{{ codeInvalid }}" style="height:54px;border:0;border-radius:999px;background:{{ codeBg }};color:#FFFFFF;font-size:16px;font-weight:700;cursor:pointer">Se connecter</button>
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:14px">
+          <button onClick="{{ resend }}" disabled="{{ resendLocked }}" style="border:0;background:none;padding:0;font-size:14px;font-weight:600;cursor:pointer;color:{{ resendColor }}">{{ resendLabel }}</button>
+          <button onClick="{{ changeEmail }}" style="border:0;background:none;padding:0;font-size:14px;font-weight:600;color:#1A3B70;cursor:pointer;text-decoration:underline">Changer d'adresse</button>
+        </div>
+        <p style="margin:0;font-size:12px;color:#7A869C;text-align:center">Pour la démo, tout code à 6 chiffres fonctionne.</p>
+      </sc-if>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<!-- ============ WEB DASHBOARD ============ -->
+<sc-if value="{{ isDash }}" hint-placeholder-val="{{ true }}">
+<div style="max-width:1400px;margin:0 auto;background:#0F1B35;border-radius:40px;padding:14px">
+  <div style="display:flex;flex-wrap:wrap;align-items:center;gap:14px;padding:8px 10px 18px 14px">
+    <div style="display:flex;align-items:center;gap:12px;margin-right:auto">
+      <div style="width:48px;height:48px;border-radius:50%;background:#DDE7F8;display:flex;align-items:center;justify-content:center;overflow:hidden"><img src="assets/nurtu-01-idle.svg" alt="" style="width:44px;height:44px"></div>
+      <span style="color:#FFFFFF;font-size:20px;font-weight:700">Nurturia</span>
+    </div>
+    <nav style="display:flex;flex-wrap:wrap;gap:4px;background:#1B2B4F;padding:6px;border-radius:999px">
+      <sc-for list="{{ nav }}" as="n" hint-placeholder-count="5"><button onClick="{{ n.onClick }}" style="border:0;cursor:pointer;padding:10px 16px;border-radius:999px;font-size:14px;font-weight:600;background:{{ n.bg }};color:{{ n.fg }}">{{ n.label }}</button></sc-for>
+    </nav>
+    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-left:auto">
+      <div style="display:flex;gap:4px;background:#1B2B4F;padding:5px;border-radius:999px">
+        <sc-for list="{{ kids }}" as="k" hint-placeholder-count="2"><button onClick="{{ k.onClick }}" style="border:0;cursor:pointer;display:flex;align-items:center;gap:8px;padding:5px 14px 5px 5px;border-radius:999px;background:{{ k.bg }};color:{{ k.fg }};font-size:13px;font-weight:600"><span style="width:30px;height:30px;border-radius:50%;background:{{ k.dot }};color:#0B132B;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800">{{ k.initial }}</span>{{ k.label }}</button></sc-for>
+      </div>
+      <button onClick="{{ goTransparency }}" style="border:0;cursor:pointer;height:44px;padding:0 18px;border-radius:999px;background:{{ trBg }};color:#0B132B;font-size:14px;font-weight:700">Comment ça marche ?</button>
+      <button onClick="{{ goAccount }}" title="Compte et consentements" style="border:2px solid {{ accBorder }};cursor:pointer;width:46px;height:46px;border-radius:50%;background:#FFE6D5;color:#0B132B;font-size:14px;font-weight:800">CM</button>
+    </div>
+  </div>
+
+  <div style="background:#F5F6FA;border-radius:30px;padding:28px;min-height:680px">
+
+  <!-- ===== OVERVIEW ===== -->
+  <sc-if value="{{ scOverview }}" hint-placeholder-val="{{ true }}">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:22px">
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <span style="font-size:14px;color:#51607A">Mercredi 30 septembre 2026</span>
+        <h1 style="margin:0;font-size:34px;font-weight:800;letter-spacing:-0.02em">Vue d'ensemble · {{ kidName }}, {{ kidClass }}</h1>
+      </div>
+      <sc-if value="{{ showSubjSeg }}"><div style="display:flex;flex-wrap:wrap;gap:4px;background:#FFFFFF;padding:4px;border-radius:999px">
+        <sc-for list="{{ subjSeg }}" as="x" hint-placeholder-count="6"><button onClick="{{ x.onClick }}" style="border:0;cursor:pointer;padding:8px 14px;border-radius:999px;font-size:13px;font-weight:600;background:{{ x.bg }};color:{{ x.fg }}">{{ x.label }}</button></sc-for>
+      </div></sc-if>
+    </div>
+
+    <sc-if value="{{ ovPop }}" hint-placeholder-val="{{ true }}">
+    <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+      <!-- left -->
+      <div style="flex:1 1 290px;min-width:0;display:flex;flex-direction:column;gap:16px">
+        <div style="position:relative;background:#3A6BB0;border-radius:30px;padding:26px 26px 24px;min-height:268px;overflow:hidden;display:flex;flex-direction:column;gap:10px">
+          <span style="font-size:13px;font-weight:600;color:#DDE7F8">Semaine du 22 au 28 sept.</span>
+          <h2 style="margin:0;font-size:25px;line-height:1.2;font-weight:800;color:#FFFFFF;max-width:250px;text-wrap:pretty">La semaine dernière, Léa a fait 3 sessions.</h2>
+          <p style="margin:0;font-size:14px;line-height:1.5;color:#FFFFFF;max-width:calc(100% - 130px)">Une erreur est passée en cours. Une autre a été résolue le 23 sept.</p>
+          <button onClick="{{ goTimeline }}" title="Voir la chronologie" style="margin-top:auto;width:58px;height:58px;border-radius:50%;border:0;background:#0F1B35;color:#FFFFFF;font-size:22px;cursor:pointer">→</button>
+          <img src="assets/nurtu-09-bienveillance.svg" alt="" style="position:absolute;right:-14px;bottom:-10px;width:130px;height:148px">
+        </div>
+        <div style="display:flex;gap:10px">
+          <sc-for list="{{ counts }}" as="c" hint-placeholder-count="3">
+          <div style="flex:1 1 0;min-width:0;background:{{ c.bg }};border:2px solid {{ c.border }};border-radius:22px;padding:14px 14px 12px;display:flex;flex-direction:column;gap:2px">
+            <span style="font-size:12px;font-weight:600;color:{{ c.fg }}">{{ c.label }}</span>
+            <span style="font-size:30px;font-weight:800;color:#0B132B">{{ c.n }}</span>
+          </div>
+          </sc-for>
+        </div>
+        <div style="background:#FFFFFF;border-radius:30px;padding:22px;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:18px;font-weight:800">Activités de la semaine</span><span style="font-size:12px;color:#51607A">Du 22 au 28 sept. · toutes matières</span></div>
+          <sc-for list="{{ activities }}" as="a" hint-placeholder-count="4">
+          <div style="display:flex;gap:12px;align-items:flex-start;background:#F5F6FA;border-radius:18px;padding:12px 14px">
+            <span style="flex:none;width:32px;height:32px;border-radius:10px;background:{{ a.c }};display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:{{ a.fg }}">{{ a.g }}</span>
+            <span style="display:flex;flex-direction:column;gap:2px"><span style="font-size:14px;font-weight:700">{{ a.t }}</span><span style="font-size:12px;line-height:1.4;color:#51607A">{{ a.subs }}</span></span>
+          </div>
+          </sc-for>
+        </div>
+        <div style="position:relative;background:#0F1B35;border-radius:30px;padding:24px;overflow:hidden;display:flex;flex-direction:column;gap:10px;min-height:220px">
+          <span style="font-size:11px;font-weight:700;letter-spacing:0.08em;color:#FFAD66">COMMENT ÇA MARCHE ?</span>
+          <h3 style="margin:0;font-size:21px;line-height:1.25;font-weight:700;color:#FFFFFF;max-width:230px">{{ nm }} ne connaît pas la réponse.</h3>
+          <p style="margin:0;font-size:14px;line-height:1.5;color:#C9D4EA;max-width:230px">Les réponses sont vérifiées par des règles écrites par des enseignants. L'IA aide seulement à reformuler.</p>
+          <button onClick="{{ goTransparency }}" title="Comment ça marche ?" style="margin-top:auto;width:52px;height:52px;border-radius:50%;border:0;background:#FFFFFF;color:#0B132B;font-size:20px;cursor:pointer">→</button>
+          <img src="assets/nurtu-04-curiosite.svg" alt="" style="position:absolute;right:-8px;bottom:-8px;width:120px;height:136px">
+        </div>
+      </div>
+      <!-- middle -->
+      <div style="flex:1.5 1 440px;min-width:0;display:flex;flex-direction:column;gap:16px">
+        <div style="background:#FF9F66;border-radius:30px;padding:24px;display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:12px">
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <h2 style="margin:0;font-size:24px;font-weight:800;letter-spacing:-0.01em">Progression des erreurs</h2>
+              <p style="margin:0;font-size:13px;line-height:1.45;color:#3A1A00;max-width:360px">Chaque pastille est une erreur récurrente. Elle change de colonne quand son statut change.</p>
+            </div>
+            <div style="background:#0F1B35;color:#FFFFFF;border-radius:999px;padding:8px 14px;font-size:13px;font-weight:700">{{ weekTitle }}</div>
+          </div>
+          <div style="position:relative;height:334px">
+            <sc-for list="{{ lanes }}" as="l" hint-placeholder-count="3">
+            <div style="position:absolute;top:0;bottom:0;left:{{ l.left }};width:calc(33.333% - 8px);background:rgba(255,255,255,0.3);border-radius:20px;padding:12px 14px">
+              <span style="font-size:13px;font-weight:700;color:#3A1A00">{{ l.label }}</span>
+            </div>
+            </sc-for>
+            <sc-for list="{{ chips }}" as="c" hint-placeholder-count="5">
+            <div style="position:absolute;left:{{ c.left }};top:{{ c.top }};opacity:{{ c.op }};width:calc(33.333% - 20px);min-height:44px;background:{{ c.bg }};color:{{ c.fg }};border-radius:16px;padding:8px 10px;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;line-height:1.2;box-shadow:0 2px 6px rgba(58,26,0,0.12);transition:left 0.8s cubic-bezier(.5,0,.2,1), top 0.8s cubic-bezier(.5,0,.2,1), background-color 0.6s, color 0.6s, opacity 0.5s">
+              <span style="flex:none;width:10px;height:10px;border-radius:50%;background:{{ c.dot }}"></span>{{ c.label }}
+            </div>
+            </sc-for>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:5px">
+            <button onClick="{{ play }}" title="Lire" style="width:44px;height:44px;border-radius:50%;border:0;background:#0F1B35;color:#FFFFFF;font-size:14px;cursor:pointer">{{ playIcon }}</button>
+            <sc-for list="{{ weekBtns }}" as="w" hint-placeholder-count="5"><button onClick="{{ w.onClick }}" style="border:0;cursor:pointer;padding:5px 9px;border-radius:14px;background:{{ w.bg }};color:{{ w.fg }};display:flex;flex-direction:column;align-items:flex-start;gap:1px"><span style="font-size:13px;font-weight:800">{{ w.k }}</span><span style="font-size:11px;font-weight:500">{{ w.d }}</span></button></sc-for>
+          </div>
+        </div>
+        <div style="background:#FFFFFF;border-radius:30px;padding:22px;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap">
+            <h2 style="margin:0;font-size:21px;font-weight:800">Erreurs récurrentes</h2>
+            <button onClick="{{ goTimeline }}" style="border:0;background:none;padding:0;font-size:13px;font-weight:600;color:#1A3B70;cursor:pointer">Voir la chronologie →</button>
+          </div>
+          <sc-for list="{{ errs }}" as="e" hint-placeholder-count="5">
+          <button onClick="{{ e.onClick }}" style="border:0;cursor:pointer;text-align:left;background:#F5F6FA;border-radius:22px;padding:14px 16px;display:flex;align-items:center;gap:14px;width:100%" style-hover="background:#EDF1F8">
+            <span style="flex:none;width:46px;height:46px;border-radius:50%;background:{{ e.bg }};display:flex;align-items:center;justify-content:center"><span style="width:14px;height:14px;border-radius:50%;background:{{ e.dot }}"></span></span>
+            <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px">
+              <span style="font-size:15px;font-weight:700;color:#0B132B;line-height:1.3;text-wrap:pretty">{{ e.label }}</span>
+              <span style="font-size:12px;color:#51607A">{{ e.notion }} · Apparue le {{ e.first }} · {{ e.lastTxt }}</span>
+            </span>
+            <span style="flex:none;padding:6px 12px;border-radius:999px;background:{{ e.bg }};color:{{ e.fg }};font-size:12px;font-weight:700">{{ e.st }}</span>
+          </button>
+          </sc-for>
+        </div>
+      </div>
+      <!-- right -->
+      <div style="flex:1 1 290px;min-width:0;display:flex;flex-direction:column;gap:16px">
+        <div style="background:#FFFFFF;border-radius:30px;padding:22px;display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <h2 style="margin:0;font-size:24px;line-height:1.2;font-weight:800;letter-spacing:-0.01em">Comment l'aider à la maison</h2>
+            <p style="margin:0;font-size:13px;color:#51607A">Un conseil pour chaque erreur active.</p>
+          </div>
+          <sc-for list="{{ activeTips }}" as="t" hint-placeholder-count="2">
+          <div style="background:#FFF1E6;border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:8px">
+            <span style="font-size:11px;font-weight:700;letter-spacing:0.06em;color:#9A3C00;text-transform:uppercase">{{ t.notion }}</span>
+            <span style="font-size:14px;font-weight:700;line-height:1.35">{{ t.label }}</span>
+            <p style="margin:0;font-size:14px;line-height:1.5;color:#34425C">{{ t.tip }}</p>
+            <button onClick="{{ t.onClick }}" style="align-self:flex-start;border:0;background:none;padding:0;font-size:13px;font-weight:700;color:#9A3C00;cursor:pointer">Tous les conseils →</button>
+          </div>
+          </sc-for>
+          <div style="display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:18px;background:#F5F6FA">
+            <span style="flex:none;width:26px;height:26px;border-radius:50%;background:#1A3B70;color:#FFFFFF;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center">✓</span>
+            <span style="font-size:12px;line-height:1.45;color:#34425C">Conseils rédigés et relus par des enseignants, issus d'une bibliothèque validée. Ils ne sont pas générés par l'IA.</span>
+          </div>
+        </div>
+        <div style="background:#DDE7F8;border-radius:30px;padding:20px;display:flex;flex-direction:column;gap:10px">
+          <span style="font-size:15px;font-weight:700">Aller plus loin</span>
+          <sc-for list="{{ quick }}" as="q" hint-placeholder-count="3">
+          <button onClick="{{ q.onClick }}" style="border:0;cursor:pointer;background:#FFFFFF;border-radius:18px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:14px;font-weight:600;color:#0B132B;text-align:left">{{ q.label }}<span style="color:#1A3B70">→</span></button>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ ovSubj }}">
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div style="background:#FFFFFF;border-radius:30px;padding:30px;display:flex;flex-wrap:wrap;align-items:center;gap:28px">
+        <img src="assets/nurtu-01-idle.svg" alt="" style="flex:none;width:130px;height:147px">
+        <div style="flex:1 1 360px;display:flex;flex-direction:column;gap:10px;max-width:640px">
+          <h2 style="margin:0;font-size:23px;font-weight:800">Pas encore de détail sur les erreurs en {{ subjLower }}</h2>
+          <p style="margin:0;font-size:15px;line-height:1.6;color:#34425C">Pour l'instant, Nurturia détaille les erreurs récurrentes uniquement pour les fractions. En {{ subjLower }}, vous voyez seulement les signaux de comportement : demandes d'aide, demandes de réponse et questions laissées en cours.</p>
+          <p style="margin:0;font-size:14px;line-height:1.6;color:#51607A">Le détail par erreur apparaîtra quand le contenu pédagogique de cette matière sera prêt. Cela ne dépend pas de ce que {{ kidName }} a fait.</p>
+        </div>
+      </div>
+      <sc-if value="{{ subjHasSig }}">
+      <div style="display:flex;flex-wrap:wrap;gap:16px">
+        <sc-for list="{{ subjSig }}" as="g" hint-placeholder-count="3">
+        <div style="flex:1 1 240px;min-width:0;background:{{ g.bg }};border-radius:28px;padding:22px;display:flex;flex-direction:column;gap:10px">
+          <span style="font-size:16px;font-weight:800">{{ g.t }}</span>
+          <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:44px;font-weight:800;line-height:1">{{ g.n }}</span><span style="font-size:13px;color:#51607A">{{ g.unit }}</span></div>
+          <span style="font-size:13px;font-weight:600;color:#34425C">{{ g.cmp }}</span>
+        </div>
+        </sc-for>
+      </div>
+      <p style="margin:0;font-size:13px;color:#51607A">Semaine du 22 au 28 sept., comparée uniquement à la semaine précédente de {{ kidName }}.</p>
+      </sc-if>
+      <sc-if value="{{ subjNoSig }}"><div style="background:#FFFFFF;border-radius:24px;padding:20px 24px;font-size:14px;line-height:1.55;color:#34425C">{{ kidName }} n'a pas fait d'activité en {{ subjLower }} du 22 au 28 sept. Les signaux apparaîtront ici après une première activité dans cette matière.</div></sc-if>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ ovNew }}">
+    <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+      <div style="flex:1.4 1 440px;min-width:0;position:relative;background:#3A6BB0;border-radius:30px;padding:30px;min-height:280px;overflow:hidden;display:flex;flex-direction:column;gap:12px">
+        <span style="font-size:13px;font-weight:600;color:#DDE7F8">Nouveau compte · 1 session</span>
+        <h2 style="margin:0;font-size:28px;line-height:1.2;font-weight:800;color:#FFFFFF;max-width:420px">{{ kidName }} a fait sa première session le 29 sept.</h2>
+        <p style="margin:0;font-size:15px;line-height:1.55;color:#FFFFFF;max-width:400px">Une erreur devient « récurrente » quand elle revient sur au moins deux questions. Il faut en général 2 ou 3 sessions pour le savoir.</p>
+        <img src="assets/nurtu-02-elan.svg" alt="" style="position:absolute;right:10px;bottom:-10px;width:170px;height:192px">
+      </div>
+      <div style="flex:1 1 320px;min-width:0;display:flex;flex-direction:column;gap:16px">
+        <div style="background:#FFFFFF;border-radius:30px;padding:22px;display:flex;flex-direction:column;gap:12px">
+          <h2 style="margin:0;font-size:19px;font-weight:800">Observé pendant cette session</h2>
+          <div style="background:#F5F6FA;border-radius:20px;padding:14px 16px;display:flex;flex-direction:column;gap:4px">
+            <span style="font-size:15px;font-weight:700;line-height:1.3">Pense qu'un plus grand dénominateur donne une plus grande fraction</span>
+            <span style="font-size:12px;color:#51607A">Comparaison · observée 1 fois, le 29 sept.</span>
+          </div>
+          <p style="margin:0;font-size:13px;line-height:1.5;color:#51607A">Si elle revient lors des prochaines sessions, elle apparaîtra ici avec un conseil pour la maison.</p>
+        </div>
+        <div style="background:#FFF1E6;border-radius:30px;padding:22px;display:flex;flex-direction:column;gap:6px">
+          <span style="font-size:15px;font-weight:700">Progression semaine par semaine</span>
+          <p style="margin:0;font-size:13px;line-height:1.5;color:#34425C">Elle s'affichera après environ deux semaines d'utilisation.</p>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+  </sc-if>
+
+  <!-- ===== DETAIL ===== -->
+  <sc-if value="{{ scDetail }}">
+    <button onClick="{{ goOverview }}" style="border:0;background:#FFFFFF;border-radius:999px;padding:9px 16px;font-size:13px;font-weight:600;color:#1A3B70;cursor:pointer;margin-bottom:18px">← Vue d'ensemble</button>
+    <sc-if value="{{ dtPop }}">
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div style="background:#FFFFFF;border-radius:30px;padding:28px;display:flex;flex-wrap:wrap;gap:24px;align-items:center">
+        <div style="flex:1 1 420px;min-width:0;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <span style="padding:6px 12px;border-radius:999px;background:{{ d.bg }};color:{{ d.fg }};font-size:12px;font-weight:700">{{ d.st }}</span>
+            <span style="padding:6px 12px;border-radius:999px;background:#F5F6FA;color:#34425C;font-size:12px;font-weight:600">{{ d.notion }}</span>
+          </div>
+          <h1 style="margin:0;font-size:30px;line-height:1.2;font-weight:800;letter-spacing:-0.02em;text-wrap:pretty">{{ d.label }}</h1>
+          <span style="font-size:13px;color:#51607A">Apparue le {{ d.first }} · {{ d.lastTxt }}</span>
+          <p style="margin:0;font-size:16px;line-height:1.6;color:#34425C;max-width:680px">{{ d.explain }}</p>
+        </div>
+        <div style="flex:none;background:#DDE7F8;border-radius:24px;padding:18px 26px;display:flex;flex-direction:column;align-items:center;gap:6px">
+          <span style="font-size:12px;font-weight:600;color:#1A3B70">Exemple typique</span>
+          <span style="font-size:26px;font-weight:800;color:#0B132B">{{ d.ex }}</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:18px;align-items:flex-start">
+        <div style="flex:1 1 380px;min-width:0;display:flex;flex-direction:column;gap:18px">
+          <div style="background:#FFFFFF;border-radius:30px;padding:24px;display:flex;flex-direction:column;gap:14px">
+            <span style="font-size:12px;font-weight:700;letter-spacing:0.06em;color:#51607A">QUESTION VUE PAR LÉA · {{ d.qDate }}</span>
+            <span style="font-size:20px;font-weight:700;line-height:1.35">{{ d.qText }}</span>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <sc-for list="{{ d.opts }}" as="o" hint-placeholder-count="3">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px;border-radius:16px;background:{{ o.bg }};border:2px {{ o.bs }} {{ o.bc }}">
+                <span style="font-size:18px;font-weight:700">{{ o.v }}</span>
+                <span style="font-size:12px;font-weight:700;color:{{ o.tc }}">{{ o.tag }}</span>
+              </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="background:{{ d.ruleBg }};border-radius:30px;padding:24px;display:flex;gap:16px;align-items:flex-start">
+            <div style="display:flex;flex-direction:column;gap:8px;flex:1;min-width:0">
+              <span style="font-size:17px;font-weight:800">Que veut dire « résolue » ?</span>
+              <p style="margin:0;font-size:14px;line-height:1.55;color:#1F2B40">{{ d.rule }}</p>
+            </div>
+          </div>
+        </div>
+        <div style="flex:1 1 380px;min-width:0;background:#FFFFFF;border-radius:30px;padding:24px;display:flex;flex-direction:column;gap:6px">
+          <span style="font-size:19px;font-weight:800;margin-bottom:10px">Historique de cette erreur</span>
+          <sc-for list="{{ d.attempts }}" as="a" hint-placeholder-count="4">
+          <div style="display:flex;gap:14px">
+            <div style="flex:none;width:22px;display:flex;flex-direction:column;align-items:center">
+              <span style="width:16px;height:16px;border-radius:50%;background:{{ a.dot }};border:3px solid {{ a.ring }};margin-top:3px"></span>
+              <span style="flex:1;width:2px;background:#E2E7F0;min-height:22px"></span>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:3px;padding-bottom:14px">
+              <span style="font-size:12px;font-weight:600;color:#51607A">{{ a.date }}{{ a.firstTag }}</span>
+              <span style="font-size:15px;font-weight:700">{{ a.res }}</span>
+              <span style="align-self:flex-start;font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;background:#F5F6FA;color:#34425C">{{ a.help }}</span>
+            </div>
+          </div>
+          </sc-for>
+          <sc-if value="{{ d.resolved }}">
+          <div style="display:flex;gap:14px;align-items:center;background:#DCF2E8;border-radius:20px;padding:14px">
+            <span style="flex:none;width:36px;height:36px;border-radius:50%;background:#1E6B4E;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-weight:800">✓</span>
+            <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;font-weight:600;color:#1E6B4E">{{ d.resDate }}</span><span style="font-size:16px;font-weight:800">Erreur résolue</span></div>
+          </div>
+          </sc-if>
+        </div>
+      </div>
+      <div style="background:#FFFFFF;border-radius:30px;padding:24px;display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:10px">
+          <span style="font-size:21px;font-weight:800">Comment l'aider à la maison</span>
+          <span style="font-size:12px;color:#51607A">Rédigés et relus par des enseignants · non générés par l'IA</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px">
+          <sc-for list="{{ d.tips }}" as="t" hint-placeholder-count="3">
+          <div style="background:#FFF1E6;border-radius:22px;padding:18px;display:flex;flex-direction:column;gap:8px">
+            <span style="font-size:12px;font-weight:800;color:#9A3C00">Conseil {{ t.n }}</span>
+            <p style="margin:0;font-size:14px;line-height:1.55;color:#1F2B40">{{ t.text }}</p>
+          </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+  </sc-if>
+
+  <!-- ===== TIMELINE ===== -->
+  <sc-if value="{{ scTimeline }}">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:22px">
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <span style="font-size:14px;color:#51607A">{{ kidName }}, {{ kidClass }}</span>
+        <h1 style="margin:0;font-size:34px;font-weight:800;letter-spacing:-0.02em">Chronologie des erreurs</h1>
+      </div>
+      <div style="display:flex;gap:4px;background:#FFFFFF;padding:4px;border-radius:999px">
+        <sc-for list="{{ tlSeg }}" as="s" hint-placeholder-count="3"><button onClick="{{ s.onClick }}" style="border:0;cursor:pointer;padding:9px 16px;border-radius:999px;font-size:13px;font-weight:600;background:{{ s.bg }};color:{{ s.fg }}">{{ s.label }}</button></sc-for>
+      </div>
+    </div>
+    <sc-if value="{{ tlPop }}">
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div style="background:#FFFFFF;border-radius:30px;padding:26px;display:flex;flex-direction:column;gap:6px;overflow-x:auto">
+        <div style="display:flex;gap:18px;min-width:720px">
+          <div style="flex:0 0 260px"></div>
+          <div style="flex:1;position:relative;height:22px">
+            <sc-for list="{{ tl.ticks }}" as="t" hint-placeholder-count="5"><span style="position:absolute;left:{{ t.left }};transform:translateX(-50%);font-size:12px;font-weight:600;color:#7A869C;white-space:nowrap">{{ t.label }}</span></sc-for>
+          </div>
+        </div>
+        <sc-for list="{{ tl.rows }}" as="r" hint-placeholder-count="5">
+        <button onClick="{{ r.onClick }}" style="border:0;background:none;padding:0;cursor:pointer;text-align:left;display:flex;align-items:center;gap:18px;min-width:720px;border-top:1px solid #EEF1F6;min-height:70px">
+          <div style="flex:0 0 260px;display:flex;flex-direction:column;gap:2px;padding:10px 0">
+            <span style="font-size:13px;font-weight:700;line-height:1.3;color:#0B132B">{{ r.label }}</span>
+            <span style="font-size:12px;color:#51607A">{{ r.notion }}</span>
+          </div>
+          <div style="flex:1;position:relative;height:44px">
+            <sc-for list="{{ tl.ticks }}" as="t"><span style="position:absolute;left:{{ t.left }};top:0;bottom:0;width:1px;background:#EEF1F6"></span></sc-for>
+            <span style="position:absolute;top:15px;height:14px;border-radius:7px;left:{{ r.aL }};width:{{ r.aW }};background:#F27121"></span>
+            <span style="position:absolute;top:15px;height:14px;border-radius:7px;left:{{ r.eL }};width:{{ r.eW }};background:repeating-linear-gradient(135deg,#3A6BB0 0 6px,#6F95D0 6px 12px)"></span>
+            <span style="position:absolute;top:8px;left:{{ r.rL }};opacity:{{ r.rOp }};transform:translateX(-50%);width:28px;height:28px;border-radius:50%;background:#1E6B4E;border:3px solid #FFFFFF;box-shadow:0 0 0 2px #1E6B4E;color:#FFFFFF;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center">✓</span>
+          </div>
+        </button>
+        </sc-for>
+        <div style="display:flex;flex-wrap:wrap;gap:18px;padding-top:14px;border-top:1px solid #EEF1F6;font-size:12px;font-weight:600;color:#34425C">
+          <span style="display:flex;align-items:center;gap:8px"><span style="width:22px;height:10px;border-radius:5px;background:#F27121"></span>Active</span>
+          <span style="display:flex;align-items:center;gap:8px"><span style="width:22px;height:10px;border-radius:5px;background:repeating-linear-gradient(135deg,#3A6BB0 0 6px,#6F95D0 6px 12px)"></span>En cours</span>
+          <span style="display:flex;align-items:center;gap:8px"><span style="width:18px;height:18px;border-radius:50%;background:#1E6B4E;color:#FFFFFF;font-size:10px;display:flex;align-items:center;justify-content:center">✓</span>Résolue</span>
+          <span style="margin-left:auto;color:#7A869C">{{ tl.note }}</span>
+        </div>
+      </div>
+      <div style="background:#FFFFFF;border-radius:30px;padding:24px;display:flex;flex-direction:column;gap:10px">
+        <span style="font-size:19px;font-weight:800;margin-bottom:4px">Événements</span>
+        <sc-for list="{{ events }}" as="v" hint-placeholder-count="6">
+        <div style="display:flex;align-items:center;gap:14px;padding:{{ v.pad }};border-radius:20px;background:{{ v.bg }}">
+          <span style="flex:none;width:84px;font-size:13px;font-weight:700;color:#51607A">{{ v.date }}</span>
+          <span style="flex:none;padding:5px 12px;border-radius:999px;font-size:12px;font-weight:700;background:{{ v.tagBg }};color:{{ v.tagFg }}">{{ v.kind }}</span>
+          <span style="flex:1;min-width:0;font-size:{{ v.fs }};font-weight:{{ v.fw }};line-height:1.35">{{ v.label }}</span>
+          <span style="flex:none;font-size:12px;font-weight:600;color:#1E6B4E">{{ v.extra }}</span>
+        </div>
+        </sc-for>
+      </div>
+    </div>
+    </sc-if>
+  </sc-if>
+
+  <!-- ===== NOTIONS ===== -->
+  <sc-if value="{{ scNotions }}">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:22px">
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <span style="font-size:14px;color:#51607A">{{ kidName }}, {{ kidClass }} · {{ nPeriodTxt }}</span>
+        <h1 style="margin:0;font-size:34px;font-weight:800;letter-spacing:-0.02em">Par notion</h1>
+      </div>
+      <div style="display:flex;gap:4px;background:#FFFFFF;padding:4px;border-radius:999px">
+        <sc-for list="{{ nSeg }}" as="s" hint-placeholder-count="2"><button onClick="{{ s.onClick }}" style="border:0;cursor:pointer;padding:9px 18px;border-radius:999px;font-size:13px;font-weight:600;background:{{ s.bg }};color:{{ s.fg }}">{{ s.label }}</button></sc-for>
+      </div>
+    </div>
+    <sc-if value="{{ nPop }}">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px">
+      <sc-for list="{{ notions }}" as="n" hint-placeholder-count="5">
+      <div style="background:#FFFFFF;border-radius:28px;padding:22px;display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="flex:none;width:44px;height:44px;border-radius:50%;background:{{ n.iconBg }};color:#0B132B;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800">{{ n.glyph }}</span>
+          <span style="font-size:18px;font-weight:800">{{ n.name }}</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          <sc-for list="{{ n.counts }}" as="c"><span style="padding:5px 10px;border-radius:999px;font-size:12px;font-weight:700;background:{{ c.bg }};color:{{ c.fg }}">{{ c.t }}</span></sc-for>
+        </div>
+        <div style="height:1px;background:#EEF1F6"></div>
+        <span style="font-size:12px;font-weight:600;color:#51607A">Stratégie observée</span>
+        <sc-for list="{{ n.items }}" as="i">
+        <button onClick="{{ i.onClick }}" style="border:0;cursor:pointer;text-align:left;background:#F5F6FA;border-radius:18px;padding:12px 14px;display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:14px;font-weight:700;line-height:1.35;color:#0B132B">{{ i.label }}</span>
+          <span style="align-self:flex-start;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:700;background:{{ i.bg }};color:{{ i.fg }}">{{ i.st }}</span>
+        </button>
+        </sc-for>
+      </div>
+      </sc-for>
+    </div>
+    </sc-if>
+  </sc-if>
+
+  <!-- ===== CONFIDENCE ===== -->
+  <sc-if value="{{ scConf }}">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:22px">
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <span style="font-size:14px;color:#51607A">{{ kidName }}, {{ kidClass }} · {{ cPeriodTxt }}</span>
+        <h1 style="margin:0;font-size:34px;font-weight:800;letter-spacing:-0.02em">Confiance déclarée et résultat</h1>
+      </div>
+      <div style="display:flex;gap:4px;background:#FFFFFF;padding:4px;border-radius:999px">
+        <sc-for list="{{ cSeg }}" as="s" hint-placeholder-count="2"><button onClick="{{ s.onClick }}" style="border:0;cursor:pointer;padding:9px 18px;border-radius:999px;font-size:13px;font-weight:600;background:{{ s.bg }};color:{{ s.fg }}">{{ s.label }}</button></sc-for>
+      </div>
+    </div>
+    <sc-if value="{{ cPop }}">
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div style="background:#FFFFFF;border-radius:28px;padding:18px 22px;display:flex;flex-wrap:wrap;align-items:center;gap:12px">
+        <span style="font-size:14px;font-weight:600;color:#34425C;margin-right:6px">Avant chaque réponse, Léa a dit :</span>
+        <sc-for list="{{ conf.decl }}" as="x" hint-placeholder-count="3"><span style="white-space:nowrap;padding:8px 14px;border-radius:999px;background:#F5F6FA;font-size:14px;font-weight:600">« {{ x.t }} » <strong style="font-weight:800">{{ x.n }}</strong> fois</span></sc-for>
+        <span style="margin-left:auto;display:flex;flex-wrap:wrap;gap:14px;font-size:12px;font-weight:600;color:#34425C">
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:50%;background:#0B132B"></span>Réponse attendue</span>
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:50%;border:2px solid #0B132B"></span>Réponse non attendue</span>
+        </span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px">
+        <sc-for list="{{ conf.quads }}" as="q" hint-placeholder-count="4">
+        <div style="background:{{ q.bg }};border-radius:28px;padding:24px;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <span style="font-size:12px;font-weight:700;letter-spacing:0.05em;color:{{ q.kc }}">{{ q.kicker }}</span>
+              <span style="font-size:20px;font-weight:800;line-height:1.25">{{ q.title }}</span>
+            </div>
+            <span style="flex:none;white-space:nowrap;font-size:14px;font-weight:700;background:#FFFFFF;border-radius:999px;padding:6px 12px">{{ q.n }} réponses</span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;min-height:20px">
+            <sc-for list="{{ q.dots }}" as="o"><span style="width:16px;height:16px;border-radius:50%;background:{{ q.dotBg }};border:2px solid #0B132B"></span></sc-for>
+          </div>
+          <p style="margin:0;font-size:14px;line-height:1.55;color:#1F2B40">{{ q.meaning }}</p>
+          <p style="margin:0;font-size:14px;line-height:1.55;color:#1F2B40;background:#FFFFFF;border-radius:16px;padding:12px 14px"><strong>Vous pouvez</strong> {{ q.action }}</p>
+        </div>
+        </sc-for>
+      </div>
+    </div>
+    </sc-if>
+  </sc-if>
+
+  <!-- ===== ENGAGEMENT ===== -->
+  <sc-if value="{{ scEng }}">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:22px">
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <span style="font-size:14px;color:#51607A">{{ kidName }}, {{ kidClass }} · {{ ePeriodTxt }}</span>
+        <h1 style="margin:0;font-size:34px;font-weight:800;letter-spacing:-0.02em">Signaux d'engagement</h1>
+      </div>
+      <div style="display:flex;gap:4px;background:#FFFFFF;padding:4px;border-radius:999px">
+        <sc-for list="{{ eSeg }}" as="s" hint-placeholder-count="2"><button onClick="{{ s.onClick }}" style="border:0;cursor:pointer;padding:9px 18px;border-radius:999px;font-size:13px;font-weight:600;background:{{ s.bg }};color:{{ s.fg }}">{{ s.label }}</button></sc-for>
+      </div>
+    </div>
+    <sc-if value="{{ ePop }}">
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:stretch">
+        <div style="flex:1.3 1 360px;min-width:0;background:#FFFFFF;border-radius:28px;padding:24px;display:flex;flex-direction:column;gap:14px">
+          <span style="font-size:18px;font-weight:800">Réponse demandée au coach</span>
+          <div style="display:flex;align-items:baseline;gap:10px"><span style="font-size:52px;font-weight:800;line-height:1">{{ eng.ask }}</span><span style="font-size:14px;color:#51607A">fois</span></div>
+          <span style="font-size:13px;font-weight:600;color:#34425C">{{ eng.askCmp }}</span>
+          <div style="height:1px;background:#EEF1F6"></div>
+          <span style="font-size:13px;font-weight:700;color:#51607A">Et ensuite, Léa a…</span>
+          <sc-for list="{{ eng.next }}" as="x" hint-placeholder-count="3">
+          <div style="display:flex;align-items:center;gap:12px">
+            <span style="flex:0 0 150px;font-size:14px;font-weight:600">{{ x.t }}</span>
+            <span style="flex:1;height:14px;border-radius:7px;background:#F5F6FA;overflow:hidden"><span style="display:block;height:100%;width:{{ x.w }};background:{{ x.c }};border-radius:7px"></span></span>
+            <span style="flex:0 0 24px;text-align:right;font-size:14px;font-weight:800">{{ x.n }}</span>
+          </div>
+          </sc-for>
+        </div>
+        <div style="flex:1 1 260px;min-width:0;background:#FFE6D5;border-radius:28px;padding:24px;display:flex;flex-direction:column;gap:12px">
+          <span style="font-size:18px;font-weight:800">Questions laissées en cours</span>
+          <div style="display:flex;align-items:baseline;gap:10px"><span style="font-size:52px;font-weight:800;line-height:1">{{ eng.aband }}</span><span style="font-size:14px;color:#51607A">question(s)</span></div>
+          <span style="font-size:13px;font-weight:600;color:#34425C">{{ eng.abandCmp }}</span>
+          <p style="margin:auto 0 0;font-size:13px;line-height:1.5;color:#34425C">Une question non terminée peut reprendre plus tard. Elle n'est pas comptée comme une erreur.</p>
+        </div>
+        <div style="flex:1 1 260px;min-width:0;background:#DDE7F8;border-radius:28px;padding:24px;display:flex;flex-direction:column;gap:12px">
+          <span style="font-size:18px;font-weight:800">Indices proposés et refusés</span>
+          <div style="display:flex;align-items:baseline;gap:10px"><span style="font-size:52px;font-weight:800;line-height:1">{{ eng.decl }}</span><span style="font-size:14px;color:#51607A">fois</span></div>
+          <span style="font-size:13px;font-weight:600;color:#34425C">{{ eng.declCmp }}</span>
+          <p style="margin:auto 0 0;font-size:13px;line-height:1.5;color:#34425C">Refuser un indice veut souvent dire que Léa préférait chercher seule.</p>
+        </div>
+      </div>
+      <div style="background:#FFFFFF;border-radius:28px;padding:20px 24px;display:flex;align-items:center;gap:18px">
+        <img src="assets/nurtu-07-patience.svg" alt="" style="flex:none;width:64px;height:72px">
+        <p style="margin:0;font-size:14px;line-height:1.55;color:#34425C">Ces signaux sont comparés uniquement avec la période précédente de Léa, jamais avec d'autres enfants ni avec une moyenne. Un jour sans session n'est pas compté et n'a rien d'anormal.</p>
+      </div>
+    </div>
+    </sc-if>
+  </sc-if>
+
+  <!-- ===== TRANSPARENCY ===== -->
+  <sc-if value="{{ scTr }}">
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div style="position:relative;background:#0F1B35;border-radius:30px;padding:32px;min-height:220px;overflow:hidden;display:flex;flex-direction:column;gap:10px">
+        <span style="font-size:12px;font-weight:700;letter-spacing:0.08em;color:#FFAD66">TRANSPARENCE</span>
+        <h1 style="margin:0;font-size:34px;font-weight:800;letter-spacing:-0.02em;color:#FFFFFF">Comment ça marche ?</h1>
+        <p style="margin:0;font-size:16px;line-height:1.55;color:#C9D4EA;max-width:560px">Nurturia utilise un coach IA, appelé {{ nm }}. Voici ce qu'il fait, ce qu'il ne fait pas, et ce qui est observé pendant les sessions.</p>
+        <img src="assets/nurtu-06-guidage.svg" alt="" style="position:absolute;right:30px;bottom:-14px;width:180px;height:204px">
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px">
+        <div style="background:#FFFFFF;border-radius:28px;padding:24px;display:flex;flex-direction:column;gap:10px">
+          <span style="font-size:18px;font-weight:800">Le coach IA</span>
+          <p style="margin:0;font-size:14px;line-height:1.6;color:#34425C">{{ nm }} reformule les questions et en pose de nouvelles pour aider l'enfant à réfléchir. Il ne connaît pas la bonne réponse et ne la donne jamais.</p>
+        </div>
+        <div style="background:#FFFFFF;border-radius:28px;padding:24px;display:flex;flex-direction:column;gap:10px">
+          <span style="font-size:18px;font-weight:800">Qui vérifie les réponses</span>
+          <p style="margin:0;font-size:14px;line-height:1.6;color:#34425C">Des règles fixes, écrites par des enseignants. Chaque mauvaise option est reliée à une stratégie d'erreur précise. L'IA ne corrige pas et ne note pas.</p>
+        </div>
+        <div style="background:#FFFFFF;border-radius:28px;padding:24px;display:flex;flex-direction:column;gap:10px">
+          <span style="font-size:18px;font-weight:800">Hébergement et IA</span>
+          <p style="margin:0;font-size:14px;line-height:1.6;color:#34425C">Les données sont hébergées dans l'Union européenne. Le fournisseur d'IA reçoit uniquement la question et le message écrit par l'enfant, sans nom ni identifiant.</p>
+        </div>
+      </div>
+      <div style="background:#FFF1E6;border-radius:28px;padding:24px;display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+        <div style="flex:1 1 320px;display:flex;flex-direction:column;gap:10px">
+          <span style="font-size:18px;font-weight:800">Photos d'énoncés</span>
+          <p style="margin:0;font-size:14px;line-height:1.6;color:#34425C">L'enfant peut photographier uniquement l'énoncé imprimé d'un exercice. La photo est transformée en texte, que l'enfant vérifie. L'image est effacée dès que le texte est confirmé.</p>
+        </div>
+        <div style="flex:1 1 320px;display:flex;flex-direction:column;gap:10px">
+          <span style="font-size:18px;font-weight:800">Ce que Nurturia ne fait pas</span>
+          <p style="margin:0;font-size:14px;line-height:1.6;color:#34425C">Nurturia ne corrige jamais le travail de l'enfant et ne photographie jamais ses réponses écrites à la main.</p>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px">
+        <div style="background:#DDE7F8;border-radius:28px;padding:24px;display:flex;flex-direction:column;gap:12px">
+          <span style="font-size:18px;font-weight:800">Ce qui est observé</span>
+          <sc-for list="{{ observed }}" as="o" hint-placeholder-count="5"><div style="display:flex;gap:10px;align-items:center;background:#FFFFFF;border-radius:16px;padding:10px 14px;font-size:14px;font-weight:600"><span style="width:8px;height:8px;border-radius:50%;background:#1A3B70"></span>{{ o }}</div></sc-for>
+        </div>
+        <div style="background:#FFE6D5;border-radius:28px;padding:24px;display:flex;flex-direction:column;gap:12px">
+          <span style="font-size:18px;font-weight:800">Ce qui n'est pas collecté</span>
+          <sc-for list="{{ notCollected }}" as="o" hint-placeholder-count="5"><div style="display:flex;gap:10px;align-items:center;background:#FFFFFF;border-radius:16px;padding:10px 14px;font-size:14px;font-weight:600"><span style="font-weight:800;color:#9A3C00">×</span>{{ o }}</div></sc-for>
+        </div>
+      </div>
+      <div style="background:#FFFFFF;border-radius:28px;padding:24px;display:flex;flex-wrap:wrap;align-items:center;gap:12px">
+        <span style="font-size:18px;font-weight:800;margin-right:auto">Vos droits</span>
+        <button onClick="{{ goAccount }}" style="border:0;cursor:pointer;padding:10px 16px;border-radius:999px;background:#F5F6FA;font-size:14px;font-weight:600;color:#1A3B70">Exporter les données →</button>
+        <button onClick="{{ goAccount }}" style="border:0;cursor:pointer;padding:10px 16px;border-radius:999px;background:#F5F6FA;font-size:14px;font-weight:600;color:#1A3B70">Supprimer le compte →</button>
+        <button onClick="{{ goAccount }}" style="border:0;cursor:pointer;padding:10px 16px;border-radius:999px;background:#F5F6FA;font-size:14px;font-weight:600;color:#1A3B70">Retirer un consentement →</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ===== ACCOUNT ===== -->
+  <sc-if value="{{ scAcc }}">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:22px">
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <span style="font-size:14px;color:#51607A">Consultation uniquement</span>
+        <h1 style="margin:0;font-size:34px;font-weight:800;letter-spacing:-0.02em">Compte et consentements</h1>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;background:#FFE6D5;border-radius:999px;padding:8px 16px 8px 8px">
+        <span style="width:30px;height:30px;border-radius:50%;background:#F27121;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px">i</span>
+        <span style="font-size:13px;font-weight:600;color:#3A1A00">Pour modifier : app Nurturia › Réglages › Données</span>
+      </div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start">
+      <div style="flex:1 1 320px;min-width:0;display:flex;flex-direction:column;gap:16px">
+        <div style="background:#FFFFFF;border-radius:28px;padding:24px;display:flex;flex-direction:column;gap:12px">
+          <span style="font-size:18px;font-weight:800">Compte</span>
+          <div style="display:flex;flex-direction:column;gap:2px;background:#F5F6FA;border-radius:16px;padding:12px 14px"><span style="font-size:12px;color:#51607A">Adresse e-mail</span><span style="font-size:15px;font-weight:700">claire.martin@exemple.fr</span></div>
+          <span style="font-size:13px;font-weight:700;color:#51607A;margin-top:4px">Enfants</span>
+          <div style="display:flex;align-items:center;gap:12px;background:#F5F6FA;border-radius:16px;padding:10px 14px"><span style="width:34px;height:34px;border-radius:50%;background:#FFAD66;display:flex;align-items:center;justify-content:center;font-weight:800">L</span><span style="font-size:15px;font-weight:700;flex:1">Léa</span><span style="font-size:13px;color:#51607A">6e · née en 2015</span></div>
+          <div style="display:flex;align-items:center;gap:12px;background:#F5F6FA;border-radius:16px;padding:10px 14px"><span style="width:34px;height:34px;border-radius:50%;background:#A9C1EA;display:flex;align-items:center;justify-content:center;font-weight:800">T</span><span style="font-size:15px;font-weight:700;flex:1">Tom</span><span style="font-size:13px;color:#51607A">CM2 · né en 2016</span></div>
+          <span style="font-size:13px;font-weight:700;color:#51607A;margin-top:4px">Appareils connectés</span>
+          <div style="display:flex;justify-content:space-between;gap:10px;background:#F5F6FA;border-radius:16px;padding:12px 14px"><span style="font-size:14px;font-weight:600">iPhone de Claire · app parent</span><span style="font-size:13px;color:#51607A">29 sept.</span></div>
+          <div style="display:flex;justify-content:space-between;gap:10px;background:#F5F6FA;border-radius:16px;padding:12px 14px"><span style="font-size:14px;font-weight:600">Tablette familiale · app enfant</span><span style="font-size:13px;color:#51607A">29 sept.</span></div>
+          <div style="display:flex;justify-content:space-between;gap:10px;background:#F5F6FA;border-radius:16px;padding:12px 14px"><span style="font-size:14px;font-weight:600">Navigateur web · cette session</span><span style="font-size:13px;color:#51607A">30 sept.</span></div>
+        </div>
+        <div style="background:#FFFFFF;border-radius:28px;padding:24px;display:flex;flex-direction:column;gap:12px">
+          <span style="font-size:18px;font-weight:800">Données</span>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;background:#F5F6FA;border-radius:16px;padding:12px 14px"><span style="font-size:14px;font-weight:600">Demander l'export de mes données</span><span style="font-size:12px;font-weight:600;color:#51607A">Dans l'app mobile</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;background:#F5F6FA;border-radius:16px;padding:12px 14px"><span style="font-size:14px;font-weight:600">Supprimer le compte</span><span style="font-size:12px;font-weight:600;color:#51607A">Dans l'app mobile</span></div>
+          <button onClick="{{ signOut }}" style="align-self:flex-start;border:0;background:none;padding:4px 0;font-size:13px;font-weight:600;color:#1A3B70;cursor:pointer;text-decoration:underline">Se déconnecter</button>
+        </div>
+      </div>
+      <div style="flex:1.4 1 420px;min-width:0;background:#FFFFFF;border-radius:28px;padding:24px;display:flex;flex-direction:column;gap:12px">
+        <span style="font-size:18px;font-weight:800">Consentements</span>
+        <p style="margin:0;font-size:13px;color:#51607A">Chaque objectif est enregistré séparément.</p>
+        <sc-for list="{{ consentsWeb }}" as="c" hint-placeholder-count="4">
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px;background:#F5F6FA;border-radius:18px;padding:14px 16px">
+          <div style="flex:1 1 220px;min-width:0;display:flex;flex-direction:column;gap:3px">
+            <span style="font-size:15px;font-weight:700">{{ c.t }}</span>
+            <span style="font-size:12px;color:#51607A">{{ c.meta }}</span>
+          </div>
+          <span style="padding:6px 12px;border-radius:999px;font-size:12px;font-weight:700;background:{{ c.bg }};color:{{ c.fg }}">{{ c.st }}</span>
+        </div>
+        </sc-for>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ===== GENERIC STATES ===== -->
+  <sc-if value="{{ stLoading }}">
+    <div style="display:flex;flex-wrap:wrap;gap:20px">
+      <div style="flex:1 1 280px;height:260px;border-radius:30px;background:#E4E8F0"></div>
+      <div style="flex:1.5 1 420px;height:260px;border-radius:30px;background:#E4E8F0;display:flex;align-items:center;justify-content:center;gap:14px">
+        <img src="assets/nurtu-07-patience.svg" alt="" style="width:70px;height:80px">
+        <span style="font-size:15px;font-weight:600;color:#51607A">Chargement des données de {{ kidName }}…</span>
+      </div>
+      <div style="flex:1 1 280px;height:260px;border-radius:30px;background:#E4E8F0"></div>
+      <div style="flex:1 1 100%;height:120px;border-radius:30px;background:#E4E8F0"></div>
+    </div>
+  </sc-if>
+  <sc-if value="{{ stEmpty }}">
+    <div style="background:#FFFFFF;border-radius:30px;padding:40px;display:flex;flex-wrap:wrap;align-items:center;gap:32px">
+      <img src="assets/nurtu-01-idle.svg" alt="" style="flex:none;width:150px;height:170px">
+      <div style="flex:1 1 360px;display:flex;flex-direction:column;gap:10px;max-width:600px">
+        <h2 style="margin:0;font-size:24px;font-weight:800">Pas encore assez de données</h2>
+        <p style="margin:0;font-size:16px;line-height:1.6;color:#34425C">{{ emptyBody }}</p>
+        <p style="margin:0;font-size:14px;line-height:1.6;color:#51607A">Cela ne dépend pas de ce que {{ kidName }} a fait : il faut simplement un peu plus de sessions pour pouvoir afficher quelque chose d'utile.</p>
+      </div>
+    </div>
+  </sc-if>
+  <sc-if value="{{ stError }}">
+    <div style="background:#FFFFFF;border-radius:30px;padding:40px;display:flex;flex-wrap:wrap;align-items:center;gap:32px">
+      <img src="assets/nurtu-05-relance.svg" alt="" style="flex:none;width:150px;height:170px">
+      <div style="flex:1 1 360px;display:flex;flex-direction:column;gap:12px;max-width:600px">
+        <h2 style="margin:0;font-size:24px;font-weight:800">Ces données ne s'affichent pas pour le moment</h2>
+        <p style="margin:0;font-size:16px;line-height:1.6;color:#34425C">Vous pouvez recharger la page. Si l'affichage ne revient pas, reconnectez-vous avec le lien reçu par e-mail. Les données de {{ kidName }} sont conservées.</p>
+        <button onClick="{{ reload }}" style="align-self:flex-start;border:0;cursor:pointer;height:48px;padding:0 22px;border-radius:999px;background:#0F1B35;color:#FFFFFF;font-size:15px;font-weight:700">Recharger</button>
+      </div>
+    </div>
+  </sc-if>
+
+  </div>
+</div>
+</sc-if>
+
+<!-- ============ MOBILE PARENT ============ -->
+<sc-if value="{{ isMobile }}">
+<div style="max-width:1400px;margin:0 auto;display:flex;flex-direction:column;gap:18px">
+  <div style="display:flex;flex-direction:column;gap:4px">
+    <h1 style="margin:0;font-size:30px;font-weight:800;letter-spacing:-0.02em">App parent · compte et consentements</h1>
+    <p style="margin:0;font-size:14px;color:#51607A">Les modifications se font ici. Le tableau de bord web reste en lecture seule.</p>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start">
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <span style="font-size:13px;font-weight:700;color:#34425C">1 · Connexion</span>
+      <div style="width:340px;height:720px;background:#0F1B35;border-radius:48px;padding:10px">
+        <div style="height:100%;background:#F5F6FA;border-radius:40px;overflow:hidden;display:flex;flex-direction:column">
+          <div style="height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:700">9:41<span style="width:70px;height:22px;border-radius:12px;background:#0F1B35"></span><span>●●</span></div>
+          <div style="flex:1;padding:18px 22px 24px;display:flex;flex-direction:column;gap:16px">
+            <img src="assets/nurtu-06-guidage.svg" alt="" style="width:100px;height:112px;align-self:center">
+            <h2 style="margin:0;font-size:22px;font-weight:800;text-align:center">Vérifiez votre boîte de réception</h2>
+            <p style="margin:0;font-size:14px;line-height:1.5;color:#51607A;text-align:center">Lien et code envoyés à claire.martin@exemple.fr</p>
+            <input inputmode="numeric" maxlength="6" value="{{ mcode }}" onChange="{{ onMcode }}" placeholder="000000" style="height:56px;border-radius:16px;border:2px solid #DCE2EC;background:#FFFFFF;padding:0 14px;font-size:20px;letter-spacing:0.25em;text-align:center;font-weight:700;outline:none">
+            <button style="height:52px;border:0;border-radius:999px;background:{{ mcodeBg }};color:#FFFFFF;font-size:16px;font-weight:700">Se connecter</button>
+            <div style="display:flex;justify-content:space-between;gap:10px;font-size:13px;font-weight:600">
+              <button onClick="{{ resend }}" disabled="{{ resendLocked }}" style="border:0;background:none;padding:0;font-size:13px;font-weight:600;color:{{ resendColor }}">{{ resendLabel }}</button>
+              <span style="color:#1A3B70;text-decoration:underline">Changer d'adresse</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <span style="font-size:13px;font-weight:700;color:#34425C">2 · Ajouter un enfant</span>
+      <div style="width:340px;height:720px;background:#0F1B35;border-radius:48px;padding:10px">
+        <div style="height:100%;background:#F5F6FA;border-radius:40px;overflow:hidden;display:flex;flex-direction:column">
+          <div style="height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:700">9:41<span style="width:70px;height:22px;border-radius:12px;background:#0F1B35"></span><span>●●</span></div>
+          <div style="flex:1;padding:14px 22px 24px;display:flex;flex-direction:column;gap:16px">
+            <span style="font-size:13px;font-weight:600;color:#1A3B70">← Retour</span>
+            <h2 style="margin:0;font-size:24px;font-weight:800">Ajouter un enfant</h2>
+            <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;color:#34425C">Prénom
+              <input value="{{ kidFirst }}" onChange="{{ onKidFirst }}" style="height:52px;border-radius:16px;border:2px solid #DCE2EC;background:#FFFFFF;padding:0 14px;font-size:16px;outline:none">
+            </label>
+            <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;color:#34425C">Année de naissance
+              <input inputmode="numeric" maxlength="4" value="{{ kidYear }}" onChange="{{ onKidYear }}" style="height:52px;border-radius:16px;border:2px solid #DCE2EC;background:#FFFFFF;padding:0 14px;font-size:16px;outline:none">
+              <span style="font-size:12px;font-weight:500;line-height:1.45;color:#51607A">Elle détermine les règles de consentement parental qui s'appliquent.</span>
+            </label>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <span style="font-size:13px;font-weight:600;color:#34425C">Classe</span>
+              <div style="display:flex;gap:6px;background:#FFFFFF;padding:4px;border-radius:999px">
+                <sc-for list="{{ classSeg }}" as="s" hint-placeholder-count="2"><button onClick="{{ s.onClick }}" style="flex:1;border:0;height:44px;border-radius:999px;font-size:15px;font-weight:700;background:{{ s.bg }};color:{{ s.fg }};cursor:pointer">{{ s.label }}</button></sc-for>
+              </div>
+            </div>
+            <button style="margin-top:auto;height:52px;border:0;border-radius:999px;background:#0F1B35;color:#FFFFFF;font-size:16px;font-weight:700">Continuer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <span style="font-size:13px;font-weight:700;color:#34425C">3 · Consentement parent</span>
+      <div style="width:340px;height:720px;background:#0F1B35;border-radius:48px;padding:10px">
+        <div style="height:100%;background:#F5F6FA;border-radius:40px;overflow:hidden;display:flex;flex-direction:column">
+          <div style="height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:700">9:41<span style="width:70px;height:22px;border-radius:12px;background:#0F1B35"></span><span>●●</span></div>
+          <div style="flex:1;overflow-y:auto;padding:10px 18px 20px;display:flex;flex-direction:column;gap:12px">
+            <h2 style="margin:0;font-size:21px;line-height:1.25;font-weight:800">Votre accord, objectif par objectif</h2>
+            <sc-for list="{{ purposes }}" as="p" hint-placeholder-count="3">
+            <button onClick="{{ p.onClick }}" style="border:2px solid {{ p.border }};background:#FFFFFF;border-radius:20px;padding:14px;display:flex;gap:12px;align-items:flex-start;text-align:left;cursor:pointer">
+              <span style="flex:none;width:26px;height:26px;border-radius:8px;border:2px solid #1A3B70;background:{{ p.boxBg }};color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800">{{ p.mark }}</span>
+              <span style="display:flex;flex-direction:column;gap:4px">
+                <span style="font-size:14px;font-weight:700;color:#0B132B">{{ p.t }}</span>
+                <span style="font-size:12px;line-height:1.4;color:#51607A">{{ p.d }}</span>
+                <span style="align-self:flex-start;font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;background:{{ p.tagBg }};color:{{ p.tagFg }}">{{ p.tag }}</span>
+              </span>
+            </button>
+            </sc-for>
+            <p style="margin:0;font-size:12px;line-height:1.5;color:#34425C;background:#DDE7F8;border-radius:16px;padding:10px 12px">L'autre parent de l'enfant peut s'opposer à ce traitement. Chaque accord peut être retiré plus tard dans Réglages → Données.</p>
+            <button onClick="{{ validateConsent }}" disabled="{{ consentInvalid }}" style="flex:none;height:50px;border:0;border-radius:999px;background:{{ consentBg }};color:#FFFFFF;font-size:15px;font-weight:700;cursor:pointer">{{ consentBtn }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <span style="font-size:13px;font-weight:700;color:#34425C">4 · Mes consentements</span>
+      <div style="width:340px;height:720px;background:#0F1B35;border-radius:48px;padding:10px">
+        <div style="height:100%;background:#F5F6FA;border-radius:40px;overflow:hidden;display:flex;flex-direction:column">
+          <div style="height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:700">9:41<span style="width:70px;height:22px;border-radius:12px;background:#0F1B35"></span><span>●●</span></div>
+          <div style="flex:1;overflow-y:auto;padding:10px 18px 20px;display:flex;flex-direction:column;gap:12px">
+            <span style="font-size:13px;font-weight:600;color:#1A3B70">← Réglages</span>
+            <h2 style="margin:0;font-size:22px;font-weight:800">Mes consentements</h2>
+            <span style="font-size:12px;color:#51607A">Pour Léa · chaque accord se retire séparément.</span>
+            <sc-for list="{{ myConsents }}" as="c" hint-placeholder-count="3">
+            <div style="background:#FFFFFF;border-radius:20px;padding:14px;display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start">
+                <span style="font-size:14px;font-weight:700;line-height:1.3">{{ c.t }}</span>
+                <span style="flex:none;font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;background:{{ c.bg }};color:{{ c.fg }}">{{ c.st }}</span>
+              </div>
+              <span style="font-size:12px;color:#51607A">{{ c.meta }}</span>
+              <sc-if value="{{ c.canWithdraw }}"><button onClick="{{ c.onAsk }}" style="align-self:flex-start;border:0;background:#F5F6FA;border-radius:999px;padding:8px 14px;font-size:13px;font-weight:700;color:#1A3B70;cursor:pointer">Retirer</button></sc-if>
+              <sc-if value="{{ c.confirming }}">
+              <div style="background:#FFF1E6;border-radius:14px;padding:10px;display:flex;flex-direction:column;gap:8px">
+                <span style="font-size:12px;line-height:1.45;color:#3A1A00">{{ c.warn }}</span>
+                <div style="display:flex;gap:8px">
+                  <button onClick="{{ c.onConfirm }}" style="border:0;background:#0F1B35;color:#FFFFFF;border-radius:999px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer">Retirer l'accord</button>
+                  <button onClick="{{ c.onCancel }}" style="border:0;background:#FFFFFF;color:#1A3B70;border-radius:999px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer">Annuler</button>
+                </div>
+              </div>
+              </sc-if>
+            </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <span style="font-size:13px;font-weight:700;color:#34425C">5 · Données</span>
+      <div style="width:340px;height:720px;background:#0F1B35;border-radius:48px;padding:10px">
+        <div style="position:relative;height:100%;background:#F5F6FA;border-radius:40px;overflow:hidden;display:flex;flex-direction:column">
+          <div style="height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:700">9:41<span style="width:70px;height:22px;border-radius:12px;background:#0F1B35"></span><span>●●</span></div>
+          <div style="flex:1;padding:10px 18px 20px;display:flex;flex-direction:column;gap:12px">
+            <span style="font-size:13px;font-weight:600;color:#1A3B70">← Réglages</span>
+            <h2 style="margin:0;font-size:22px;font-weight:800">Données</h2>
+            <div style="background:#FFFFFF;border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:8px">
+              <span style="font-size:15px;font-weight:700">Exporter mes données</span>
+              <span style="font-size:12px;line-height:1.45;color:#51607A">Un fichier contenant les données du compte, de Léa et de Tom.</span>
+              <button onClick="{{ doExport }}" style="align-self:flex-start;border:0;background:#DDE7F8;border-radius:999px;padding:9px 16px;font-size:13px;font-weight:700;color:#1A3B70;cursor:pointer">{{ exportLabel }}</button>
+            </div>
+            <div style="background:#FFFFFF;border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:8px">
+              <span style="font-size:15px;font-weight:700">Supprimer mon compte</span>
+              <span style="font-size:12px;line-height:1.45;color:#51607A">{{ deleteDesc }}</span>
+              <sc-if value="{{ canDelete }}"><button onClick="{{ openDelete }}" style="align-self:flex-start;border:2px solid #0F1B35;background:#FFFFFF;border-radius:999px;padding:8px 16px;font-size:13px;font-weight:700;color:#0F1B35;cursor:pointer">Supprimer le compte</button></sc-if>
+            </div>
+            <span style="font-size:12px;color:#51607A">Réglages → Données → Mes consentements</span>
+          </div>
+          <sc-if value="{{ deleteOpen }}">
+          <div style="position:absolute;inset:0;background:rgba(15,27,53,0.45);display:flex;align-items:flex-end">
+            <div style="width:100%;background:#FFFFFF;border-radius:30px 30px 0 0;padding:24px 20px 28px;display:flex;flex-direction:column;gap:12px">
+              <span style="font-size:19px;font-weight:800">Supprimer le compte ?</span>
+              <p style="margin:0;font-size:14px;line-height:1.5;color:#34425C">Le compte et toutes les données de Léa et de Tom seront effacés sous 30 jours. Cette action ne peut pas être annulée.</p>
+              <button onClick="{{ confirmDelete }}" style="height:50px;border:0;border-radius:999px;background:#0F1B35;color:#FFFFFF;font-size:15px;font-weight:700;cursor:pointer">Supprimer définitivement</button>
+              <button onClick="{{ closeDelete }}" style="height:46px;border:0;border-radius:999px;background:#F5F6FA;color:#1A3B70;font-size:15px;font-weight:700;cursor:pointer">Annuler</button>
+            </div>
+          </div>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</sc-if>
+
+<!-- ============ CHILD CONSENT ============ -->
+<sc-if value="{{ isChild }}">
+<div style="max-width:1400px;margin:0 auto;display:flex;flex-wrap:wrap;gap:40px;align-items:center;justify-content:center">
+  <div style="width:360px;height:760px;background:#0F1B35;border-radius:50px;padding:10px">
+    <div style="height:100%;background:#DDE7F8;border-radius:42px;overflow:hidden;display:flex;flex-direction:column">
+      <div style="height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:700">9:41<span style="width:70px;height:22px;border-radius:12px;background:#0F1B35"></span><span>●●</span></div>
+      <sc-if value="{{ chAsk }}" hint-placeholder-val="{{ true }}">
+      <div style="flex:1;overflow-y:auto;padding:6px 20px 22px;display:flex;flex-direction:column;gap:12px">
+        <img src="assets/nurtu-09-bienveillance.svg" alt="" style="width:120px;height:136px;align-self:center">
+        <h2 style="margin:0;font-size:22px;line-height:1.25;font-weight:800;text-align:center">Bonjour Léa. Avant de commencer, voici comment ça marche.</h2>
+        <sc-for list="{{ childPoints }}" as="c" hint-placeholder-count="4">
+        <div style="background:#FFFFFF;border-radius:18px;padding:12px 14px;display:flex;gap:12px;align-items:flex-start">
+          <span style="flex:none;width:26px;height:26px;border-radius:50%;background:#FF9F66;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center">{{ c.n }}</span>
+          <span style="font-size:14px;line-height:1.45;font-weight:500">{{ c.t }}</span>
+        </div>
+        </sc-for>
+        <p style="margin:0;font-size:13px;line-height:1.45;color:#1A3B70;text-align:center">Tes parents ont déjà dit oui. Rien ne commence sans ton accord à toi aussi.</p>
+        <button onClick="{{ childYes }}" style="flex:none;height:54px;border:0;border-radius:999px;background:#0F1B35;color:#FFFFFF;font-size:17px;font-weight:700;cursor:pointer">D'accord</button>
+        <button onClick="{{ childLater }}" style="flex:none;height:50px;border:0;border-radius:999px;background:#FFFFFF;color:#1A3B70;font-size:16px;font-weight:700;cursor:pointer">Pas maintenant</button>
+      </div>
+      </sc-if>
+      <sc-if value="{{ chYes }}">
+      <div style="flex:1;padding:30px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center">
+        <img src="assets/nurtu-02-elan.svg" alt="" style="width:170px;height:192px">
+        <h2 style="margin:0;font-size:24px;font-weight:800">C'est noté, Léa.</h2>
+        <p style="margin:0;font-size:15px;line-height:1.5;color:#1F2B40">On commence quand tu veux. Tu peux t'arrêter à tout moment.</p>
+        <button onClick="{{ childReset }}" style="margin-top:12px;border:0;background:none;font-size:13px;font-weight:600;color:#1A3B70;cursor:pointer;text-decoration:underline">Revoir l'écran</button>
+      </div>
+      </sc-if>
+      <sc-if value="{{ chLater }}">
+      <div style="flex:1;padding:30px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center">
+        <img src="assets/nurtu-07-patience.svg" alt="" style="width:160px;height:180px">
+        <h2 style="margin:0;font-size:24px;font-weight:800">Pas de souci.</h2>
+        <p style="margin:0;font-size:15px;line-height:1.5;color:#1F2B40">Rien n'a commencé. Tu pourras revenir quand tu voudras.</p>
+        <button onClick="{{ childReset }}" style="margin-top:12px;border:0;background:none;font-size:13px;font-weight:600;color:#1A3B70;cursor:pointer;text-decoration:underline">Revoir l'écran</button>
+      </div>
+      </sc-if>
+    </div>
+  </div>
+  <div style="max-width:380px;display:flex;flex-direction:column;gap:10px">
+    <span style="font-size:12px;font-weight:700;letter-spacing:0.08em;color:#9A3C00">CÔTÉ ENFANT · PREMIER LANCEMENT</span>
+    <h1 style="margin:0;font-size:30px;line-height:1.2;font-weight:800;letter-spacing:-0.02em">Consentement de l'enfant</h1>
+    <p style="margin:0;font-size:15px;line-height:1.6;color:#34425C">Affiché une seule fois, avant la première session. Tutoiement, phrases courtes. Deux choix : l'accord de l'enfant s'ajoute à celui du parent, et aucune session ne démarre sans les deux.</p>
+  </div>
+</div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;mascotName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Néo&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;autoplay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;showReviewBar&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+const ST = {
+  active:{t:'Active',bg:'#FFE6D5',fg:'#9A3C00',dot:'#F27121',chipBg:'#FFFFFF',chipFg:'#0B132B'},
+  encours:{t:'En cours',bg:'#DDE7F8',fg:'#1A3B70',dot:'#3A6BB0',chipBg:'#1A3B70',chipFg:'#FFFFFF'},
+  resolue:{t:'Résolue',bg:'#DCF2E8',fg:'#1E6B4E',dot:'#2F8F6B',chipBg:'#1E6B4E',chipFg:'#FFFFFF'}
+};
+const RULE_ACTIVE = "Une erreur est résolue quand Léa répond correctement 3 fois, sur au moins 2 jours différents, sans aide, à des questions où cette erreur était possible. Ce n'est pas encore arrivé pour celle-ci.";
+const E = [
+ {id:'add',label:"Additionne les numérateurs et les dénominateurs",ex:"1/2 + 1/3 = 2/5",notion:"Addition",status:'active',first:"2 sept.",last:"26 sept.",fd:245,ed:null,rd:null,
+  weeks:['active','active','active','active','active'],
+  explain:"Léa ajoute les nombres du haut entre eux, puis ceux du bas entre eux, comme pour deux nombres entiers. La méthode semble logique, mais elle ne tient pas compte de la taille des parts : on ne peut additionner que des parts de même taille.",
+  q:{d:"26 sept.",t:"Combien font 1/2 + 1/3 ?",o:["2/5","5/6","2/6","1/6"],c:"2/5",x:"5/6"},
+  at:[["2 sept.",0,0],["8 sept.",0,1],["15 sept.",1,1],["19 sept.",0,0],["26 sept.",0,0]],rule:RULE_ACTIVE,
+  tips:["Avec deux pizzas identiques, l'une coupée en 2 et l'autre en 3, vous pouvez demander à Léa si les parts ont la même taille.","Vous pouvez lui demander ce que donne 1/2 + 1/2 avec sa méthode, puis avec un dessin.","Vous pouvez chercher ensemble un découpage qui convient aux deux fractions, par exemple en 6 parts."]},
+ {id:'cmp',label:"Pense qu'un plus grand dénominateur donne une plus grande fraction",ex:"1/8 > 1/4",notion:"Comparaison",status:'active',first:"4 sept.",last:"29 sept.",fd:247,ed:null,rd:null,
+  weeks:['active','active','active','active','active'],
+  explain:"Léa applique une règle des nombres entiers : 8 est plus grand que 4, donc 1/8 lui semble plus grand. Or plus on partage en parts nombreuses, plus chaque part est petite.",
+  q:{d:"29 sept.",t:"Quelle fraction est la plus grande ?",o:["1/8","1/4","Elles sont égales"],c:"1/8",x:"1/4"},
+  at:[["4 sept.",0,0],["11 sept.",0,0],["18 sept.",0,1],["29 sept.",0,0]],rule:RULE_ACTIVE,
+  tips:["Vous pouvez partager une tablette de chocolat en 4 puis en 8 et comparer la taille d'un morceau.","Vous pouvez lui demander : si le même gâteau est partagé entre plus de personnes, chaque part grandit-elle ou rapetisse-t-elle ?","Vous pouvez placer 1/4 et 1/8 sur deux bandes de papier de même longueur."]},
+ {id:'grad',label:"Compte les graduations au lieu des intervalles",ex:"3/5 au lieu de 3/4",notion:"Droite graduée",status:'encours',first:"9 sept.",last:"16 sept.",fd:252,ed:265,rd:null,
+  weeks:[null,'active','active','encours','encours'],
+  explain:"Léa compte les traits, y compris celui du 0, au lieu de compter les espaces entre eux. Elle voit un partage en 5 là où la droite est partagée en 4.",
+  q:{d:"16 sept.",t:"La droite va de 0 à 1 et est partagée en 4 intervalles égaux. Quelle fraction indique le 3e trait après 0 ?",o:["3/4","3/5","4/5"],c:"3/5",x:"3/4"},
+  at:[["9 sept.",0,0],["16 sept.",0,0],["22 sept.",1,1],["25 sept.",1,0]],
+  rule:"Des réponses attendues apparaissent : le 22 sept. (avec aide) et le 25 sept. (sans aide). L'erreur sera résolue après 3 réponses attendues sans aide, sur au moins 2 jours différents.",
+  tips:["Sur une règle, vous pouvez compter ensemble les espaces entre les traits plutôt que les traits.","Vous pouvez lui demander combien de « sauts » il faut pour aller de 0 à 1.","Vous pouvez dessiner une droite de 0 à 1 et la partager en 4 avec elle, en nommant chaque saut."]},
+ {id:'eq',label:"Ajoute le même nombre en haut et en bas pour trouver une fraction égale",ex:"2/3 = 4/5",notion:"Égalité de fractions",status:'resolue',first:"2 sept.",last:"9 sept.",fd:245,ed:255,rd:266,resTxt:"23 sept.",
+  weeks:['active','encours','encours','resolue','resolue'],
+  explain:"Pour trouver une fraction égale, Léa ajoutait le même nombre en haut et en bas. Il faut en réalité multiplier, ou diviser, les deux nombres par le même nombre.",
+  q:{d:"9 sept.",t:"Quelle fraction est égale à 2/3 ?",o:["4/5","4/6","3/4"],c:"4/5",x:"4/6"},
+  at:[["2 sept.",0,0],["9 sept.",0,0],["12 sept.",1,1],["17 sept.",1,0],["19 sept.",1,0],["23 sept.",1,0]],
+  rule:"Léa a répondu correctement 3 fois, sur 3 jours différents (17, 19 et 23 sept.), sans aide. L'erreur n'est plus apparue depuis. Il a fallu environ 3 semaines.",
+  tips:["Vous pouvez plier une feuille en 3, colorier 2 parts, puis replier en 6 : la surface coloriée ne change pas.","Vous pouvez lui demander ce qu'on fait au nombre du haut et à celui du bas pour passer de 2/3 à 4/6.","Vous pouvez comparer 2/3 et 3/4 sur deux bandes de papier."]},
+ {id:'dec',label:"Lit 1/4 comme 0,4",ex:"1/4 = 0,4",notion:"Fractions et décimaux",status:'resolue',first:"5 sept.",last:"5 sept.",fd:248,ed:253,rd:259,resTxt:"16 sept.",
+  weeks:['active','encours','resolue','resolue','resolue'],
+  explain:"Léa lisait les deux chiffres de la fraction comme ceux d'un nombre décimal. 1/4 signifie « 1 partagé en 4 », soit 0,25.",
+  q:{d:"5 sept.",t:"Comment s'écrit 1/4 en nombre décimal ?",o:["0,4","0,25","1,4"],c:"0,4",x:"0,25"},
+  at:[["5 sept.",0,0],["10 sept.",1,0],["12 sept.",1,0],["16 sept.",1,0]],
+  rule:"Léa a répondu correctement 3 fois, sur 3 jours différents (10, 12 et 16 sept.), sans aide. L'erreur n'est plus apparue depuis.",
+  tips:["Avec des pièces de monnaie, vous pouvez montrer qu'un quart d'euro fait 25 centimes.","Vous pouvez lui demander combien vaut 1/2 en décimal, puis 1/4.","Vous pouvez placer 0,4 et 0,25 sur une règle graduée en dixièmes."]}
+];
+const WEEKS = [["S1","1–7 sept."],["S2","8–14 sept."],["S3","15–21 sept."],["S4","22–28 sept."],["S5","29–30 sept."]];
+const LANES = ['active','encours','resolue'];
+const doyTxt = d => d>=244 ? `${d-243} sept.` : d>=213 ? `${d-212} août` : `${d-181} juil.`;
+const RANGES = {'4w':{s:245,e:273,ticks:[245,252,259,266,273]},'3m':{s:182,e:273,ticks:[182,213,244,273]},'all':{s:244,e:273,ticks:[244,251,258,265,272]}};
+const EVENTS = [
+ [245,'add','a'],[245,'eq','a'],[247,'cmp','a'],[248,'dec','a'],[252,'grad','a'],[253,'dec','e'],[255,'eq','e'],[259,'dec','r'],[265,'grad','e'],[266,'eq','r']
+];
+
+const SIG = (()=>{ const mk=(h,hp,a,ap,q,qp)=>[['Aide demandée à Néo',h,hp,'fois','#DDE7F8'],['Réponse demandée',a,ap,'fois','#FFFFFF'],['Questions laissées en cours',q,qp,'question(s)','#FFE6D5']].map(([t,n,p,unit,bg])=>({t,n,unit,bg,cmp:`Semaine précédente : ${p}${n===p?' (identique)':n<p?` (${p-n} de moins)`:` (${n-p} de plus)`}`})); return {'Français':mk(4,3,1,2,0,1),'Sciences':mk(1,0,0,0,0,0),'Anglais':mk(2,2,0,1,1,0)}; })();
+class Component extends DCLogic {
+  state = { surface:'dash', screen:'overview', child:'lea', subj:'Maths', errId:'add', dataState:'auto', week:4, playing:false,
+    tl:'4w', np:'month', cp:'month', ep:'week',
+    siStep:'email', email:'claire.martin@exemple.fr', code:'', resendIn:60,
+    mcode:'', kidFirst:'Léa', kidYear:'2015', kidClass:'6e',
+    pc:{account:false,analysis:false,improve:false}, pcDone:false,
+    withdrawn:{}, confirming:null, exportSent:false, deleteOpen:false, deleted:false, childAns:null };
+
+  componentDidMount(){
+    this.r = setInterval(()=>{ if(this.state.resendIn>0) this.setState(s=>({resendIn:s.resendIn-1})); },1000);
+    if (this.props.autoplay ?? true) { this.setState({week:0}); this.a = setTimeout(()=>this.play(),900); }
+  }
+  componentWillUnmount(){ clearInterval(this.r); clearInterval(this.t); clearTimeout(this.a); clearTimeout(this.l); }
+
+  play = () => {
+    clearInterval(this.t);
+    if (this.state.playing) { this.setState({playing:false}); return; }
+    this.setState(s=>({week: s.week>=4?0:s.week, playing:true}));
+    this.t = setInterval(()=>{
+      if (this.state.week>=4) { clearInterval(this.t); this.setState({playing:false}); }
+      else this.setState(s=>({week:s.week+1}));
+    },1400);
+  };
+  go = (screen, extra={}) => () => this.setState({screen, surface:'dash', ...extra});
+  seg(key, opts, dark='#0F1B35'){ return opts.map(([v,l])=>({label:l,onClick:()=>this.setState({[key]:v}),bg:this.state[key]===v?dark:'transparent',fg:this.state[key]===v?'#FFFFFF':'#34425C'})); }
+  stFor(sc){
+    const o=this.state.dataState;
+    if (!['overview','detail','timeline','notions','confidence','engagement'].includes(sc)) return 'pop';
+    if (o!=='auto') return (o==='new' && sc!=='overview') ? 'empty' : o;
+    if (this.state.child==='tom') return sc==='overview' ? 'new' : 'empty';
+    if (sc==='notions' && this.state.np==='week') return 'empty';
+    return 'pop';
+  }
+
+  renderVals(){
+    const s=this.state, nm=this.props.mascotName ?? 'Néo';
+    const kid = s.child==='lea' ? {n:'Léa',c:'6e'} : {n:'Tom',c:'CM2'};
+    const st = this.stFor(s.screen);
+    const scr = s.screen;
+    const openErr = id => this.go('detail',{errId:id});
+
+    const surfaces = [['signin','Connexion web'],['dash','Tableau de bord web'],['mobile','App parent mobile'],['child','Consentement enfant']]
+      .map(([v,l])=>({label:l,onClick:()=>this.setState({surface:v}),bg:s.surface===v?'#0F1B35':'transparent',fg:s.surface===v?'#FFFFFF':'#34425C'}));
+    const dataStates = this.seg('dataState',[['auto','Rempli'],['loading','Chargement'],['empty','Vide'],['error','Erreur'],['new','Nouveau compte']]);
+
+    const navDefs=[['overview',"Vue d'ensemble"],['timeline','Chronologie'],['notions','Par notion'],['confidence','Confiance'],['engagement','Engagement']];
+    const navActive = scr==='detail'?'overview':scr;
+    const nav = navDefs.map(([v,l])=>({label:l,onClick:this.go(v),bg:navActive===v?'#F5F6FA':'transparent',fg:navActive===v?'#0B132B':'#C9D4EA'}));
+    const kids = [['lea','Léa · 6e','L','#FFAD66'],['tom','Tom · CM2','T','#A9C1EA']].map(([v,l,i,d])=>({label:l,initial:i,dot:d,onClick:()=>this.setState({child:v,screen:scr==='detail'?'overview':scr}),bg:s.child===v?'#F5F6FA':'transparent',fg:s.child===v?'#0B132B':'#C9D4EA'}));
+
+    const errs = E.map(e=>({label:e.label,notion:e.notion,first:e.first,lastTxt:e.status==='resolue'?`Résolue le ${e.resTxt}`:`Vue le ${e.last}`,st:ST[e.status].t,bg:ST[e.status].bg,fg:ST[e.status].fg,dot:ST[e.status].dot,onClick:openErr(e.id)}));
+    const cnt = k=>E.filter(e=>e.status===k).length;
+    const counts = [['Actives','active','#FFF1E6','#F27121'],['En cours','encours','#EEF3FB','#3A6BB0'],['Résolues','resolue','#EAF7F1','#2F8F6B']].map(([l,k,bg,b])=>({label:l,n:cnt(k),bg,border:b,fg:ST[k].fg}));
+    const activeTips = E.filter(e=>e.status==='active').map(e=>({notion:e.notion,label:e.label,tip:e.tips[0],onClick:openErr(e.id)}));
+    const quick = [['Chronologie des erreurs','timeline'],['Erreurs par notion','notions'],['Confiance déclarée et résultat','confidence'],["Signaux d'engagement",'engagement']].map(([l,v])=>({label:l,onClick:this.go(v)}));
+
+    const w=s.week, slot={active:0,encours:0,resolue:0};
+    const chips = E.map(e=>{ const k=e.weeks[w]; const lane = k?LANES.indexOf(k):0; const i = k?slot[k]++:0; const S=ST[k||'active'];
+      return {label:e.notion,left:`calc(${lane*33.333}% + 10px)`,top:`${44+i*56}px`,op:k?1:0,bg:S.chipBg,fg:S.chipFg,dot:S.dot}; });
+    const lanes = [['Active',0],['En cours',1],['Résolue',2]].map(([l,i])=>({label:l,left:`calc(${i*33.333}% + 4px)`}));
+    const weekBtns = WEEKS.map(([k,d],i)=>({k,d,onClick:()=>{clearInterval(this.t);this.setState({week:i,playing:false});},bg:i===w?'#0F1B35':'rgba(255,255,255,0.45)',fg:i===w?'#FFFFFF':'#3A1A00'}));
+
+    const e = E.find(x=>x.id===s.errId)||E[0];
+    const d = {label:e.label,notion:e.notion,ex:e.ex,explain:e.explain,first:e.first,st:ST[e.status].t,bg:ST[e.status].bg,fg:ST[e.status].fg,
+      lastTxt:e.status==='resolue'?`Dernière apparition le ${e.last} · Résolue le ${e.resTxt}`:`Vue pour la dernière fois le ${e.last}`,
+      qDate:e.q.d.toUpperCase(),qText:e.q.t,rule:e.rule,ruleBg:e.status==='resolue'?'#DCF2E8':'#DDE7F8',resolved:e.status==='resolue',resDate:e.resTxt,
+      opts:e.q.o.map(v=>{const ch=v===e.q.c, ex=v===e.q.x; return {v,tag:ch?'Choix de Léa':ex?'Réponse attendue':'',bg:ch?'#EEF3FB':'#F5F6FA',bs:ex?'dashed':'solid',bc:ch?'#1A3B70':ex?'#2F8F6B':'transparent',tc:ch?'#1A3B70':'#1E6B4E'};}),
+      attempts:e.at.map(([dt,ok,h],i)=>({date:dt,firstTag:i===0?' · Première apparition':'',res:ok?'Réponse attendue':'Réponse non attendue',help:h?'Avec aide du coach':'Sans aide',dot:ok?'#2F8F6B':'#FFFFFF',ring:ok?'#2F8F6B':'#F27121'})),
+      tips:e.tips.map((t,i)=>({n:i+1,text:t}))};
+
+    const R=RANGES[s.tl], pct=x=>Math.max(0,Math.min(100,(x-R.s)/(R.e-R.s)*100));
+    const tl = {ticks:R.ticks.map(t=>({left:`${pct(t)}%`,label:doyTxt(t)})),
+      note: s.tl==='3m'?'Léa utilise Nurturia depuis le 1er sept.':'Aujourd\'hui : 30 sept.',
+      rows:E.map(x=>{const aEnd=x.ed||x.rd||273, eEnd=x.rd||273;
+        return {label:x.label,notion:x.notion,onClick:openErr(x.id),aL:`${pct(x.fd)}%`,aW:`${pct(aEnd)-pct(x.fd)}%`,
+          eL:`${x.ed?pct(x.ed):0}%`,eW:x.ed?`${pct(eEnd)-pct(x.ed)}%`:'0%',rL:`${x.rd?pct(x.rd):0}%`,rOp:x.rd?1:0};})};
+    const lbl = id=>E.find(x=>x.id===id).label;
+    const events = EVENTS.filter(([dy])=>dy>=R.s).slice().reverse().map(([dy,id,k])=>{const r=k==='r';
+      return {date:doyTxt(dy),label:lbl(id),kind:k==='a'?'Apparition':k==='e'?'En cours':'Résolue',
+        tagBg:k==='a'?'#FFE6D5':k==='e'?'#DDE7F8':'#1E6B4E',tagFg:k==='a'?'#9A3C00':k==='e'?'#1A3B70':'#FFFFFF',
+        bg:r?'#DCF2E8':'transparent',pad:r?'16px':'6px 16px',fs:r?'16px':'14px',fw:r?'800':'500',extra:id==='eq'&&r?'environ 3 semaines':''};});
+
+    const glyphs={'Comparaison':'<>','Égalité de fractions':'=','Addition':'+','Droite graduée':'|—|','Fractions et décimaux':'0,'};
+    const notions = ['Comparaison','Égalité de fractions','Addition','Droite graduée','Fractions et décimaux'].map(n=>{
+      const its=E.filter(x=>x.notion===n); const c=k=>its.filter(x=>x.status===k).length;
+      return {name:n,glyph:glyphs[n],iconBg:its.some(x=>x.status==='active')?'#FFE6D5':'#DDE7F8',
+        counts:[[`${c('active')} active`,'active'],[`${c('encours')} en cours`,'encours'],[`${c('resolue')} résolue`,'resolue']].map(([t,k])=>({t,bg:ST[k].bg,fg:ST[k].fg})),
+        items:its.map(x=>({label:x.label,st:ST[x.status].t,bg:ST[x.status].bg,fg:ST[x.status].fg,onClick:openErr(x.id)}))};});
+
+    const cm = s.cp==='month';
+    const Q = cm?[14,6,9,7]:[4,2,3,1];
+    const conf = {decl: cm?[{t:'Je suis sûre',n:20},{t:'Je crois',n:10},{t:'Je ne sais pas',n:6}]:[{t:'Je suis sûre',n:6},{t:'Je crois',n:3},{t:'Je ne sais pas',n:1}],
+      quads:[
+       {kicker:'SÛRE · ATTENDUE',title:'Sûre, et la réponse était attendue',n:Q[0],bg:'#DDE7F8',kc:'#1A3B70',dotBg:'#0B132B',meaning:"La confiance de Léa correspond à ce qu'elle sait sur ces questions.",action:"lui demander d'expliquer sa méthode, pour l'aider à la consolider."},
+       {kicker:'SÛRE · NON ATTENDUE',title:"Sûre, mais la réponse n'était pas attendue",n:Q[1],bg:'#DDE7F8',kc:'#1A3B70',dotBg:'transparent',meaning:"Léa pensait savoir. C'est souvent le signe d'une stratégie bien installée qui ne marche pas dans ce cas précis.",action:"lui demander comment elle vérifierait sa réponse, sans lui dire si elle est juste."},
+       {kicker:'PAS SÛRE · ATTENDUE',title:'Pas sûre, mais la réponse était attendue',n:Q[2],bg:'#FFEBDD',kc:'#9A3C00',dotBg:'#0B132B',meaning:"Léa a trouvé sans en être certaine. La notion est en train de se construire.",action:"lui faire remarquer ce qui l'a menée à la bonne réponse."},
+       {kicker:'PAS SÛRE · NON ATTENDUE',title:"Pas sûre, et la réponse n'était pas attendue",n:Q[3],bg:'#FFEBDD',kc:'#9A3C00',dotBg:'transparent',meaning:"Léa avait signalé qu'elle hésitait. C'est une information utile : elle repère ce qui n'est pas encore clair pour elle.",action:"reprendre la notion avec un exemple concret, sans enjeu."}
+      ].map(q=>({...q,dots:Array.from({length:q.n},(_,i)=>i)}))};
+
+    const ew = s.ep==='week';
+    const nextRaw = ew?[['A réessayé seule',2,'#1A3B70'],['A demandé un indice',1,'#3A6BB0'],["S'est arrêtée",0,'#A9C1EA']]:[['A réessayé seule',7,'#1A3B70'],['A demandé un indice',3,'#3A6BB0'],["S'est arrêtée",1,'#A9C1EA']];
+    const mx = Math.max(...nextRaw.map(x=>x[1]),1);
+    const cmpTxt=(n,p)=>p==null?"Pas de période précédente : Léa a commencé le 1er sept.":`Semaine précédente : ${p}${n===p?' (identique)':n<p?` (${p-n} de moins)`:` (${n-p} de plus)`}`;
+    const eng = ew?{ask:3,askCmp:cmpTxt(3,5),aband:1,abandCmp:cmpTxt(1,2),decl:2,declCmp:cmpTxt(2,2)}:{ask:11,askCmp:cmpTxt(11,null),aband:4,abandCmp:cmpTxt(4,null),decl:6,declCmp:cmpTxt(6,null)};
+    eng.next = nextRaw.map(([t,n,c])=>({t,n,c,w:`${n/mx*100}%`}));
+
+    const dt = s.child==='tom'?'29 sept. 2026':'1 sept. 2026';
+    const consentsWeb = [
+      ['Création du compte',`Requis · accordé le 1 sept. 2026 · texte v1.0`,'Accordé'],
+      ['Analyse du travail de Léa',`Requis pour le service · accordé le 1 sept. 2026 · texte v1.0`,'Accordé'],
+      ['Analyse du travail de Tom',`Requis pour le service · accordé le 29 sept. 2026 · texte v1.0`,'Accordé'],
+      ["Aide à l'amélioration du coach",`Facultatif · refusé le 1 sept. 2026 · texte v1.0`,'Non accordé'],
+      ["Accord de Léa (enfant)",`Donné le 1 sept. 2026 · texte enfant v1.0`,'Accordé'],
+      ["Accord de Tom (enfant)",`Donné le 29 sept. 2026 · texte enfant v1.0`,'Accordé']
+    ].map(([t,meta,stt])=>({t,meta,st:stt,bg:stt==='Accordé'?'#DCF2E8':'#EEF1F6',fg:stt==='Accordé'?'#1E6B4E':'#34425C'}));
+
+    const pc=s.pc;
+    const purposes = [
+      ['account','Créer le compte',"Nécessaire pour ouvrir votre espace parent.",'Requis'],
+      ['analysis',"Analyser le travail de Léa","C'est le cœur du service : repérer les erreurs récurrentes et leur évolution. Léa peut photographier uniquement l'énoncé imprimé d'un exercice : la photo est transformée en texte, qu'elle vérifie, puis effacée dès que le texte est confirmé. Nurturia ne corrige jamais son travail et ne photographie jamais ses réponses écrites à la main.",'Requis'],
+      ['improve',"Aider à améliorer le coach","Facultatif. Si vous ne cochez pas, le service reste exactement le même.",'Facultatif']
+    ].map(([k,t,dd,tag])=>({t,d:dd,tag,mark:pc[k]?'✓':'',boxBg:pc[k]?'#1A3B70':'#FFFFFF',border:pc[k]?'#1A3B70':'#FFFFFF',
+      tagBg:tag==='Requis'?'#FFE6D5':'#EEF1F6',tagFg:tag==='Requis'?'#9A3C00':'#34425C',
+      onClick:()=>this.setState(x=>({pc:{...x.pc,[k]:!x.pc[k]},pcDone:false}))}));
+    const consentOk = pc.account && pc.analysis;
+
+    const myConsents = [
+      ['account','Création du compte','1 sept. 2026 · texte v1.0',true,"Retirer cet accord ferme le compte. Les données seront supprimées sous 30 jours."],
+      ['analysis',"Analyse du travail de Léa",'1 sept. 2026 · texte v1.0',true,"Sans cet accord, l'analyse du travail de Léa s'arrête et le tableau de bord ne se met plus à jour."],
+      ['improve',"Aide à l'amélioration du coach",'1 sept. 2026 · texte v1.0',false,"Rien ne change pour Léa."]
+    ].map(([k,t,meta,given,warn])=>{const wd=s.withdrawn[k]; const on=given&&!wd;
+      return {t,meta:wd?`Retiré le 30 sept. 2026 · accordé le ${meta}`:(given?`Accordé le ${meta}`:`Non accordé · ${meta}`),st:on?'Accordé':wd?'Retiré':'Non accordé',
+        bg:on?'#DCF2E8':'#EEF1F6',fg:on?'#1E6B4E':'#34425C',canWithdraw:on&&s.confirming!==k,confirming:s.confirming===k,warn,
+        onAsk:()=>this.setState({confirming:k}),onCancel:()=>this.setState({confirming:null}),
+        onConfirm:()=>this.setState(x=>({withdrawn:{...x.withdrawn,[k]:true},confirming:null}))};});
+
+    const classSeg = [['CM2','CM2'],['6e','6e']].map(([v,l])=>({label:l,onClick:()=>this.setState({kidClass:v}),bg:s.kidClass===v?'#0F1B35':'transparent',fg:s.kidClass===v?'#FFFFFF':'#34425C'}));
+
+    const emptyBodies = {
+      overview:`Les premières observations apparaîtront ici après la première session de ${kid.n}.`,
+      detail:`Le détail d'une erreur s'affiche dès qu'elle a été observée sur au moins deux questions, en général après 2 ou 3 sessions.`,
+      timeline:`La chronologie apparaît quand une erreur a été observée au moins deux fois. Il faut en général 2 ou 3 sessions, soit quelques jours.`,
+      notions: s.child==='tom'?`Tom a fait une seule session pour l'instant. La répartition par notion s'affiche à partir de deux sessions dans la période, probablement d'ici quelques jours.`:(s.np==='week'?`Cette semaine, Léa a fait une seule session. La répartition par notion s'affiche à partir de deux sessions dans la période, probablement d'ici quelques jours. Vous pouvez aussi choisir « Mois ».`:`La répartition par notion s'affiche à partir de deux sessions dans la période.`),
+      confidence:`La comparaison entre confiance et résultat s'affiche à partir d'une dizaine de réponses, soit environ deux sessions.`,
+      engagement:`Les signaux d'engagement apparaissent après deux sessions, pour pouvoir comparer une période à la précédente.`
+    };
+    const codeOk = /^\d{6}$/.test(s.code), emailOk=/.+@.+\..+/.test(s.email), mcodeOk=/^\d{6}$/.test(s.mcode);
+    const rl = s.resendIn>0;
+
+    return {
+      nm, showReviewBar:this.props.showReviewBar ?? true, surfaces, dataStates,
+      isSignin:s.surface==='signin', isDash:s.surface==='dash', isMobile:s.surface==='mobile', isChild:s.surface==='child',
+      siEmail:s.siStep==='email', siCheck:s.siStep==='check', email:s.email, code:s.code,
+      onEmail:ev=>this.setState({email:ev.target.value}), onCode:ev=>this.setState({code:ev.target.value.replace(/\D/g,'').slice(0,6)}),
+      emailInvalid:!emailOk, sendBg:emailOk?'#0F1B35':'#A7B1C4', codeInvalid:!codeOk, codeBg:codeOk?'#0F1B35':'#A7B1C4',
+      sendLink:()=>this.setState({siStep:'check',resendIn:60,code:''}), signIn:()=>this.setState({surface:'dash',screen:'overview',siStep:'email',code:''}),
+      changeEmail:()=>this.setState({siStep:'email'}), resend:()=>this.setState({resendIn:60}),
+      resendLocked:rl, resendLabel:rl?`Renvoyer dans 0:${String(s.resendIn).padStart(2,'0')}`:'Renvoyer le lien', resendColor:rl?'#7A869C':'#1A3B70',
+      nav, kids, kidName:kid.n, kidClass:kid.c,
+      goTransparency:this.go('transparency'), goAccount:this.go('account'), goOverview:this.go('overview'), goTimeline:this.go('timeline'),
+      trBg:scr==='transparency'?'#FFFFFF':'#FF9F66', accBorder:scr==='account'?'#FF9F66':'transparent',
+      signOut:()=>this.setState({surface:'signin',siStep:'email'}),
+      scOverview:scr==='overview', scDetail:scr==='detail', scTimeline:scr==='timeline', scNotions:scr==='notions', scConf:scr==='confidence', scEng:scr==='engagement', scTr:scr==='transparency', scAcc:scr==='account',
+      ovPop:scr==='overview'&&st==='pop'&&s.subj==='Maths', ovSubj:scr==='overview'&&st==='pop'&&s.subj!=='Maths', showSubjSeg:scr==='overview'&&st==='pop', subjSeg:this.seg('subj',['Maths','Français','Sciences','Histoire-Géo','Anglais','Arts'].map(x=>[x,x])),
+      subjLower:s.subj.toLowerCase(), subjSig:SIG[s.subj]||[], subjHasSig:!!SIG[s.subj], subjNoSig:s.subj!=='Maths'&&!SIG[s.subj],
+      activities:[['Diagnostic fractions','Maths','÷','#FFE6D5','#9A3C00'],['Faire un devoir','Maths · Français','✎','#FF9F66','#3A1A00'],['Préparer une évaluation',"Maths (fractions) · évaluation annoncée le 2 oct.",'✓','#1A3B70','#FFFFFF'],['Comprendre une notion',"Sciences (les états de l'eau) · Anglais (les nombres)",'?','#DDE7F8','#1A3B70']].map(([t,subs,g,c,fg])=>({t,subs,g,c,fg})),
+      ovNew:scr==='overview'&&st==='new', dtPop:scr==='detail'&&st==='pop', tlPop:scr==='timeline'&&st==='pop',
+      nPop:scr==='notions'&&st==='pop', cPop:scr==='confidence'&&st==='pop', ePop:scr==='engagement'&&st==='pop',
+      stLoading:st==='loading', stEmpty:st==='empty', stError:st==='error', emptyBody:emptyBodies[scr]||'',
+      reload:()=>{ this.setState({dataState:'loading'}); this.l=setTimeout(()=>this.setState({dataState:'auto'}),1100); },
+      counts, errs, activeTips, quick, chips, lanes, weekBtns, play:this.play, playIcon:s.playing?'❚❚':'▶', weekTitle:`${WEEKS[w][0]} · ${WEEKS[w][1]}`,
+      d, tl, events, tlSeg:this.seg('tl',[['4w','4 dernières semaines'],['3m','3 mois'],['all','Depuis le début']]),
+      notions, nSeg:this.seg('np',[['week','Semaine'],['month','Mois']]), nPeriodTxt:s.np==='week'?'Semaine du 28 sept.':'Septembre 2026',
+      conf, cSeg:this.seg('cp',[['week','Semaine'],['month','Mois']]), cPeriodTxt:cm?'Septembre 2026 · 36 réponses':'Semaine du 22 au 28 sept. · 10 réponses',
+      eng, eSeg:this.seg('ep',[['week','Semaine'],['month','Mois']]), ePeriodTxt:ew?'Semaine du 22 au 28 sept.':'Septembre 2026',
+      observed:['Les réponses choisies','La confiance déclarée avant de répondre','Le temps de réponse','Les demandes d\'aide ou de réponse',`Les messages écrits à ${nm}`,"La photo de l'énoncé imprimé, si l'enfant en prend une : effacée dès que le texte est confirmé"],
+      notCollected:["Aucune photo de la copie ni des réponses écrites à la main",'Aucune localisation','Aucun contact','Aucune publicité','Aucun suivi dans d\'autres applications'],
+      consentsWeb,
+      mcode:s.mcode, onMcode:ev=>this.setState({mcode:ev.target.value.replace(/\D/g,'').slice(0,6)}), mcodeBg:mcodeOk?'#0F1B35':'#A7B1C4',
+      kidFirst:s.kidFirst, kidYear:s.kidYear, onKidFirst:ev=>this.setState({kidFirst:ev.target.value}), onKidYear:ev=>this.setState({kidYear:ev.target.value.replace(/\D/g,'').slice(0,4)}), classSeg,
+      purposes, consentInvalid:!consentOk||s.pcDone, consentBg:s.pcDone?'#1E6B4E':consentOk?'#0F1B35':'#A7B1C4',
+      consentBtn:s.pcDone?'Accords enregistrés le 30 sept. 2026':consentOk?'Valider mes accords':'Cochez les deux accords requis',
+      validateConsent:()=>this.setState({pcDone:true}), myConsents,
+      doExport:()=>this.setState({exportSent:true}), exportLabel:s.exportSent?'Demande envoyée · lien par e-mail sous 72 h':'Demander un export',
+      canDelete:!s.deleted, deleteDesc:s.deleted?'Demande enregistrée le 30 sept. 2026. Le compte sera supprimé sous 30 jours.':'Supprime le compte et les données de vos enfants.',
+      deleteOpen:s.deleteOpen, openDelete:()=>this.setState({deleteOpen:true}), closeDelete:()=>this.setState({deleteOpen:false}), confirmDelete:()=>this.setState({deleteOpen:false,deleted:true}),
+      chAsk:!s.childAns, chYes:s.childAns==='yes', chLater:s.childAns==='later',
+      childYes:()=>this.setState({childAns:'yes'}), childLater:()=>this.setState({childAns:'later'}), childReset:()=>this.setState({childAns:null}),
+      childPoints:[
+        `Un programme d'ordinateur, pas une personne, t'aide à réfléchir. Il s'appelle ${nm}.`,
+        `${nm} ne te donne pas la réponse. Il te pose des questions pour t'aider à la trouver.`,
+        `On regarde tes réponses, si tu te sentais sûre, et ce que tu écris à ${nm}.`,
+        "Tu peux t'arrêter quand tu veux."
+      ].map((t,i)=>({n:i+1,t}))
+    };
+  }
+}
+</script>
+</body>
+</html>
