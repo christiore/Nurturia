@@ -40,7 +40,7 @@ export type TextProps = {
   align?: 'left' | 'center' | 'right';
   numberOfLines?: number;
   children: React.ReactNode;
-} & Pick<RNTextProps, 'accessibilityLabel' | 'accessibilityRole' | 'testID'>;
+} & Pick<RNTextProps, 'accessibilityLabel' | 'accessibilityRole' | 'accessibilityLiveRegion' | 'testID'>;
 
 export function Text({
   variant,
