@@ -11,7 +11,7 @@ const nurturaRules = require('./eslint-rules');
  */
 module.exports = defineConfig([
   {
-    ignores: ['dist/**', '.expo/**', 'node_modules/**', 'design/**', 'ios/**', 'android/**'],
+    ignores: ['dist/**', '.expo/**', 'node_modules/**', 'design/**', 'ios/**', 'android/**', 'iadibou/**'],
   },
   ...expoConfig,
   {

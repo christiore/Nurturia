@@ -36,7 +36,7 @@ function resolve(node: unknown, parts: string[]): unknown {
 export function t(key: TranslationKey): string {
   const value = resolve(dictionary, key.split('.'));
   if (typeof value !== 'string') {
-    throw new Error(`Nurtura i18n: clé de traduction manquante "${key}"`);
+    throw new Error(`Nurturia i18n: clé de traduction manquante "${key}"`);
   }
   return value;
 }

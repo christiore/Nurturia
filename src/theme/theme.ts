@@ -1,5 +1,5 @@
 /**
- * Nurtura — Design tokens pour React Native / Expo
+ * Nurturia — Design tokens pour React Native / Expo
  * Version 0.1.0-draft — 13 août 2026
  *
  * Source de vérité : tokens.json. Ce fichier en est la transposition typée.
@@ -273,7 +273,7 @@ export const componentSize = {
 // ─────────────────────────────────────────────────────────────
 
 /**
- * Le positionnement Nurtura interdit les mécaniques de compétition et de
+ * Le positionnement Nurturia interdit les mécaniques de compétition et de
  * culpabilisation (cf. teardown concurrentiel du 2 août 2026). Ces jetons
  * n'existent pas volontairement — s'ils apparaissent dans une PR, c'est un bug produit.
  */

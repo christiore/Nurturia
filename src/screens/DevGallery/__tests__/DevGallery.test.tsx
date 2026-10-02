@@ -37,7 +37,7 @@ describe('DevGallery — rendu et disposition responsive', () => {
   it('se monte sans planter avec le thème parent par défaut', async () => {
     const { getByText } = renderGallery();
     await flushMicrotasks();
-    expect(getByText('Nurtura')).toBeTruthy();
+    expect(getByText('Nurturia')).toBeTruthy();
   });
 
   it('la largeur de contenu est plafonnée par layout.contentMaxWidth (utile ≥ 840px, tablette)', async () => {

@@ -8,5 +8,6 @@ module.exports = {
     '^@react-native-async-storage/async-storage$':
       '@react-native-async-storage/async-storage/jest/async-storage-mock',
   },
+  testPathIgnorePatterns: ['/node_modules/', '<rootDir>/iadibou/'],
   collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/**/__tests__/**'],
 };
