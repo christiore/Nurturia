@@ -1,7 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   Animated,
-  AccessibilityInfo,
   Pressable as RNPressable,
   type AccessibilityRole,
   type AccessibilityState,
@@ -10,6 +9,7 @@ import {
 } from 'react-native';
 
 import { motion, touch } from '../../theme/theme';
+import { useReduceMotion } from '../../theme/useReduceMotion';
 
 type HitSlop = { top: number; bottom: number; left: number; right: number };
 
@@ -26,26 +26,6 @@ export function computeHitSlop(measured: { width: number; height: number } | nul
   const horizontal = Math.ceil(missingWidth / 2);
   const vertical = Math.ceil(missingHeight / 2);
   return { top: vertical, bottom: vertical, left: horizontal, right: horizontal };
-}
-
-function useReduceMotion(): boolean {
-  const [reduceMotion, setReduceMotion] = useState(false);
-
-  useEffect(() => {
-    let mounted = true;
-    AccessibilityInfo.isReduceMotionEnabled()
-      .then((value) => {
-        if (mounted) setReduceMotion(value);
-      })
-      .catch(() => undefined);
-    const subscription = AccessibilityInfo.addEventListener('reduceMotionChanged', setReduceMotion);
-    return () => {
-      mounted = false;
-      subscription.remove();
-    };
-  }, []);
-
-  return reduceMotion;
 }
 
 export type PressableRenderState = { pressed: boolean; focused: boolean };
