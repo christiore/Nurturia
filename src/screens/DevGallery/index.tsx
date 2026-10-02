@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 
 import { Box } from '../../components/primitives/Box';
@@ -6,8 +6,13 @@ import { Pressable } from '../../components/primitives/Pressable';
 import { Text } from '../../components/primitives/Text';
 import { Button, type ButtonVariant } from '../../components/Button/Button';
 import { IconButton } from '../../components/Button/IconButton';
+import { Chip, ChipRow } from '../../components/Chip/Chip';
+import { RadioCardGroup } from '../../components/RadioCard/RadioCard';
+import { Segmented } from '../../components/Segmented/Segmented';
+import { Switch } from '../../components/Switch/Switch';
+import { TextField } from '../../components/TextField/TextField';
 import { useBreakpoint, useTheme } from '../../theme/ThemeProvider';
-import { componentSize, layout } from '../../theme/theme';
+import { componentSize, layout, subject, type SubjectKey } from '../../theme/theme';
 import { t } from '../../i18n';
 
 /**
@@ -39,6 +44,11 @@ export function DevGallery(): React.JSX.Element {
         <PressableSection />
         <ButtonSection />
         <IconButtonSection />
+        <TextFieldSection />
+        <RadioCardSection />
+        <SwitchSection />
+        <SegmentedSection />
+        <ChipSection />
       </View>
     </ScrollView>
   );
@@ -240,6 +250,135 @@ function IconButtonSection(): React.JSX.Element {
         <IconButton icon={dotIcon} variant="secondary" accessibilityLabel={t('devGallery.iconButtonMicLabel')} onPress={() => undefined} />
         <IconButton icon={dotIcon} variant="tonal" accessibilityLabel={t('devGallery.iconButtonArrowLabel')} onPress={() => undefined} />
       </Box>
+    </Box>
+  );
+}
+
+function SectionTitle({ children }: { children: string }): React.JSX.Element {
+  return (
+    <Text variant="h3" color="textPrimary">
+      {children}
+    </Text>
+  );
+}
+
+function validateDemoEmail(value: string): string | undefined {
+  return /.+@.+\..+/.test(value) ? undefined : t('devGallery.textFieldError');
+}
+
+function TextFieldSection(): React.JSX.Element {
+  const [email, setEmail] = useState('');
+  return (
+    <Box gap={3}>
+      <SectionTitle>{t('devGallery.formSectionTitle')}</SectionTitle>
+      <TextField
+        label={t('devGallery.textFieldLabel')}
+        helper={t('devGallery.textFieldHelper')}
+        placeholder={t('devGallery.textFieldPlaceholder')}
+        value={email}
+        onChangeText={setEmail}
+        validate={validateDemoEmail}
+        keyboardType="email-address"
+        returnKeyType="done"
+        autoComplete="email"
+        textContentType="emailAddress"
+        autoCapitalize="none"
+      />
+    </Box>
+  );
+}
+
+type DemoSlot = 'afterSchool' | 'wednesday' | 'custom';
+
+function RadioCardSection(): React.JSX.Element {
+  const [slot, setSlot] = useState<DemoSlot | undefined>('afterSchool');
+  return (
+    <Box gap={3}>
+      <SectionTitle>{t('devGallery.radioSectionTitle')}</SectionTitle>
+      <RadioCardGroup
+        accessibilityLabel={t('devGallery.radioQuestion')}
+        value={slot}
+        onChange={setSlot}
+        options={[
+          {
+            value: 'afterSchool',
+            label: t('devGallery.radioAfterSchool'),
+            description: t('devGallery.radioAfterSchoolDetail'),
+          },
+          { value: 'wednesday', label: t('devGallery.radioWednesday') },
+          { value: 'custom', label: t('devGallery.radioCustom') },
+        ]}
+      />
+    </Box>
+  );
+}
+
+function SwitchSection(): React.JSX.Element {
+  const [voice, setVoice] = useState(true);
+  const [readAloud, setReadAloud] = useState(false);
+  return (
+    <Box gap={3}>
+      <SectionTitle>{t('devGallery.switchSectionTitle')}</SectionTitle>
+      <Box direction="row" align="center" justify="space-between">
+        <Text variant="body" color="textPrimary">
+          {t('devGallery.switchVoiceLabel')}
+        </Text>
+        <Switch value={voice} onValueChange={setVoice} accessibilityLabel={t('devGallery.switchVoiceLabel')} />
+      </Box>
+      <Box direction="row" align="center" justify="space-between">
+        <Text variant="body" color="textPrimary">
+          {t('devGallery.switchReadAloudLabel')}
+        </Text>
+        {voice ? (
+          <Switch
+            value={readAloud}
+            onValueChange={setReadAloud}
+            accessibilityLabel={t('devGallery.switchReadAloudLabel')}
+          />
+        ) : (
+          <Switch
+            value={false}
+            onValueChange={setReadAloud}
+            accessibilityLabel={t('devGallery.switchReadAloudLabel')}
+            disabled
+            disabledReason={t('devGallery.switchReadAloudDisabledReason')}
+          />
+        )}
+      </Box>
+    </Box>
+  );
+}
+
+function SegmentedSection(): React.JSX.Element {
+  const [period, setPeriod] = useState<'week' | 'month'>('week');
+  return (
+    <Box gap={3}>
+      <SectionTitle>{t('devGallery.segmentedSectionTitle')}</SectionTitle>
+      <Segmented
+        accessibilityLabel={t('devGallery.segmentedLabel')}
+        value={period}
+        onChange={setPeriod}
+        options={[
+          { value: 'week', label: t('devGallery.segmentedWeek') },
+          { value: 'month', label: t('devGallery.segmentedMonth') },
+        ]}
+      />
+    </Box>
+  );
+}
+
+const SUBJECT_KEYS = Object.keys(subject) as SubjectKey[];
+
+function ChipSection(): React.JSX.Element {
+  const [selected, setSelected] = useState<SubjectKey>('maths');
+  return (
+    <Box gap={3}>
+      <SectionTitle>{t('devGallery.chipSectionTitle')}</SectionTitle>
+      <ChipRow accessibilityLabel={t('devGallery.chipRowLabel')}>
+        {SUBJECT_KEYS.map((key) => (
+          <Chip key={key} label={t(`subject.${key}`)} selected={key === selected} onPress={() => setSelected(key)} />
+        ))}
+      </ChipRow>
     </Box>
   );
 }

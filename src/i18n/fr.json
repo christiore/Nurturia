@@ -37,6 +37,35 @@
     "iconButtonSectionTitle": "Boutons icône",
     "iconButtonBackLabel": "Revenir à l'écran précédent",
     "iconButtonMicLabel": "Démarrer l'enregistrement vocal",
-    "iconButtonArrowLabel": "Continuer"
+    "iconButtonArrowLabel": "Continuer",
+    "formSectionTitle": "Champ de saisie",
+    "textFieldLabel": "Adresse e-mail",
+    "textFieldHelper": "Vous recevrez un lien de connexion et un code à 6 chiffres.",
+    "textFieldPlaceholder": "vous@exemple.fr",
+    "textFieldError": "Indiquez une adresse e-mail complète pour recevoir le lien",
+    "radioSectionTitle": "Cartes de choix",
+    "radioQuestion": "Quand l’app est-elle disponible ?",
+    "radioAfterSchool": "Après l’école",
+    "radioAfterSchoolDetail": "Du lundi au vendredi, en fin d’après-midi",
+    "radioWednesday": "Mercredi après-midi",
+    "radioCustom": "Personnaliser",
+    "switchSectionTitle": "Interrupteurs",
+    "switchVoiceLabel": "Saisie vocale",
+    "switchReadAloudLabel": "Lecture à voix haute",
+    "switchReadAloudDisabledReason": "Activez d’abord la saisie vocale",
+    "segmentedSectionTitle": "Sélecteur de vue",
+    "segmentedLabel": "Période affichée",
+    "segmentedWeek": "Semaine",
+    "segmentedMonth": "Mois",
+    "chipSectionTitle": "Filtres",
+    "chipRowLabel": "Matière"
+  },
+  "subject": {
+    "maths": "Maths",
+    "francais": "Français",
+    "sciences": "Sciences",
+    "histoire": "Histoire-Géo",
+    "anglais": "Anglais",
+    "arts": "Arts"
   }
 }
