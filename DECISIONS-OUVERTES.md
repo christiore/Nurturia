@@ -326,7 +326,7 @@ Pour éviter de rouvrir ce qui est fermé. Ces points sont décidés et document
 | Décidé | Où |
 | --- | --- |
 | **Nom du produit : Nurturia** | Décision du 16 août |
-| Application unique avec bascule de mode | Décision du 14 août |
+| Application unique avec bascule de mode | Décision du 14 août, confirmée le 3 octobre (le modèle à deux apps d'`ARCHITECTURE.md` est écarté) |
 | Verrou par code à 6 chiffres + biométrie conditionnelle | `PARCOURS.md` §3 |
 | Authentification par lien magique + code de secours à 6 chiffres | `PARCOURS.md` §2 |
 | Consentement : déclaration d'âge + finalités séparées | `PARCOURS.md` §2 |
