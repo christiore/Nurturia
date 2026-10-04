@@ -4,6 +4,7 @@ import { TextInput, View, type TextInputProps } from 'react-native';
 import { Box } from '../primitives/Box';
 import { Text } from '../primitives/Text';
 import { useTheme } from '../../theme/ThemeProvider';
+import { fontStyle } from '../../theme/fonts';
 import { border, componentSize, space, typography } from '../../theme/theme';
 
 /**
@@ -141,7 +142,7 @@ export function TextField({
             borderColor: fieldBorderColor,
             backgroundColor: hasError ? theme.colors.errorBg : theme.colors.surfaceSunken,
             color: theme.colors.textPrimary,
-            fontFamily: typography.family.text,
+            ...fontStyle(typography.family.text, typography.bodyL.fontWeight),
             fontSize: typography.bodyL.fontSize,
             textAlignVertical: multiline ? 'top' : 'center',
             opacity: editable ? 1 : 0.4,

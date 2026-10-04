@@ -25,7 +25,7 @@ module.exports = defineConfig([
   {
     // Règle 3 : identifiants FORBIDDEN_PATTERNS interdits partout dans src/,
     // SAUF le fichier qui les déclare (il doit forcément les citer).
-    files: ['src/**/*.{ts,tsx}'],
+    files: ['src/**/*.{ts,tsx}', 'app/**/*.{ts,tsx}'],
     ignores: ['src/theme/theme.ts', '**/__tests__/**'],
     plugins: { nurtura: nurturaRules },
     rules: {
@@ -36,7 +36,7 @@ module.exports = defineConfig([
     // Règles 1, 2, 4 : composants d'écran uniquement. theme.ts est la seule
     // source de valeurs brutes (#hex, nombres) ; les tests peuvent utiliser
     // des valeurs arbitraires pour vérifier un comportement.
-    files: ['src/screens/**/*.{ts,tsx}', 'src/components/**/*.{ts,tsx}'],
+    files: ['src/screens/**/*.{ts,tsx}', 'src/components/**/*.{ts,tsx}', 'app/**/*.{ts,tsx}'],
     ignores: ['**/__tests__/**', '**/*.test.{ts,tsx}'],
     plugins: { nurtura: nurturaRules },
     rules: {

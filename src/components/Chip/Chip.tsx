@@ -3,6 +3,7 @@ import { ScrollView, Text as RNText, View } from 'react-native';
 
 import { Pressable } from '../primitives/Pressable';
 import { useTheme } from '../../theme/ThemeProvider';
+import { fontStyle } from '../../theme/fonts';
 import { border, borderInteractive, componentSize, layout, space, typography } from '../../theme/theme';
 
 export type ChipProps = {
@@ -46,10 +47,9 @@ export function Chip({ label, selected, onPress, testID }: ChipProps): React.JSX
             allowFontScaling
             numberOfLines={1}
             style={{
-              fontFamily: typography.family.text,
+              ...fontStyle(typography.family.text, typography.label.fontWeight),
               fontSize: typography.label.fontSize,
               lineHeight: typography.label.lineHeight,
-              fontWeight: typography.label.fontWeight,
               color: selected ? theme.colors.actionText : theme.colors.textPrimary,
             }}
           >

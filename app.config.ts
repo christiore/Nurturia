@@ -16,6 +16,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: 'Nurturia',
   slug: 'nurturia',
+  /** Schéma des liens profonds (Expo Router). En mode enfant, ils sont refusés hors liste explicite (src/navigation/deepLinks.ts). */
+  scheme: 'nurturia',
   version: '1.0.0',
   orientation: 'default',
   icon: './assets/icon.png',
@@ -32,6 +34,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     },
     predictiveBackGestureEnabled: false,
   },
+  plugins: ['expo-router', 'expo-font'],
   web: {
     favicon: './assets/favicon.png',
   },

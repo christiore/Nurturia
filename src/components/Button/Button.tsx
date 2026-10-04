@@ -3,6 +3,7 @@ import { ActivityIndicator, Text as RNText, type LayoutChangeEvent, View } from 
 
 import { Pressable } from '../primitives/Pressable';
 import { useTheme } from '../../theme/ThemeProvider';
+import { fontStyle } from '../../theme/fonts';
 import { border, componentSize, typography } from '../../theme/theme';
 import { AffordanceGlyph } from './AffordanceGlyph';
 import { resolveShadow, resolveVariantColors, type ButtonVariant } from './variants';
@@ -99,9 +100,8 @@ export function Button({
                 allowFontScaling
                 numberOfLines={1}
                 style={{
-                  fontFamily: typography.family.text,
+                  ...fontStyle(typography.family.text, typography.bodyStrong.fontWeight),
                   fontSize: dimensions.fontSize,
-                  fontWeight: typography.bodyStrong.fontWeight,
                   color: colors.content,
                 }}
               >

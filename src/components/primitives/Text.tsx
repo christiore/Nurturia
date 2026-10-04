@@ -2,6 +2,7 @@ import React from 'react';
 import { Text as RNText, type TextProps as RNTextProps, type TextStyle } from 'react-native';
 
 import { useTheme } from '../../theme/ThemeProvider';
+import { fontStyle } from '../../theme/fonts';
 import { typography } from '../../theme/theme';
 
 /**
@@ -55,10 +56,9 @@ export function Text({
   const fontFamily = DISPLAY_VARIANTS.has(variant) ? theme.displayFamily : typography.family.text;
 
   const style: TextStyle = {
-    fontFamily,
+    ...fontStyle(fontFamily, scale.fontWeight),
     fontSize: scale.fontSize,
     lineHeight: scale.lineHeight,
-    fontWeight: scale.fontWeight,
     letterSpacing: scale.letterSpacing,
     color: theme.colors[color],
     textAlign: align,
