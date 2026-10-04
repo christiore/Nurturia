@@ -27,6 +27,13 @@ export const SecureStoreKey = {
   isParentDevice: 'nurtura.device.isParentDevice',
   appMode: 'nurtura.mode.current',
   activeChildId: 'nurtura.mode.activeChildId',
+  /**
+   * DÉVELOPPEMENT UNIQUEMENT — code parent stocké tel quel, en attendant la
+   * décision sur la dérivation de clé (src/features/auth/parentCode.ts).
+   * Lu et écrit seulement par devParentCodeStore.ts, qui refuse de tourner
+   * hors de `__DEV__`.
+   */
+  devParentCode: 'nurturia.dev.parentCode',
 } as const;
 
 export type SecureStoreKeyName = (typeof SecureStoreKey)[keyof typeof SecureStoreKey];
