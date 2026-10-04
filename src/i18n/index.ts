@@ -33,10 +33,18 @@ function resolve(node: unknown, parts: string[]): unknown {
  * Seule voie d'accès à une chaîne visible. Aucune chaîne en dur dans un
  * composant (CLAUDE.md §4, invariant de code n°14 / définition de « terminé »).
  */
-export function t(key: TranslationKey): string {
+export function t(key: TranslationKey, params: Record<string, string | number> = {}): string {
   const value = resolve(dictionary, key.split('.'));
   if (typeof value !== 'string') {
     throw new Error(`Nurturia i18n: clé de traduction manquante "${key}"`);
   }
-  return value;
+  // Remplace chaque `{nom}` par sa valeur. Un paramètre manquant est une
+  // erreur de l'appelant : on la rend visible plutôt que d'afficher « {nom} ».
+  return value.replace(/\{(\w+)\}/g, (_match, name: string) => {
+    const replacement = params[name];
+    if (replacement === undefined) {
+      throw new Error(`Nurturia i18n: paramètre "${name}" manquant pour la clé "${key}"`);
+    }
+    return String(replacement);
+  });
 }

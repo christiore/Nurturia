@@ -6,7 +6,8 @@
     "retry": "Réessayer",
     "loading": "Chargement en cours",
     "cancel": "Annuler",
-    "back": "Retour"
+    "back": "Retour",
+    "close": "Fermer"
   },
   "devGallery": {
     "title": "Galerie de composants",
@@ -85,5 +86,57 @@
     "histoire": "Histoire-Géo",
     "anglais": "Anglais",
     "arts": "Arts"
+  },
+  "pinPad": {
+    "delete": "Effacer le dernier chiffre",
+    "progress": "{count} chiffres saisis sur {total}"
+  },
+  "modeBanner": {
+    "label": "Mode {name}",
+    "parent": "Parent",
+    "parentAccessibilityLabel": "Revenir au mode parent. Le code parent sera demandé."
+  },
+  "parentHome": {
+    "title": "Aujourd’hui",
+    "emptyTitle": "Le suivi apparaîtra ici",
+    "emptyBody": "Après les premières sessions, vous trouverez ici ce que votre enfant a travaillé et comment il s’y est pris.",
+    "switchToChild": "Passer en mode enfant",
+    "devGallery": "Galerie de composants (développement)"
+  },
+  "chooseChild": {
+    "title": "Qui va utiliser l’app ?",
+    "lockNote": "Pour revenir au mode parent, il faudra saisir votre code parent.",
+    "confirm": "Passer en mode enfant",
+    "confirmDisabledReason": "Choisissez l’enfant qui va utiliser l’app",
+    "gradeLabel": "Classe : {grade}",
+    "emptyTitle": "Aucun enfant sur ce compte",
+    "emptyBody": "Ajoutez un enfant depuis les réglages pour pouvoir passer en mode enfant.",
+    "errorTitle": "La liste des enfants ne s’affiche pas",
+    "errorBody": "Vérifiez la connexion, puis réessayez."
+  },
+  "createCode": {
+    "title": "Créez votre code parent",
+    "body": "Il sera demandé pour quitter le mode enfant. Choisissez 6 chiffres que votre enfant ne peut pas deviner.",
+    "confirmTitle": "Saisissez le code une seconde fois",
+    "confirmBody": "Pour vérifier qu’il n’y a pas d’erreur de frappe.",
+    "mismatch": "Les deux saisies sont différentes. Recommencez avec le code de votre choix.",
+    "rejected": "Ce code est trop facile à deviner. Choisissez-en un autre.",
+    "devNotice": "Version de développement : le code est conservé sans chiffrement sur cet appareil."
+  },
+  "parentCode": {
+    "title": "Code parent",
+    "body": "Saisissez votre code à 6 chiffres pour revenir au mode parent.",
+    "wrongOne": "Ce code ne correspond pas. Encore 1 essai avant une pause.",
+    "wrongMany": "Ce code ne correspond pas. Encore {count} essais avant une pause.",
+    "locked": "Pause en cours. Nouvel essai possible dans {time}.",
+    "checking": "Vérification…",
+    "forgot": "Code oublié",
+    "forgotInfo": "Un lien pour choisir un nouveau code sera envoyé à l’adresse e-mail du compte. Cette fonction arrive avec le compte en ligne.",
+    "back": "Retour au mode {name}"
+  },
+  "childHome": {
+    "greeting": "Bonjour {name}",
+    "body": "Ton espace de travail arrive bientôt. Tu pourras y faire tes exercices avec ton coach, à ton rythme.",
+    "fallbackName": "enfant"
   }
 }
